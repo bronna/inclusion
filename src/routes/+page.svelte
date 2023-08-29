@@ -5,15 +5,27 @@
 
 <script>
   import { getData } from "../data/processData.js";
-  import { selectedDistricts, selectedDistrictsData } from "../stores/stores.js"
+  import { selectedDistricts, districtsData, selectedDistrictsData } from "../stores/stores.js"
+  import { colors } from '../styles/colors';
   import Svelecte from "svelecte";
-  import StateBar from "../components/StateBar.svelte";
+  import StateLegend from "../components/StateLegend.svelte";
   import DistrictBar from "../components/DistrictBar.svelte";
   import StateMap from "../components/StateMap.svelte";
+  import StateAvg from "../components/StateAvg.svelte";
+  import { scaleOrdinal } from "d3";
 
   let data = getData()
 
-  let numberDistricts = data.length
+  let stateData = data.find(row => row.properties.GEOID === "999999")
+  let stateAvgLines = [
+	stateData.properties.eighty, 
+	stateData.properties.eighty + stateData.properties.between, 
+	stateData.properties.eighty + stateData.properties.between + stateData.properties.forty
+  ]//.map(value => parseFloat(value.toFixed(2)));
+
+  let numberDistricts = $districtsData.length
+
+  let backgroundSVG
 
 	// Define the sort and filter actions
     let actions = [
@@ -21,7 +33,7 @@
 			name: `Select all (${numberDistricts})`, 
 			action: () => {
 				selectedDistricts.set(
-					data
+					$districtsData
 						.filter(district => district.GEOID !== undefined && district.GEOID !== null)
 						.map(district => district.GEOID)
 				);
@@ -65,40 +77,37 @@
 	}
 
 	// create array of objects with id and name value for each item in the data array
-	let districtNames = data.map((district) => {
+	let districtNames = $districtsData.map((district) => {
 		return { value: district.GEOID, label: district.name };
 	});
 
+	let lineColorScale = scaleOrdinal()
+		.domain([0, 1, 2])
+		.range([colors[4], colors[5], colors[6]]);
 </script>
 
 <section>
-  <h1>
-    How inclusive are Oregon's school districts for students with disabilities?
-  </h1>
+	<h1 class="headline text-width">
+		Inclusion in the state of Oregon
+	</h1>
 
-  <div class="state">
-	<StateBar stateData={data.find(row => row.GEOID === "999999")} />
-  </div>
+	<p class="text-width">Oregon ranks 11th out of 50 states for how included students with disabilities are in its schools</p>
 
-  <StateMap data={data} />
+	<p class="text-width">Overall, the state's rates of inclusion can be broken down as follows:</p>
 
-  <div class="striped-background">
-	<!-- <svg width="0" height="0" style="position:absolute;">
-		<defs>
-			<pattern id="striped-pattern" width="80" height="40" patternUnits="userSpaceOnUse">
-				<line x1="0" y1="0" x2="0" y2="40" style="stroke:#333; stroke-width:10" />
-			</pattern>			
-		</defs>
-	</svg> -->
-	<!-- <svg width="500" height="500">
-		<rect width="500" height="500" fill="url(#striped-pattern)"/>
-	</svg> -->
+	<div class="state text-width">
+		<StateLegend stateData={stateData} />
+	</div>
+
+	<p class="text-width" style="margin-bottom:3rem;">These rates of inclusion are just the statewide average, however. Districts within the state vary widely. To see the inclusion rates of individual districts, select below</p>
+
+	<StateMap data={$districtsData} />
 	
-	  <div class="search">
+	<div class="search text-width">
 		<p class="search-description">
 			find a school district
 		</p>
-	
+
 		<div class="search-container">
 			<Svelecte 
 				options={districtNames} 
@@ -107,7 +116,7 @@
 				collapseSelection={$selectedDistricts.length < 6 ? false : true}
 				placeholder={"find a school district"}
 			/>
-	
+
 			<div class="menu-container">
 				<button 
 					on:click={(event) => {
@@ -137,24 +146,34 @@
 				{/if}
 			</div>
 		</div>
+	</div>
+
+	<div class="striped-background text-width">
+		<!-- SVG for the striped pattern -- see if there's a way to move each stripe back by 2.2px * index -->
+		<svg bind:this={backgroundSVG} width="100%" height="100%">
+			{#each stateAvgLines as linePos, index (index)}
+				<line 
+					x1="{linePos * 100}%" 
+					x2="{linePos * 100}%" 
+					y1="60px" 
+					y2="100%" 
+					stroke={lineColorScale(index)} 
+					stroke-width="2" 
+					stroke-dasharray="2, 2"
+				/>
+			{/each}
+		</svg>
 	
-	  <div class="comparison-bars">
-		<!-- <div class="legend">
-			<div class="box teal">
-				More inclusive <span class="arrow">&#8594;</span>
-			  </div>
-			  <div class="box dark-pink">
-				<span class="arrow">&#8592;</span> Less inclusive
-			  </div>
-		</div> -->
-		
-		{#each $selectedDistrictsData as district}
-			{#if district.name}
-				<DistrictBar districtData={district} />
-			{/if}
-		{/each}
-	  </div>
-  </div>
+		<StateAvg stateData={stateData} />
+	
+		<div class="comparison-bars">
+			{#each $selectedDistrictsData as district}
+				{#if district.name}
+					<DistrictBar districtData={district} />
+				{/if}
+			{/each}
+		</div>
+	</div>
   
 </section>
 
@@ -162,19 +181,29 @@
   section {
     display: flex;
     flex-direction: column;
+	align-items: center;
   }
 
   h1 {
     width: 100%;
-	padding-bottom: 1rem;
-	line-height: 3rem;
+	padding-top: 2rem;
+	font-size: 3rem;
+	line-height: 3.5rem;
+	text-align: center;
   }
 
-  .striped-background {
-    /* background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><line x1="0" y1="0" x2="0" y2="40" style="stroke:%23f2f2f2; stroke-width:10" /></svg>'); */
-	background: url('../styles/striped-pattern.svg')
-	/* height: 800px;
-	width: 100%; */
+  p {
+	font-size: 1.1rem;
+  }
+
+  .state {
+	width: 100%;
+	margin-bottom: 1rem;
+  }
+
+  .text-width {
+	max-width: 36rem;
+	width: 100%;
   }
 
   .search p {
@@ -192,6 +221,7 @@
   .search {
 	width: 100%;
 	padding: 2rem 0;
+	margin-bottom: 1rem;
   }
 
     .search-description {
@@ -247,33 +277,23 @@
         background: #eee;
   }
 
-  .legend {
-	display: flex;
-	justify-content: space-between;
-	margin: 2rem 0;
-  }
+    .striped-background {
+		position: relative;
+	}
 
-  .box {
-	padding: 1px 8px; 
-	color: white; 
-	font-size: 0.75rem; 
-	text-transform: uppercase;
-	font-weight: 600;
-	letter-spacing: 0.06rem;
-	text-align: center;
-  }
+	.striped-background > svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 0; /* This ensures SVG stays behind other content */
+	}
 
-  .teal {
-	background-color: var(--inclusive-color); 
-  }
+	/* Ensure other children of .striped-background stay above the SVG */
+	.striped-background > * {
+		position: relative;
+		z-index: 1;
+	}
 
-  .dark-pink {
-	background-color: var(--separate-color); 
-  }
-
-  .arrow {
-	font-size: 1rem;
-  }
 
   .comparison-bars {
 	margin-top: 2.4rem;

@@ -35,6 +35,12 @@
     box-sizing: border-box;
   }
 
+  @media (max-width: 768px) {
+    main {
+        padding: 1rem 1rem;
+    }
+  }
+
   footer {
     display: flex;
     flex-direction: column;

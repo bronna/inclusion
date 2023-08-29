@@ -3,6 +3,7 @@
     import { slide } from 'svelte/transition';
     import { tick } from 'svelte';
     import { colors } from '../styles/colors';
+    import BarChart from './BarChart.svelte';
 
     export let districtData
 
@@ -179,20 +180,7 @@
         {/if}
     {:else}
         {#if districtData.students !== 0}
-            <!-- <svg class="bar-chart" viewBox="0 0 100 30" preserveAspectRatio="none">
-                {#each data as d (d.group)}
-                    <path d ={d.barPath} fill={colorScale(d.group)} />
-                {/each}
-            </svg> -->
-            <div class="bar-chart">
-                {#each data as d, i (d.group)}
-                    <div class="bar" style="background-color: {colorScale(d.group)}; width: {d.value}%">
-                        {#if d.value >= 1}
-                            <span class="bar-text">{(d.value).toFixed(0)}{i === 0 ? '%' : ''}</span>
-                        {/if}
-                    </div>
-                {/each}
-            </div>    
+            <BarChart data={data} />   
         {/if}
     {/if}
 
@@ -221,21 +209,21 @@
 
     .header-wrapper {
         display: flex;
-        justify-content: space-between;
+        /* justify-content: space-between; */
         align-items: center; /* align items vertically */
     }
 
     .district-name {
-        font-size: 0.95rem;
-        font-weight: 600;
+        font-size: 1.05rem;
         letter-spacing: 0.03rem;
         text-transform: uppercase;
+        /* font-family: 'Source Serif 4', serif; */
     }
 
     .alert-icon {
         background-color: var(--separate-color);
         color: white;
-        margin-left: 1rem;
+        margin-left: 0.5rem;
         padding: 1px;
         border-radius: 10%;
         display: inline-flex;
@@ -251,40 +239,11 @@
         height: 1em;
         width: 1em;
         cursor: pointer;
-    }
-
-    .bar-chart {
-        margin-top: 0.3rem;
-        width: 100%;
-        height: 20px;
-    }
-
-    .bar {
-        display: inline-block;
-        /* display: flex;
-        align-items: center;
-        justify-content: center; */
-        height: 100%;
-        position: relative;
-        /* margin-right: 2px; */
-    }
-
-    .bar:last-child {
-        margin-right: 0;
-    }
-
-    .bar-text {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: white;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translateY(2px);
     }
 
     .smallDistrict {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         letter-spacing: 0.02rem;
         font-weight: 400;
         color: var(--dark-gray);
@@ -293,9 +252,10 @@
     }
 
     .expand-button {
-        background: none;
+        background: white;
         border: none;
         cursor: pointer;
+        margin-left: 0.5rem;
     }
 
     .expanded-content {

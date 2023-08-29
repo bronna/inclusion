@@ -1,7 +1,7 @@
 import originalData from "./OregonData.js"
 
 export const getData = () => {
-    let data = JSON.parse(JSON.stringify(originalData));
+    let data = JSON.parse(JSON.stringify(originalData.features));  // Access the features array
     
     let totalStudents = 0
     let eighty = 0
@@ -31,23 +31,27 @@ export const getData = () => {
         }
     });
 
+    // Creating a new feature for the summary data
+    let summaryFeature = {
+        type: "Feature",
+        properties: {
+            name: "Oregon",
+            GEOID: "999999",
+            students: totalStudents,
+            eighty: eighty / totalStudents,
+            forty: forty / totalStudents,
+            separate: separate / totalStudents,
+            between: between / totalStudents,
+        },
+        geometry: null  // Since this is a summary, I'm assuming no specific geometry, but adjust as needed
+    };
 
-    let summary = {
-      name: "Oregon",
-      GEOID: "999999",
-      students: totalStudents,
-      eighty: eighty / totalStudents,
-      forty: forty / totalStudents,
-      separate: separate / totalStudents,
-      between: between / totalStudents,
-    }
-
-    data.push(summary)
+    data.push(summaryFeature)
 
     return data.sort((a, b) => {
-      if (!a.name && !b.name) return 0;  // If both are missing, they're equal
-      if (!a.name) return 1;  // If only a's name is missing, a is greater
-      if (!b.name) return -1; // If only b's name is missing, b is greater
-      return a.name.localeCompare(b.name); // If neither is missing, do the actual comparison
+      if (!a.properties.name && !b.properties.name) return 0;  // If both are missing, they're equal
+      if (!a.properties.name) return 1;  // If only a's name is missing, a is greater
+      if (!b.properties.name) return -1; // If only b's name is missing, b is greater
+      return a.properties.name.localeCompare(b.properties.name); // If neither is missing, do the actual comparison
     });
-  };
+};
