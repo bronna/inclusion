@@ -22,12 +22,12 @@
     </strong>
 </h3>
 
-<div class="color-legend">
+<!-- <div class="color-legend">
     <span class="setting-name" style="background-color:{colors[0]}; color:white;">inclusive</span>
     <span class="setting-name" style="background-color:{colors[1]}; color:white;">semi-inclusive</span>
     <span class="setting-name" style="background-color:{colors[2]}; color:white;">non-inclusive</span>
     <span class="setting-name" style="background-color:{colors[3]}; color:white;">separate</span> 
-</div>
+</div> -->
 
 <div class="state-data">
     {#if stateData.students !== 0}

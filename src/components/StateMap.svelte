@@ -49,6 +49,40 @@
       districtPathGenerator = d3.geoPath(projection);
     }
 
+    let tooltip;
+    let tooltipVisible = false
+
+    function showTooltip(name) {
+      tooltip.textContent = name;
+      tooltip.style.opacity = 1;
+    }
+
+    function updateTooltipPosition(event) {
+      // Check if event has touches (is a touch event)
+      if (event.touches) {
+          tooltip.style.left = event.touches[0].clientX + "px";
+          tooltip.style.top = event.touches[0].clientY + "px";
+      } else {
+          tooltip.style.left = event.pageX + "px";
+          tooltip.style.top = event.pageY + "px";
+      }
+    }
+
+    function hideTooltip() {
+      tooltip.style.opacity = 0;
+    }
+
+    function handleDistrictClick(event, district) {
+        if (!tooltipVisible) {
+            showTooltip(district.name);
+            updateTooltipPosition(event);
+            tooltipVisible = true;
+        } else {
+            hideTooltip();
+            tooltipVisible = false;
+        }
+    }
+
     // Adjust the dimensions and projection once the data is loaded
     onMount(() => {
       updateProjection()
@@ -64,16 +98,12 @@
       }
     });
 </script>
+
+<div class="tooltip" bind:this={tooltip}></div>
   
 <div id="map">
     <svg width={dims.width} height={dims.height}>
       {#if districtPathGenerator}
-        <defs>
-          <clipPath id="Map_districts">
-            <path d={districtPathGenerator(data)} />
-          </clipPath>
-        </defs>
-    
         <g style={{ clipPath: "url(#districts)" }}>
           {#each data as district}
             {#if district.GEOID !== "999999"}
@@ -83,6 +113,10 @@
                 d={districtPathGenerator(district)}
                 fill={$selectedDistricts.includes(district.GEOID) ? "rgb(67,182,161,1.0)" : "lightgray"}
                 stroke="white"
+                on:mouseover={() => showTooltip(district.name)}
+                on:mousemove={updateTooltipPosition}
+                on:mouseout={hideTooltip}
+                on:click={e => handleDistrictClick(e, district)}
               >
                 <title>
                   {district.name}
@@ -100,6 +134,21 @@
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+
+  .tooltip {
+    position: absolute;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .districtShape:hover {
+    fill: rgb(67,182,161,0.6);
   }
 </style>
   

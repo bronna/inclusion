@@ -38,21 +38,64 @@
 						.map(district => district.GEOID)
 				);
 				showMenu = false;
-				// this needs to map just the GEOIDs to selectedDistricts, not all their data
 			} 
 		},
-        { name: 'Sort by most inclusive', action: () => console.log('Sort most inclusive') },
-        { name: 'Sort by least inclusive', action: () => console.log('Sort least inclusive') },
+        { 
+			name: 'Sort by most inclusive', 
+			action: () => {
+				let sortedDistricts = $selectedDistrictsData
+					.sort((a, b) => (b.eighty + b.between) - (a.eighty + a.between))
+					.map(district => district.GEOID)
+				selectedDistricts.set(sortedDistricts)
+				showMenu = false;
+			} 
+		},
+        { 
+			name: 'Sort by least inclusive', 
+			action: () => {
+				let sortedDistricts = $selectedDistrictsData
+					.sort((a, b) => (b.forty + b.separate) - (a.forty + a.separate))
+					.map(district => district.GEOID)
+				selectedDistricts.set(sortedDistricts)
+				showMenu = false;
+			} 
+		},
 		{ 
 			name: 'Sort by name', 
 			action: () => {
-				sortName.set((a, b) => a.name.localeCompare(b.name)); // change
+				let sortedDistricts = $selectedDistrictsData
+					.sort((a, b) => a.name.localeCompare(b.name))
+					.map(district => district.GEOID)
+				selectedDistricts.set(sortedDistricts)
             	showMenu = false;
 			} 
 		},
 		// { name: 'Filter by disability', action: () => console.log('Filter disability') },
-		{ name: 'Sort by size', action: () => console.log('Sort # students') },
-		{ name: 'Filter by size', action: () => console.log('Filter # students') },
+		{ 
+			name: 'Sort by size',
+			action: () => {
+				let sortedDistricts = $selectedDistrictsData
+					.sort((a, b) => b.students - a.students)
+					.map(district => district.GEOID)
+				selectedDistricts.set(sortedDistricts)
+				showMenu = false;
+			}  
+		},
+		{
+			name: 'Filter by size', 
+			action: () => {
+				if (minSize > maxSize) {
+					alert('Min size must be less than max size')
+					return
+				}
+
+				let filteredDistricts = $districtsData
+					.filter(district => district.students >= minSize && district.students <= maxSize)
+					.map(district => district.GEOID);
+				selectedDistricts.set(filteredDistricts);
+				showMenu = false;
+			}
+		},
     ];
 
 	let showMenu = false;
@@ -81,6 +124,11 @@
 		return { value: district.GEOID, label: district.name };
 	});
 
+	// set state for filter option
+	let minSize = 0;
+	let maxSize = Number.MAX_VALUE
+
+	// color scale for background average lines
 	let lineColorScale = scaleOrdinal()
 		.domain([0, 1, 2])
 		.range([colors[4], colors[5], colors[6]]);
@@ -137,10 +185,28 @@
 						showMenu = false
 					}}>
 						{#each actions as action (action.name)}
-							<li>
-								<button on:click={action.action}>
-								{action.name}
-							</li>
+							{#if action.name === 'Filter by size'}
+								<div class="filter-by-size">
+									<label>
+										Min size: 
+										<input type="number" bind:value={minSize} />
+									</label>
+								
+									<label>
+										Max size:
+										<input type="number" bind:value={maxSize} />
+									</label>
+								
+									<button on:click={actions.find(action => action.name === 'Filter by size').action}>
+										Filter
+									</button>
+								</div>
+							{:else}
+								<li>
+									<button on:click={action.action}>
+									{action.name}
+								</li>
+							{/if}
 						{/each}
 					</ul>
 				{/if}
@@ -155,7 +221,7 @@
 				<line 
 					x1="{linePos * 100}%" 
 					x2="{linePos * 100}%" 
-					y1="60px" 
+					y1="80px" 
 					y2="100%" 
 					stroke={lineColorScale(index)} 
 					stroke-width="2" 
@@ -244,6 +310,7 @@
 
 	.menu-container {
 		position: relative; /* to position the dropdown menu */
+		z-index: 10;
 		margin-left: 1rem;
 	}
 
