@@ -8,6 +8,7 @@
   import { selectedDistricts, districtsData, selectedDistrictsData } from "../stores/stores.js"
   import { colors } from '../styles/colors';
   import Svelecte from "svelecte";
+  import RangeSlider from "svelte-range-slider-pips"
   import StateLegend from "../components/StateLegend.svelte";
   import DistrictBar from "../components/DistrictBar.svelte";
   import StateMap from "../components/StateMap.svelte";
@@ -37,6 +38,9 @@
 						.filter(district => district.GEOID !== undefined && district.GEOID !== null)
 						.map(district => district.GEOID)
 				);
+				minSize = 0;
+				maxSize = 9000
+				values = [minSize, maxSize]
 				showMenu = false;
 			} 
 		},
@@ -83,18 +87,7 @@
 		},
 		{
 			name: 'Filter by size', 
-			action: () => {
-				if (minSize > maxSize) {
-					alert('Min size must be less than max size')
-					return
-				}
-
-				let filteredDistricts = $districtsData
-					.filter(district => district.students >= minSize && district.students <= maxSize)
-					.map(district => district.GEOID);
-				selectedDistricts.set(filteredDistricts);
-				showMenu = false;
-			}
+			action: filterBySize
 		},
     ];
 
@@ -124,9 +117,19 @@
 		return { value: district.GEOID, label: district.name };
 	});
 
+	function filterBySize() {
+		let filteredDistricts = $selectedDistrictsData
+			.filter(district => district.students >= minSize && district.students <= maxSize)
+			.map(district => district.GEOID);
+		
+		selectedDistricts.set(filteredDistricts);
+		console.log($selectedDistricts)
+	}
+
 	// set state for filter option
 	let minSize = 0;
-	let maxSize = Number.MAX_VALUE
+	let maxSize = 9000
+	let values = [minSize, maxSize]
 
 	// color scale for background average lines
 	let lineColorScale = scaleOrdinal()
@@ -186,21 +189,26 @@
 					}}>
 						{#each actions as action (action.name)}
 							{#if action.name === 'Filter by size'}
-								<div class="filter-by-size">
-									<label>
-										Min size: 
-										<input type="number" bind:value={minSize} />
-									</label>
-								
-									<label>
-										Max size:
-										<input type="number" bind:value={maxSize} />
-									</label>
-								
-									<button on:click={actions.find(action => action.name === 'Filter by size').action}>
-										Filter
-									</button>
-								</div>
+								<li>
+									Filter by size
+									<RangeSlider 
+										bind:values
+										range={true} 
+										min={0} 
+										max={10000} 
+										float={true} 
+										first={true}
+										last={true}
+										id="range-slider"
+										aria-labels={["Minimum number of students", "Maximum number of students"]}
+										on:stop={() => {
+											minSize = values[0]
+											maxSize = values[1]
+
+											filterBySize()
+										}}
+									/>
+								</li>
 							{:else}
 								<li>
 									<button on:click={action.action}>
@@ -221,7 +229,7 @@
 				<line 
 					x1="{linePos * 100}%" 
 					x2="{linePos * 100}%" 
-					y1="80px" 
+					y1="30px" 
 					y2="100%" 
 					stroke={lineColorScale(index)} 
 					stroke-width="2" 

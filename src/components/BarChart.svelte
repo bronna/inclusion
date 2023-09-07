@@ -46,13 +46,13 @@
 
 <style>
 .bar-chart {
-    margin-top: 0.3rem;
+    /* margin-top: 0.3rem; */
     width: 100%;
     height: 25px;
     display: flex;
     align-items: center;
-    border-top: 9px solid white;
-    border-bottom: 9px solid white;
+    /* border-top: 9px solid white;
+    border-bottom: 9px solid white; */
 }
 
 .bar {

@@ -180,7 +180,11 @@
         {/if}
     {:else}
         {#if districtData.students !== 0}
-            <BarChart data={data} />   
+            <div class="bar-border-top bar-border-bottom">
+                <BarChart data={data} />
+            </div>
+        {:else}
+            <div class="bar-border-top"></div>
         {/if}
     {/if}
 
@@ -204,7 +208,7 @@
         height: auto;
         display: flex;
         flex-direction: column;
-        margin-top: 1.3rem;
+        margin-top: 1.6rem;
     }
 
     .header-wrapper {
@@ -240,6 +244,14 @@
         width: 1em;
         cursor: pointer;
         transform: translateY(2px);
+    }
+
+    .bar-border-top {
+        border-top: 9px solid white;
+    }
+
+    .bar-border-bottom {
+        border-bottom: 9px solid white;
     }
 
     .smallDistrict {

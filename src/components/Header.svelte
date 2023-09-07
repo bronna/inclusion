@@ -26,11 +26,15 @@
     align-items: flex-start; /* align the child items to the top */
   }
 
+  .logo svg {
+    opacity: 0.75;
+  }
+
   .logo a {
-    margin-left: 7px;
+    margin-left: 9px;
     text-decoration: none;
     font-family: var(--font-headers);
-    color: var(--color-text);
+    color: var(--inclusive-color);
     font-size: 1.2rem;
     line-height: 1.1rem;
   }

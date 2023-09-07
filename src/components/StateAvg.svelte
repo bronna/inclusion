@@ -37,8 +37,8 @@
 
 <style>
     .title {
-        font-size: 1.4rem;
-        letter-spacing: 0.03rem;
+        font-size: 1rem;
+        letter-spacing: 0.05rem;
         text-transform: uppercase;
     }
 
