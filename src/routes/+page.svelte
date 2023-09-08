@@ -295,7 +295,6 @@
   .search {
 	width: 100%;
 	padding: 2rem 0;
-	margin-bottom: 1rem;
   }
 
     .search-description {

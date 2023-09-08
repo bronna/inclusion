@@ -6,6 +6,7 @@
     import BarChart from './BarChart.svelte';
 
     export let districtData
+    console.log(districtData)
 
     let data
     let xScale
@@ -111,13 +112,13 @@
         {line1: 'are in an', line2: 'inclusive setting', x1: 120, y1: 50, x2: 116, y2: 70},
         {line1: 'are in a', line2: 'semi-inclusive setting', x1: -114, y1: 44, x2: -134, y2: 64},
         {line1: 'are in a', line2: 'non-inclusive setting', x1: -86, y1: -78, x2: -138, y2: -58},
-        {line1: 'of students with IEPs are in a', line2: 'separate setting', x1: 90, y1: -92, x2: 112, y2: -72},
+        {line1: 'of students with IEPs are in a', line2: 'separate setting', x1: 97, y1: -92, x2: 112, y2: -72},
     ]
 </script>
 
 <div class="district-data">
     <div class="district-info">
-        <div class="header-wrapper">
+        <div class="header-wrapper" class:white-background={expanded}>
             <h3 class="district-name">
                 <!-- <strong>
                     {#if districtNameParts[0]}
@@ -224,14 +225,36 @@
                     <!-- section for alerts, if there are any -->
                     <svg width="418" height="80" class="alerts">
                         <g transform="translate(209, 30)">
-                            {#each Array(districtData.nAlerts) as d, index (index)}
+                            {#if districtData.susp_iep === "Yes"}
+                                <!-- Wider rounded vertical bar of the exclamation mark -->
+                                <path fill={colors[3]} stroke={colors[3]} stroke-width="2" d="M11 8 Q11.5 6 12 7 T13 14 L12 14"></path>
+                                <!-- Larger dot at the bottom -->
+                                <circle cx="12" cy="18" r="1.5" fill={colors[3]}></circle>
+                            {/if}
+                            <!-- {#if districtData.susp_iep_race}
                                 <circle
-                                    cx={-20 * index}
+                                    cx="-10"
                                     cy="0"
                                     r="5"
                                     fill={colors[3]}
                                 />
-                            {/each}
+                            {/if}
+                            {#if districtData.proprtn_race}
+                                <circle
+                                    cx="0"
+                                    cy="0"
+                                    r="5"
+                                    fill={colors[3]}
+                                />
+                            {/if}
+                            {#if districtData.proprtn_race_specific}
+                                <circle
+                                    cx="10"
+                                    cy="0"
+                                    r="5"
+                                    fill={colors[3]}
+                                />
+                            {/if} -->
                         </g>
                     </svg>
                 </div>
@@ -267,10 +290,14 @@
     }
 
     .district-name {
-        font-size: 1.05rem;
+        font-size: 1.2rem;
         letter-spacing: 0.03rem;
         text-transform: uppercase;
         /* font-family: 'Source Serif 4', serif; */
+    }
+
+    .white-background {
+        background: white;
     }
 
     .alert-icon {

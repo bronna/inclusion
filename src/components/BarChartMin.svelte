@@ -37,9 +37,9 @@
     {#each data as d, i (d.group)}
         <div class={`bar ${shouldAddBorder(i) ? 'add-border' : ''}`} 
              style="background-color: {colorScale(d.group)}; width: calc({d.value}% - {gapPercentage}%);">
-            {#if d.value >= 1}
+            <!-- {#if d.value >= 1}
                 <span class="bar-text">{(d.value).toFixed(0)}{i === 0 ? '%' : ''}</span>
-            {/if}
+            {/if} -->
         </div>
     {/each}
 </div>
@@ -47,7 +47,7 @@
 <style>
 .bar-chart {
     width: 100%;
-    height: 25px;
+    height: 14px;
     display: flex;
     align-items: center;
 }

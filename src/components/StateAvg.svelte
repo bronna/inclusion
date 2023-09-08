@@ -1,6 +1,6 @@
 <script>
     import { colors } from '../styles/colors';
-    import BarChart from "./BarChart.svelte";
+    import BarChartMin from "./BarChartMin.svelte";
 
     export let stateData;
 
@@ -16,10 +16,8 @@
     }
 </script>
 
-<h3>
-    <strong class="title">
-        State Average
-    </strong>
+<h3 class="title">
+    State Average
 </h3>
 
 <!-- <div class="color-legend">
@@ -31,15 +29,17 @@
 
 <div class="state-data">
     {#if stateData.students !== 0}
-        <BarChart data={data} />
+        <BarChartMin data={data} />
     {/if}
 </div>
 
 <style>
     .title {
-        font-size: 1rem;
+        font-size: 0.9rem;
         letter-spacing: 0.05rem;
         text-transform: uppercase;
+        color: var(--dark-gray);
+        font-weight: 700;
     }
 
     .color-legend {
