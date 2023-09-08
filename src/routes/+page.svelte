@@ -190,7 +190,7 @@
 						{#each actions as action (action.name)}
 							{#if action.name === 'Filter by size'}
 								<li>
-									Filter by size
+									<span style="margin:0; padding:0.5rem 1rem;">Filter by size</span>
 									<RangeSlider 
 										bind:values
 										range={true} 
@@ -211,7 +211,7 @@
 								</li>
 							{:else}
 								<li>
-									<button on:click={action.action}>
+									<button on:click={action.action} style="margin:0; padding:0.5rem 1rem;">
 									{action.name}
 								</li>
 							{/if}

@@ -47,7 +47,7 @@
 <style>
 .bar-chart {
     width: 100%;
-    height: 14px;
+    height: 15px;
     display: flex;
     align-items: center;
 }

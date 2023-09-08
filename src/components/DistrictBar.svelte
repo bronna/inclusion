@@ -45,7 +45,7 @@
             .range(colors)
 
         // Prepare stacked bar chart
-        const barSpacing = 0.3
+        const barSpacing = 1.3
 
         stackStart = 0
         height = 30
@@ -83,7 +83,7 @@
         });     
     }
 
-    let expanded = false //change back to false when done tweaking design
+    let expanded = true //change back to false when done tweaking design
     const toggleExpanded = () => {
         expanded = !expanded
     }

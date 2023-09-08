@@ -39,7 +39,7 @@
         font-size: 0.95rem;
         letter-spacing: 0.02rem;
         font-weight: 600;
-        margin-top: -0.8rem;
+        margin-top: -0.4rem;
         margin-bottom: 0.5rem;
         text-align: right;
         text-transform: uppercase;

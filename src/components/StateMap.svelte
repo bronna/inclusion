@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import * as d3 from 'd3';
+    import { geoBounds, geoTransverseMercator, geoPath } from 'd3';
     import { selectedDistricts } from '../stores/stores.js';
 
     // Import and format the data
@@ -23,7 +23,7 @@
     let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
 
     data.forEach(feature => {
-        const [[featureMinLng, featureMinLat], [featureMaxLng, featureMaxLat]] = d3.geoBounds(feature);
+        const [[featureMinLng, featureMinLat], [featureMaxLng, featureMaxLat]] = geoBounds(feature);
         if (featureMinLng < minLng) minLng = featureMinLng;
         if (featureMinLat < minLat) minLat = featureMinLat;
         if (featureMaxLng > maxLng) maxLng = featureMaxLng;
@@ -42,11 +42,11 @@
       dims.width = ref.offsetWidth
       dims.height = dims.width / aspectRatio
 
-      projection = d3.geoTransverseMercator()
+      projection = geoTransverseMercator()
         .rotate([-centralLong, -centralLat])
         .fitSize([dims.width, dims.height], featureCollection);
 
-      districtPathGenerator = d3.geoPath(projection);
+      districtPathGenerator = geoPath(projection);
     }
 
     let tooltip;
