@@ -68,7 +68,7 @@
         pieData = pieFunc(data);
     
         // Prepare arc function for donut chart generation
-        arcGenerator = arc().innerRadius(70).outerRadius(100);
+        arcGenerator = arc().innerRadius(50).outerRadius(75);
 
         startAngle = 0;
         data.forEach(d => {
@@ -82,7 +82,7 @@
         });     
     }
 
-    let expanded = false
+    let expanded = false //change back to false when done tweaking design
     const toggleExpanded = () => {
         expanded = !expanded
     }
@@ -106,6 +106,13 @@
     $: data.forEach(d => {
         d.path = expanded ? d.donutPath : d.barPath
     })
+
+    const donutLabels = [
+        {line1: 'are in an', line2: 'inclusive setting', x1: 120, y1: 50, x2: 116, y2: 70},
+        {line1: 'are in a', line2: 'semi-inclusive setting', x1: -114, y1: 44, x2: -134, y2: 64},
+        {line1: 'are in a', line2: 'non-inclusive setting', x1: -86, y1: -78, x2: -138, y2: -58},
+        {line1: 'of students with IEPs are in a', line2: 'separate setting', x1: 90, y1: -92, x2: 112, y2: -72},
+    ]
 </script>
 
 <div class="district-data">
@@ -122,7 +129,7 @@
                 {/if} -->
                 <strong>{districtData.name}</strong>
             
-                {#if districtData.nAlerts}
+                {#if districtData.nAlerts && !expanded}
                     {#each Array(districtData.nAlerts).fill() as _}
                         <span class="alert-icon">!</span>
                     {/each}
@@ -159,26 +166,80 @@
                 </div>
             {:else}
                 <div class="expanded-content" transition:slide={{duration: 200}}>
-                    <p>{data.students} students with IEPs</p>
+                    <svg width="418" height="200" class="donut-chart">
+                        <g transform="translate(209, 120)">
+                            {#each pieData as d (d.data.group)}
+                                <path
+                                    d={arcGenerator(d)}
+                                    fill={colorScale(d.data.group)}
+                                />
+                            {/each}
+
+                            <!-- text labels for segments -->
+                            {#each pieData as d (d.data.group)}
+                                <text
+                                    x={donutLabels[d.index].x1}
+                                    y={donutLabels[d.index].y1}
+                                    text-anchor="middle"
+                                    dominant-baseline="middle"
+                                    font-size="1rem"
+                                    fill={colors[8]}
+                                    font-weight="600"
+                                >
+                                    <tspan font-size="1.1rem" fill={colorScale(d.data.group)} font-weight="700">
+                                        {Math.round(d.value)}%
+                                    </tspan> 
+                                    <tspan dx="1"> <!-- shifts the second tspan a bit to the right -->
+                                        {donutLabels[d.index].line1}
+                                    </tspan>
+                                </text>
+                            {/each}
+                            {#each pieData as d (d.data.group)}
+                                <text
+                                    x={donutLabels[d.index].x2}
+                                    y={donutLabels[d.index].y2}
+                                    text-anchor="middle"
+                                    dominant-baseline="middle"
+                                    font-size="1rem"
+                                    fill={colors[8]}
+                                    font-weight="600"
+                                >
+                                    {donutLabels[d.index].line2}
+                                </text>
+                            {/each}
+                            
+                            <!-- number of students in center of donut chart -->
+                            <text x="0" y="-11" text-anchor="middle" dominant-baseline="middle" font-size="1.6rem" font-weight="bold" fill="black">
+                                {data.students.toLocaleString('en-US')}
+                            </text>
+                            <text x="0" y="11" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[8]}>
+                                students
+                            </text>
+                            <text x="0" y="27" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[8]}>
+                                with IEPs
+                            </text>
+                        </g>
+                    </svg>
+                    
+                    <!-- section for alerts, if there are any -->
+                    <svg width="418" height="80" class="alerts">
+                        <g transform="translate(209, 30)">
+                            {#each Array(districtData.nAlerts) as d, index (index)}
+                                <circle
+                                    cx={-20 * index}
+                                    cy="0"
+                                    r="5"
+                                    fill={colors[3]}
+                                />
+                            {/each}
+                        </g>
+                    </svg>
                 </div>
             {/if}
         {/each}
     </div>
 
-    {#if expanded}
-        {#if districtData.students !== 0}
-            <svg width="200" height="200" class="donut-chart">
-                <g transform="translate(100, 100)">
-                    {#each pieData as d (d.data.group)}
-                        <path
-                            d={arcGenerator(d)}
-                            fill={colorScale(d.data.group)}
-                        />
-                    {/each}
-                </g>
-            </svg>
-        {/if}
-    {:else}
+    {#if !expanded}
         {#if districtData.students !== 0}
             <div class="bar-border-top bar-border-bottom">
                 <BarChart data={data} />
@@ -187,18 +248,6 @@
             <div class="bar-border-top"></div>
         {/if}
     {/if}
-
-    <!-- <svg width="200" height="200" class={expanded ? "donut-chart" : "bar-chart"}>
-        <g transform="translate(100, 100)">
-            {#each data as d (d.group)}
-                <path 
-                    d={d.path} 
-                    fill={colorScale(d.group)} 
-                    transition:pathTransition="{{ delay: 0, duration: 500, from: d.barPath, to: d.donutPath }}"
-                />
-            {/each}
-        </g>
-    </svg> -->
 
 </div>
 
@@ -271,8 +320,10 @@
     }
 
     .expanded-content {
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #fff;
     }
 </style>

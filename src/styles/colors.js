@@ -7,4 +7,6 @@ export const colors = [
     'rgba(255,181,39,0.7',  // yellow reduced opacity
     'rgba(245,115,70,0.6)',  // orange reduced opacity
     'rgba(207,66,120,0.5)',  // dark pink reduced opacity
+    '#777677', // dark gray
+    '#001A17', // text dark
 ]
