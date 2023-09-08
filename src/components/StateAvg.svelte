@@ -16,9 +16,9 @@
     }
 </script>
 
-<h3 class="title">
-    State Average
-</h3>
+<p class="title">
+    state average
+</p>
 
 <!-- <div class="color-legend">
     <span class="setting-name" style="background-color:{colors[0]}; color:white;">inclusive</span>
@@ -35,11 +35,14 @@
 
 <style>
     .title {
-        font-size: 0.9rem;
-        letter-spacing: 0.05rem;
-        text-transform: uppercase;
         color: var(--dark-gray);
-        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.02rem;
+        font-weight: 600;
+        margin-top: -0.8rem;
+        margin-bottom: 0.5rem;
+        text-align: right;
+        text-transform: uppercase;
     }
 
     .color-legend {

@@ -297,11 +297,6 @@
 	padding: 2rem 0;
   }
 
-    .search-description {
-        display: flex;
-        align-items: center;
-    }
-
   .icon-btn {
         background: none;
         border: none;

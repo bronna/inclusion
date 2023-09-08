@@ -112,8 +112,8 @@
             are in a 
             <span class="setting-name" style="background-color:{colors[3]}; color:white;">separate</span> 
             <div class="tooltip-container">
-                <span class="question-bubble" use:tooltip={'a hospital, incarcerated, etc.'}></span>
-                <div class="tooltip">a hospital, incarcerated, etc.</div>
+                <span class="question-bubble" use:tooltip={'in a hospital, incarcerated, etc.'}></span>
+                <div class="tooltip">in a hospital, incarcerated, etc.</div>
             </div>
             setting
         </div> 
