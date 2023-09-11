@@ -6,7 +6,6 @@
     import BarChart from './BarChart.svelte';
 
     export let districtData
-    console.log(districtData)
 
     let data
     let xScale
@@ -83,7 +82,7 @@
         });     
     }
 
-    let expanded = true //change back to false when done tweaking design
+    let expanded = false
     const toggleExpanded = () => {
         expanded = !expanded
     }
@@ -116,9 +115,10 @@
     ]
 </script>
 
-<div class="district-data">
+<!-- <div class="district-data" class:expanded={expanded}> -->
+<div class="district-data" class:expanded={expanded}>
     <div class="district-info">
-        <div class="header-wrapper" class:white-background={expanded}>
+        <div class="header-wrapper">
             <h3 class="district-name">
                 <!-- <strong>
                     {#if districtNameParts[0]}
@@ -183,9 +183,9 @@
                                     y={donutLabels[d.index].y1}
                                     text-anchor="middle"
                                     dominant-baseline="middle"
-                                    font-size="1rem"
+                                    font-size="0.95rem"
                                     fill={colors[8]}
-                                    font-weight="600"
+                                    font-weight="400"
                                 >
                                     <tspan font-size="1.1rem" fill={colorScale(d.data.group)} font-weight="700">
                                         {Math.round(d.value)}%
@@ -201,9 +201,9 @@
                                     y={donutLabels[d.index].y2}
                                     text-anchor="middle"
                                     dominant-baseline="middle"
-                                    font-size="1rem"
+                                    font-size="0.95rem"
                                     fill={colors[8]}
-                                    font-weight="600"
+                                    font-weight="400"
                                 >
                                     {donutLabels[d.index].line2}
                                 </text>
@@ -223,40 +223,39 @@
                     </svg>
                     
                     <!-- section for alerts, if there are any -->
-                    <svg width="418" height="80" class="alerts">
-                        <g transform="translate(209, 30)">
+                    {#if districtData.nAlerts}
+                        <div class="alerts">
+                            <svg width="418" height="10">
+                                <g transform="translate(209, 0)">
+                                    <path fill={colors[3]} stroke={colors[3]} stroke-width="2.4" d="M-70 8 h140 M-4 8 l4 -7 l4 7"></path>
+                                </g>
+                            </svg>
                             {#if districtData.susp_iep === "Yes"}
-                                <!-- Wider rounded vertical bar of the exclamation mark -->
-                                <path fill={colors[3]} stroke={colors[3]} stroke-width="2" d="M11 8 Q11.5 6 12 7 T13 14 L12 14"></path>
-                                <!-- Larger dot at the bottom -->
-                                <circle cx="12" cy="18" r="1.5" fill={colors[3]}></circle>
+                                <div class="alert-label">
+                                    <span class="alert-icon">!</span>
+                                    <span class="alert-text">disproportionate discipline of students with IEPs</span>
+                                </div>
                             {/if}
-                            <!-- {#if districtData.susp_iep_race}
-                                <circle
-                                    cx="-10"
-                                    cy="0"
-                                    r="5"
-                                    fill={colors[3]}
-                                />
+                            {#if districtData.susp_iep_race === "Yes"}
+                                <div class="alert-label">
+                                    <span class="alert-icon">!</span>
+                                    <span class="alert-text">disproportionate discipline of students in specific racial groups with IEPs</span>
+                                </div>
                             {/if}
-                            {#if districtData.proprtn_race}
-                                <circle
-                                    cx="0"
-                                    cy="0"
-                                    r="5"
-                                    fill={colors[3]}
-                                />
+                            {#if districtData.proprtn_race === "Yes"}
+                                <div class="alert-label">
+                                    <span class="alert-icon">!</span>
+                                    <span class="alert-text">disproportionate identification of students in specific racial groups as having disabilities</span>
+                                </div>
                             {/if}
-                            {#if districtData.proprtn_race_specific}
-                                <circle
-                                    cx="10"
-                                    cy="0"
-                                    r="5"
-                                    fill={colors[3]}
-                                />
-                            {/if} -->
-                        </g>
-                    </svg>
+                            {#if districtData.proprtn_race_specific === "Yes"}
+                                <div class="alert-label">
+                                    <span class="alert-icon">!</span>
+                                    <span class="alert-text">disproportionate identification of students in specific racial groups as having specific disabilities</span>
+                                </div>
+                            {/if}
+                        </div>
+                    {/if}
                 </div>
             {/if}
         {/each}
@@ -289,6 +288,11 @@
         align-items: center; /* align items vertically */
     }
 
+    .expanded {
+        background: white;
+        padding-bottom: 2rem;
+    }
+
     .district-name {
         font-size: 1.2rem;
         letter-spacing: 0.03rem;
@@ -296,15 +300,26 @@
         /* font-family: 'Source Serif 4', serif; */
     }
 
-    .white-background {
-        background: white;
+    .alerts {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 16px;
+    }
+
+    .alert-label {
+        display: flex;
+        margin-top: 0.3rem;
+        width: 200px;
+        line-height: 1.1rem;
     }
 
     .alert-icon {
         background-color: var(--separate-color);
         color: white;
         margin-left: 0.5rem;
-        padding: 1px;
+        padding: 0.8px;
         border-radius: 10%;
         display: inline-flex;
         justify-content: center;
@@ -312,7 +327,16 @@
         width: 10px;
         height: 15px;
         font-size: 0.85rem;
-        font-weight: 700;
+        font-weight: 600;
+    }
+
+    .alert-text {
+        font-size: 0.85rem;
+        letter-spacing: 0.02rem;
+        font-weight: 400;
+        color: var(--dark-gray);
+        margin: 0 0 0 0.5rem;
+        padding: 0;
     }
 
     .expand-icon {
@@ -352,5 +376,6 @@
         align-items: center;
         flex-direction: column;
         background-color: #fff;
+        padding-top: 0.5rem;
     }
 </style>
