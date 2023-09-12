@@ -1,5 +1,6 @@
 <script>
   import Header from "../components/Header.svelte";
+  import Footer from "../components/Footer.svelte";
   import "../styles/styles.css";
 </script>
 
@@ -10,11 +11,7 @@
     <slot />
   </main>
 
-  <footer>
-    <p>
-      about | contact
-    </p>
-  </footer>
+  <Footer />
 </div>
 
 <style>
@@ -38,24 +35,6 @@
   @media (max-width: 768px) {
     main {
         padding: 1rem 1rem;
-    }
-  }
-
-  footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 12px;
-  }
-
-  footer a {
-    font-weight: bold;
-  }
-
-  @media (min-width: 480px) {
-    footer {
-      padding: 12px 0;
     }
   }
 </style>

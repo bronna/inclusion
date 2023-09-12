@@ -271,6 +271,9 @@
 		</div>
 	</div>
   
+	<div class="data-source">
+		<a href="https://www.oregon.gov/ode/reports-and-data/spedreports/pages/default.aspx" target="_blank">Data: Oregon Department of Education</a>
+	</div>
 </section>
 
 <style>
@@ -412,5 +415,9 @@
 
   .comparison-bars {
 	margin-top: 2.4rem;
+  }
+
+  .data-source {
+	margin-top: 2rem;
   }
 </style>

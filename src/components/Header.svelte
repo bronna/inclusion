@@ -13,7 +13,7 @@
             stroke-linecap="round"
         />
     </svg>  
-    <a href="https://specialeducationdata.org">
+    <a href="/">
       Data for<br>Caregivers
     </a>
   </div>
