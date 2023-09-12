@@ -44,7 +44,7 @@
             .range(colors)
 
         // Prepare stacked bar chart
-        const barSpacing = 1.3
+        const barSpacing = 0.7
 
         stackStart = 0
         height = 30

@@ -150,8 +150,30 @@
 		<StateLegend stateData={stateData} />
 	</div>
 
-	<p class="text-width" style="margin-bottom:3rem;">These rates of inclusion are just the statewide average, however. Districts within the state vary widely. To see the inclusion rates of individual districts, select below</p>
+	<aside class="aside text-width">
+		<div class="inner-content">
+			<!-- <Icon data="{comment}" scale="4" class="comment-icon" /> -->
+			<svg 
+				xmlns="http://www.w3.org/2000/svg" 
+				x="0px" 
+				y="0px" 
+				width="96" 
+				height="96" 
+				viewBox="0 0 32 32"
+				class="comment-icon"
+			>
+				<path 
+					d="M 16 3 C 12.210938 3 8.765625 4.113281 6.21875 5.976563 C 3.667969 7.835938 2 10.507813 2 13.5 C 2 17.128906 4.472656 20.199219 8 22.050781 L 8 29 L 14.746094 23.9375 C 15.15625 23.96875 15.570313 24 16 24 C 19.789063 24 23.234375 22.886719 25.78125 21.027344 C 28.332031 19.164063 30 16.492188 30 13.5 C 30 10.507813 28.332031 7.835938 25.78125 5.976563 C 23.234375 4.113281 19.789063 3 16 3 Z M 16 5 C 19.390625 5 22.445313 6.015625 24.601563 7.589844 C 26.757813 9.164063 28 11.246094 28 13.5 C 28 15.753906 26.757813 17.835938 24.601563 19.410156 C 22.445313 20.984375 19.390625 22 16 22 C 15.507813 22 15.015625 21.972656 14.523438 21.925781 L 14.140625 21.894531 L 10 25 L 10 20.859375 L 9.421875 20.59375 C 6.070313 19.019531 4 16.386719 4 13.5 C 4 11.246094 5.242188 9.164063 7.398438 7.589844 C 9.554688 6.015625 12.609375 5 16 5 Z">
+				</path>
+			</svg>
+			<p><strong>IEPs</strong>, or <strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans, document the accommodations that students with disabilities need to be able to participate in school</p>
+		</div>
+	</aside>
 
+	<p class="text-width" style="margin-bottom:3rem;">These rates of inclusion are just the statewide average, however. Districts within the state vary widely. To see the inclusion rates of individual districts, select below</p>
+</section>
+
+<section>
 	<StateMap data={$districtsData} />
 	
 	<div class="search text-width">
@@ -268,6 +290,28 @@
 
   p {
 	font-size: 1.1rem;
+  }
+
+  aside {
+	background-color: var(--light-gray);
+	margin: 1rem 0;
+  }
+
+  aside .inner-content {
+	display: flex;
+	align-items: top;
+    padding: 1% 5%;
+  }
+
+  .comment-icon {
+	margin-right: 10px;
+	width: 60px;
+	height: 60px;
+  }
+
+  .inner-content svg {
+    color: #fff;
+    margin-right: 10px;
   }
 
   .state {

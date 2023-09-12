@@ -12,7 +12,7 @@
     let gapPercentage = 0;
 
     $: if (containerWidth) {
-        gapPercentage = (2 / containerWidth) * 100;
+        gapPercentage = (1 / containerWidth) * 100;
     }
     
     function shouldAddBorder(i) {
@@ -58,7 +58,7 @@
 }
 
 .add-border {
-    border-right: 2px solid white;
+    border-right: 1px solid white;
 }
 
 .bar-text {

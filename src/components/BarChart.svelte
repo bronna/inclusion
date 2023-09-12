@@ -12,7 +12,7 @@
     let gapPercentage = 0;
 
     $: if (containerWidth) {
-        gapPercentage = (2 / containerWidth) * 100;
+        gapPercentage = (1 / containerWidth) * 100;
     }
     
     function shouldAddBorder(i) {
@@ -37,7 +37,7 @@
     {#each data as d, i (d.group)}
         <div class={`bar ${shouldAddBorder(i) ? 'add-border' : ''}`} 
              style="background-color: {colorScale(d.group)}; width: calc({d.value}% - {gapPercentage}%);">
-            {#if d.value >= 1}
+            {#if d.value >= 1.4}
                 <span class="bar-text">{(d.value).toFixed(0)}{i === 0 ? '%' : ''}</span>
             {/if}
         </div>
@@ -58,13 +58,13 @@
 }
 
 .add-border {
-    border-right: 2px solid white;
+    border-right: 1px solid white;
 }
 
 .bar-text {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     letter-spacing: 0.05rem;
-    font-weight: 600;
+    font-weight: 400;
     color: white;
     position: absolute;
     top: 50%;
