@@ -108,8 +108,8 @@
     })
 
     const donutLabels = [
-        {line1: 'are in an', line2: 'inclusive setting', x1: 120, y1: 50, x2: 116, y2: 70},
-        {line1: 'are in a', line2: 'semi-inclusive setting', x1: -114, y1: 44, x2: -134, y2: 64},
+        {line1: 'are in an', line2: 'inclusive setting', x1: 122, y1: 50, x2: 116, y2: 70},
+        {line1: 'are in a', line2: 'semi-inclusive setting', x1: -116, y1: 44, x2: -134, y2: 64},
         {line1: 'are in a', line2: 'non-inclusive setting', x1: -86, y1: -78, x2: -138, y2: -58},
         {line1: 'of students with IEPs are in a', line2: 'separate setting', x1: 97, y1: -92, x2: 112, y2: -72},
     ]
@@ -181,11 +181,7 @@
                                 <text
                                     x={donutLabels[d.index].x1}
                                     y={donutLabels[d.index].y1}
-                                    text-anchor="middle"
-                                    dominant-baseline="middle"
-                                    font-size="0.95rem"
-                                    fill={colors[8]}
-                                    font-weight="400"
+                                    class="setting-text"
                                 >
                                     <tspan font-size="1.1rem" fill={colorScale(d.data.group)} font-weight="700">
                                         {Math.round(d.value)}%
@@ -199,11 +195,7 @@
                                 <text
                                     x={donutLabels[d.index].x2}
                                     y={donutLabels[d.index].y2}
-                                    text-anchor="middle"
-                                    dominant-baseline="middle"
-                                    font-size="0.95rem"
-                                    fill={colors[8]}
-                                    font-weight="400"
+                                    class="setting-text"
                                 >
                                     {donutLabels[d.index].line2}
                                 </text>
@@ -225,9 +217,17 @@
                     <!-- section for alerts, if there are any -->
                     {#if districtData.nAlerts}
                         <div class="alerts">
-                            <svg width="418" height="10">
+                            <svg width="418" height="12">
                                 <g transform="translate(209, 0)">
-                                    <path fill={colors[3]} stroke={colors[3]} stroke-width="2.4" d="M-70 8 h140 M-4 8 l4 -7 l4 7"></path>
+                                    <path 
+                                        fill=none 
+                                        stroke={colors[3]} 
+                                        stroke-width="2.4" 
+                                        d="M-100 10 L-4 10 L0 2 L4 10 L100 10"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                    </path>
                                 </g>
                             </svg>
                             {#if districtData.susp_iep === "Yes"}
@@ -300,12 +300,20 @@
         /* font-family: 'Source Serif 4', serif; */
     }
 
+    .setting-text {
+        text-anchor: middle;
+        font-size: 0.95rem;
+        font-weight: 400;
+        letter-spacing: 0.02rem;
+        fill: var(--dark-gray);
+    }
+
     .alerts {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-top: 16px;
+        margin-top: 14px;
     }
 
     .alert-icon {
@@ -327,7 +335,7 @@
     .alert-label {
         display: flex;
         align-items: top;
-        margin-top: 0.3rem;
+        margin-top: 0.45rem;
         width: 200px;
         line-height: 1.1rem;
     }
@@ -348,7 +356,7 @@
     }
 
     .alert-text {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         letter-spacing: 0.02rem;
         font-weight: 400;
         color: var(--dark-gray);

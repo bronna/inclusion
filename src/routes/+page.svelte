@@ -293,7 +293,7 @@
   }
 
   aside {
-	background-color: var(--light-gray);
+	background-color: var(--light-light-gray);
 	margin: 1rem 0;
   }
 
