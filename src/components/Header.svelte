@@ -5,8 +5,14 @@
 <header>
   <div class="logo">
     <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="25" cy="25" r="25" fill={colors[0]} />
-    </svg> 
+        <path 
+            d="M 25,2 A 23,23 0 1,1 7,11"
+            fill="none" 
+            stroke={colors[8]} 
+            stroke-width="3.5"
+            stroke-linecap="round"
+        />
+    </svg>  
     <a href="https://specialeducationdata.org">
       Data for<br>Caregivers
     </a>
@@ -34,7 +40,7 @@
     margin-left: 9px;
     text-decoration: none;
     font-family: var(--font-headers);
-    color: var(--inclusive-color);
+    color: var(--dark-gray);
     font-size: 1.2rem;
     line-height: 1.1rem;
   }

@@ -9,4 +9,6 @@ export const colors = [
     'rgba(207,66,120,0.5)',  // dark pink reduced opacity
     '#777677', // dark gray
     '#001A17', // text dark
+    '#e6e6e6', // light gray
+    '#f2f2f2', // light light gray
 ]

@@ -140,12 +140,12 @@
             <button on:click={toggleExpanded} class="expand-button">
                 {#if expanded}
                     <!-- Chevron-up SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="expand-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={colors[8]} stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="expand-icon">
                         <polyline points="6 15 12 9 18 15"></polyline>
                     </svg>
                 {:else}
                     <!-- Chevron-down SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="expand-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={colors[8]} stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="expand-icon">
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 {/if}
@@ -222,7 +222,7 @@
                                     <path 
                                         fill=none 
                                         stroke={colors[3]} 
-                                        stroke-width="2.4" 
+                                        stroke-width="1.7" 
                                         d="M-100 10 L-4 10 L0 2 L4 10 L100 10"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"

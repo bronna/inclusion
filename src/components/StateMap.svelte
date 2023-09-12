@@ -113,6 +113,7 @@
                 d={districtPathGenerator(district)}
                 fill={$selectedDistricts.includes(district.GEOID) ? "rgb(67,182,161,1.0)" : "lightgray"}
                 stroke="white"
+                stroke-width="0.75"
                 on:mouseover={() => showTooltip(district.name)}
                 on:mousemove={updateTooltipPosition}
                 on:mouseout={hideTooltip}
