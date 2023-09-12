@@ -130,7 +130,7 @@
                 {/if} -->
                 {districtData.name}
             
-                {#if districtData.nAlerts && !expanded}
+                {#if districtData.nAlerts}
                     {#each Array(districtData.nAlerts).fill() as _}
                         <span class="alert-icon">!</span>
                     {/each}
@@ -232,25 +232,25 @@
                             </svg>
                             {#if districtData.susp_iep === "Yes"}
                                 <div class="alert-label">
-                                    <span class="alert-icon">!</span>
+                                    <span class="alert-icon-sm">!</span>
                                     <span class="alert-text">disproportionate discipline of students with IEPs</span>
                                 </div>
                             {/if}
                             {#if districtData.susp_iep_race === "Yes"}
                                 <div class="alert-label">
-                                    <span class="alert-icon">!</span>
+                                    <span class="alert-icon-sm">!</span>
                                     <span class="alert-text">disproportionate discipline of students in specific racial groups with IEPs</span>
                                 </div>
                             {/if}
                             {#if districtData.proprtn_race === "Yes"}
                                 <div class="alert-label">
-                                    <span class="alert-icon">!</span>
+                                    <span class="alert-icon-sm">!</span>
                                     <span class="alert-text">disproportionate identification of students in specific racial groups as having disabilities</span>
                                 </div>
                             {/if}
                             {#if districtData.proprtn_race_specific === "Yes"}
                                 <div class="alert-label">
-                                    <span class="alert-icon">!</span>
+                                    <span class="alert-icon-sm">!</span>
                                     <span class="alert-text">disproportionate identification of students in specific racial groups as having specific disabilities</span>
                                 </div>
                             {/if}
@@ -308,26 +308,43 @@
         margin-top: 16px;
     }
 
+    .alert-icon {
+        background-color: var(--separate-color);
+        color: white;
+        margin-left: 0.5rem;
+        padding: 1px;
+        border-radius: 50%;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 15px;
+        height: 15px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        transform: translateY(-2px);
+    }
+
     .alert-label {
         display: flex;
+        align-items: top;
         margin-top: 0.3rem;
         width: 200px;
         line-height: 1.1rem;
     }
 
-    .alert-icon {
+    .alert-icon-sm {
         background-color: var(--separate-color);
         color: white;
-        margin-left: 0.5rem;
-        padding: 0.8px;
-        border-radius: 10%;
+        padding: 1px;
+        border-radius: 50%;
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        width: 10px;
-        height: 15px;
-        font-size: 0.85rem;
-        font-weight: 600;
+        min-width: 12px;
+        height: 12px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        transform: translateY(2px);
     }
 
     .alert-text {

@@ -117,11 +117,7 @@
                 on:mousemove={updateTooltipPosition}
                 on:mouseout={hideTooltip}
                 on:click={e => handleDistrictClick(e, district)}
-              >
-                <title>
-                  {district.name}
-                </title>
-              </path>
+              ></path>
             {/if}
           {/each}
         </g>
