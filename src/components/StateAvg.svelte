@@ -36,13 +36,13 @@
 <style>
     .title {
         color: var(--dark-gray);
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         letter-spacing: 0.02rem;
-        font-weight: 600;
+        font-weight: 400;
         margin-top: -0.4rem;
         margin-bottom: 0.5rem;
         text-align: right;
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
     }
 
     .color-legend {

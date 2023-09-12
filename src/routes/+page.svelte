@@ -10,7 +10,7 @@
   import Svelecte from "svelecte";
   import RangeSlider from "svelte-range-slider-pips"
   import StateLegend from "../components/StateLegend.svelte";
-  import DistrictBar from "../components/DistrictBar.svelte";
+  import DistrictData from "../components/DistrictData.svelte";
   import StateMap from "../components/StateMap.svelte";
   import StateAvg from "../components/StateAvg.svelte";
   import { scaleOrdinal } from "d3";
@@ -156,7 +156,7 @@
 	
 	<div class="search text-width">
 		<p class="search-description">
-			find a school district
+			Find a school district
 		</p>
 
 		<div class="search-container">
@@ -243,7 +243,7 @@
 		<div class="comparison-bars">
 			{#each $selectedDistrictsData as district}
 				{#if district.name}
-					<DistrictBar districtData={district} />
+					<DistrictData districtData={district} />
 				{/if}
 			{/each}
 		</div>
@@ -287,9 +287,10 @@
 
   .search-description {
 	color: var(--dark-gray);
-	font-size: 0.95rem;
-	letter-spacing: 0.02rem;
+	font-size: 1rem;
+	letter-spacing: 0.01rem;
 	font-weight: 600;
+	/* text-transform: uppercase; */
   }
 
   .search {
@@ -348,6 +349,7 @@
 
     .striped-background {
 		position: relative;
+		margin-top: 1rem;
 	}
 
 	.striped-background > svg {

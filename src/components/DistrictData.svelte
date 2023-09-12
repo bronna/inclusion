@@ -128,7 +128,7 @@
                 {#if districtNameParts[1]}
                     {districtNameParts[1]}
                 {/if} -->
-                <strong>{districtData.name}</strong>
+                {districtData.name}
             
                 {#if districtData.nAlerts && !expanded}
                     {#each Array(districtData.nAlerts).fill() as _}
@@ -294,7 +294,7 @@
     }
 
     .district-name {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         letter-spacing: 0.03rem;
         text-transform: uppercase;
         /* font-family: 'Source Serif 4', serif; */

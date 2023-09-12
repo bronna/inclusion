@@ -142,7 +142,7 @@
         text-transform: uppercase;
         padding: 1px 6px;
         letter-spacing: 0.04rem;
-        border-radius: 3px;
+        /* border-radius: 3px; */
     }
 
     .legend {
