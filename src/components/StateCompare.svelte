@@ -17,7 +17,7 @@
 </script>
 
 <p class="title">
-    state average
+    statewide
 </p>
 
 <!-- <div class="color-legend">

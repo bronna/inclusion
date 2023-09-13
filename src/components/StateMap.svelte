@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { geoBounds, geoTransverseMercator, geoPath } from 'd3';
     import { selectedDistricts } from '../stores/stores.js';
+    import { colors } from "../styles/colors";
 
     // Import and format the data
     export let data
@@ -111,7 +112,7 @@
                 class="districtShape"
                 key={district.GEOID}
                 d={districtPathGenerator(district)}
-                fill={$selectedDistricts.includes(district.GEOID) ? "rgb(67,182,161,1.0)" : "lightgray"}
+                fill={$selectedDistricts.includes(district.GEOID) ? colors[0] : "lightgray"}
                 stroke="white"
                 stroke-width="0.75"
                 on:mouseover={() => showTooltip(district.name)}

@@ -8,8 +8,8 @@
         <path 
             d="M 25,2 A 23,23 0 1,1 7,11"
             fill="none" 
-            stroke={colors[8]} 
-            stroke-width="3.5"
+            stroke={colors[0]} 
+            stroke-width="3"
             stroke-linecap="round"
         />
     </svg>  
@@ -40,7 +40,7 @@
     margin-left: 9px;
     text-decoration: none;
     font-family: var(--font-headers);
-    color: var(--dark-gray);
+    color: var(--inclusive-color);
     font-size: 1.2rem;
     line-height: 1.1rem;
   }

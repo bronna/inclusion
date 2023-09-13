@@ -222,8 +222,8 @@
                                     <path 
                                         fill=none 
                                         stroke={colors[3]} 
-                                        stroke-width="1.7" 
-                                        d="M-100 10 L-4 10 L0 2 L4 10 L100 10"
+                                        stroke-width="3" 
+                                        d="M-90 10 L-4 10 L0 2 L4 10 L90 10"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                     >

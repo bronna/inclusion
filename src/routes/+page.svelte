@@ -12,13 +12,13 @@
   import StateLegend from "../components/StateLegend.svelte";
   import DistrictData from "../components/DistrictData.svelte";
   import StateMap from "../components/StateMap.svelte";
-  import StateAvg from "../components/StateAvg.svelte";
+  import StateCompare from "../components/StateCompare.svelte";
   import { scaleOrdinal } from "d3";
 
   let data = getData()
 
   let stateData = data.find(row => row.properties.GEOID === "999999")
-  let stateAvgLines = [
+  let stateCompareLines = [
 	stateData.properties.eighty, 
 	stateData.properties.eighty + stateData.properties.between, 
 	stateData.properties.eighty + stateData.properties.between + stateData.properties.forty
@@ -142,9 +142,9 @@
 		Inclusion in the state of Oregon
 	</h1>
 
-	<p class="text-width">Oregon ranks 11th out of 50 states for how included students with disabilities are in its schools</p>
+	<p class="text-width">Oregon ranks 11th out of 50 states for how much its schools include students with disabilities.</p>
 
-	<p class="text-width">Overall, the state's rates of inclusion can be broken down as follows:</p>
+	<p class="text-width">These are the state's rates of inclusion, broken down:</p>
 
 	<div class="state text-width">
 		<StateLegend stateData={stateData} />
@@ -166,11 +166,11 @@
 					d="M 16 3 C 12.210938 3 8.765625 4.113281 6.21875 5.976563 C 3.667969 7.835938 2 10.507813 2 13.5 C 2 17.128906 4.472656 20.199219 8 22.050781 L 8 29 L 14.746094 23.9375 C 15.15625 23.96875 15.570313 24 16 24 C 19.789063 24 23.234375 22.886719 25.78125 21.027344 C 28.332031 19.164063 30 16.492188 30 13.5 C 30 10.507813 28.332031 7.835938 25.78125 5.976563 C 23.234375 4.113281 19.789063 3 16 3 Z M 16 5 C 19.390625 5 22.445313 6.015625 24.601563 7.589844 C 26.757813 9.164063 28 11.246094 28 13.5 C 28 15.753906 26.757813 17.835938 24.601563 19.410156 C 22.445313 20.984375 19.390625 22 16 22 C 15.507813 22 15.015625 21.972656 14.523438 21.925781 L 14.140625 21.894531 L 10 25 L 10 20.859375 L 9.421875 20.59375 C 6.070313 19.019531 4 16.386719 4 13.5 C 4 11.246094 5.242188 9.164063 7.398438 7.589844 C 9.554688 6.015625 12.609375 5 16 5 Z">
 				</path>
 			</svg>
-			<p><strong>IEPs</strong>, or <strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans, document the accommodations that students with disabilities need to be able to participate in school</p>
+			<p><strong>IEPs</strong>, or <strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans, are what teams of teachers, therapists, and families put together to determine what an individual student with a disability needs to succeed in a school setting</p>
 		</div>
 	</aside>
 
-	<p class="text-width" style="margin-bottom:3rem;">These rates of inclusion are just the statewide average, however. Districts within the state vary widely. To see the inclusion rates of individual districts, select below</p>
+	<p class="text-width" style="margin-bottom:3rem;">These rates of inclusion are for the entire state, however. District by district, the rates vary widely. To see the districts you're interested in, select below</p>
 </section>
 
 <section>
@@ -247,7 +247,7 @@
 	<div class="striped-background text-width">
 		<!-- SVG for the striped pattern -- see if there's a way to move each stripe back by 2.2px * index -->
 		<svg bind:this={backgroundSVG} width="100%" height="100%">
-			{#each stateAvgLines as linePos, index (index)}
+			{#each stateCompareLines as linePos, index (index)}
 				<line 
 					x1="{linePos * 100}%" 
 					x2="{linePos * 100}%" 
@@ -260,7 +260,7 @@
 			{/each}
 		</svg>
 	
-		<StateAvg stateData={stateData} />
+		<StateCompare stateData={stateData} />
 	
 		<div class="comparison-bars">
 			{#each $selectedDistrictsData as district}
