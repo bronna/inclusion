@@ -14,12 +14,12 @@
 	font-family: var(--font-body);
 	color: var(--color-text);
 	/* --inclusive-color: rgba(67,182,161,1.0); */
-	--inclusive-color: rgba(73, 171, 160, 1.0);
-    --semi-inclusive-color: rgba(255,181,39,1.0);
+	--inclusive-color: rgba(70, 181, 166, 1.0);
+    --semi-inclusive-color: rgba(248, 170, 22, 1.0);
     /* --non-inclusive-color: rgba(245,115,70,1.0); */
-	--non-inclusive-color: rgba(245, 129, 61, 1.0);
+	--non-inclusive-color: rgba(247, 134, 68, 1.0);
     /* --separate-color: rgba(207,66,120,1.0); */
-	--separate-color: rgba(213, 68, 92, 1.0);
+	--separate-color: rgba(224, 84, 84, 1.0);
     --dark-gray: #777677;
 	--medium-gray: #b3b3b3;
 	--light-gray: #e6e6e6;
