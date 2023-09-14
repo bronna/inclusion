@@ -22,10 +22,10 @@
     // For each data object, calculate start angle, end angle, and create a donut slice path using the arc generator
     let anglePerUnit = (2 * Math.PI) / totalValue;  // totalValue is the sum of all values
 
-    // // Split the district name around 'SD'
-    // let districtNameParts = districtData.name.split('SD');
-    // // Remove leading/trailing spaces and 'SD' from the district name
-    // districtNameParts = districtNameParts.map(namePart => namePart.trim());
+    // Split the district name around 'SD'
+    let districtNameParts = districtData.name.split('SD');
+    // Remove leading/trailing spaces and 'SD' from the district name
+    districtNameParts = districtNameParts.map(namePart => namePart.trim());
 
     $: {
         data = [
@@ -120,15 +120,13 @@
     <div class="district-info">
         <div class="header-wrapper">
             <h3 class="district-name">
-                <!-- <strong>
-                    {#if districtNameParts[0]}
-                        {districtNameParts[0]}
-                    {/if}
-                </strong>
+                {#if districtNameParts[0]}
+                    {districtNameParts[0]}
+                {/if}
                 {#if districtNameParts[1]}
-                    {districtNameParts[1]}
-                {/if} -->
-                {districtData.name}
+                    <span style="font-weight:400; margin-left:2px;">{districtNameParts[1]}</span>
+                {/if}
+                <!-- {districtData.name} -->
             
                 {#if districtData.nAlerts}
                     {#each Array(districtData.nAlerts).fill() as _}
@@ -222,7 +220,7 @@
                                     <path 
                                         fill=none 
                                         stroke={colors[3]} 
-                                        stroke-width="3" 
+                                        stroke-width="2.6" 
                                         d="M-90 10 L-4 10 L0 2 L4 10 L90 10"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -384,7 +382,7 @@
         letter-spacing: 0.02rem;
         font-weight: 400;
         color: var(--dark-gray);
-        margin: -2px 0 0 0;
+        margin: 0;
         padding: 0;
     }
 
