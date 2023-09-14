@@ -82,7 +82,7 @@
         });     
     }
 
-    let expanded = false
+    let expanded = true
     const toggleExpanded = () => {
         expanded = !expanded
     }
@@ -108,10 +108,50 @@
     })
 
     const donutLabels = [
-        {line1: 'are in an', line2: 'inclusive setting', x1: 122, y1: 50, x2: 116, y2: 70},
-        {line1: 'are in a', line2: 'semi-inclusive setting', x1: -116, y1: 44, x2: -134, y2: 64},
-        {line1: 'are in a', line2: 'non-inclusive setting', x1: -86, y1: -78, x2: -138, y2: -58},
-        {line1: 'of students with IEPs are in a', line2: 'separate setting', x1: 97, y1: -92, x2: 112, y2: -72},
+        {
+            line1: 'are in', 
+            x1: 122, 
+            y1: 34,
+            line2: 'an inclusive', 
+            x2: 116, 
+            y2: 54,
+            line3: 'setting',
+            x3: 88,
+            y3: 74
+        },
+        {
+            line1: 'are in a', 
+            x1: -126, 
+            y1: 34, 
+            line2: 'semi-inclusive', 
+            x2: -122, 
+            y2: 54,
+            line3: 'setting',
+            x3: -86,
+            y3: 74
+        },
+        {
+            line1: 'are in a', 
+            x1: -86, 
+            y1: -78,
+            line2: 'non-inclusive',  
+            x2: -116, 
+            y2: -58,
+            line3: 'setting',
+            x3: -108,
+            y3: -38
+        },
+        {
+            line1: 'of students with IEPs', 
+            x1: 75, 
+            y1: -92, 
+            line2: 'are in a separate', 
+            x2: 106, 
+            y2: -72,
+            line3: 'setting',
+            x3: 98,
+            y3: -52
+        },
     ]
 </script>
 
@@ -165,8 +205,8 @@
                 </div>
             {:else}
                 <div class="expanded-content" transition:slide={{duration: 200}}>
-                    <svg width="418" height="200" class="donut-chart">
-                        <g transform="translate(209, 120)">
+                    <svg width="100%" height="200" viewBox="0 0 343 200" class="donut-chart">
+                        <g transform="translate(171.5, 120)">
                             {#each pieData as d (d.data.group)}
                                 <path
                                     d={arcGenerator(d)}
@@ -198,6 +238,15 @@
                                     {donutLabels[d.index].line2}
                                 </text>
                             {/each}
+                            {#each pieData as d (d.data.group)}
+                                <text
+                                    x={donutLabels[d.index].x3}
+                                    y={donutLabels[d.index].y3}
+                                    class="setting-text"
+                                >
+                                    {donutLabels[d.index].line3}
+                                </text>
+                            {/each}
                             
                             <!-- number of students in center of donut chart -->
                             <text x="0" y="-11" text-anchor="middle" dominant-baseline="middle" font-size="1.6rem" font-weight="bold" fill="black">
@@ -215,12 +264,12 @@
                     <!-- section for alerts, if there are any -->
                     {#if districtData.nAlerts}
                         <div class="alerts">
-                            <svg width="418" height="12">
-                                <g transform="translate(209, 0)">
+                            <svg width="100%" height="12" viewBox="0 0 343 12">
+                                <g transform="translate(171.5, 0)">
                                     <path 
                                         fill=none 
                                         stroke={colors[3]} 
-                                        stroke-width="2.6" 
+                                        stroke-width="2" 
                                         d="M-90 10 L-4 10 L0 2 L4 10 L90 10"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -278,6 +327,7 @@
         display: flex;
         flex-direction: column;
         margin-top: 1.6rem;
+        justify-content: center;
     }
 
     .header-wrapper {

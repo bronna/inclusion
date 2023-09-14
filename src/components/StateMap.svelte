@@ -41,7 +41,9 @@
       const aspectRatio = widthStateBounds / heightStateBounds
 
       dims.width = ref.offsetWidth
-      dims.height = dims.width / aspectRatio
+
+      const minHeight = 300
+      dims.height = Math.max(dims.width / aspectRatio, minHeight)
 
       projection = geoTransverseMercator()
         .rotate([-centralLong, -centralLat])
@@ -130,6 +132,7 @@
 <style>
   #map {
     width: 100%;
+    min-height: 300px;
     display: flex;
     justify-content: center;
   }
