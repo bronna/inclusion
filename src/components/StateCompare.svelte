@@ -17,7 +17,7 @@
 </script>
 
 <p class="title">
-    statewide
+    statewide inclusion rate
 </p>
 
 <!-- <div class="color-legend">

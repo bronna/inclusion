@@ -144,7 +144,7 @@
 
 	<p class="text-width">Oregon ranks 11th out of 50 states for how much its schools include students with disabilities.</p>
 
-	<p class="text-width">These are the state's rates of inclusion, broken down:</p>
+	<p class="text-width">This is the state's rate of inclusion, broken down:</p>
 
 	<div class="state text-width">
 		<StateLegend stateData={stateData} />
@@ -170,7 +170,7 @@
 		</div>
 	</aside>
 
-	<p class="text-width" style="margin-bottom:3rem;">These rates of inclusion are for the entire state, however. District by district, the rates vary widely. To see the districts you're interested in, select below</p>
+	<p class="text-width" style="margin-bottom:3rem;">This rate of inclusion is for the entire state, however. District by district, rates vary widely. To see the inclusion rates of districts you're interested in, select below</p>
 </section>
 
 <section>

@@ -82,7 +82,7 @@
         });     
     }
 
-    let expanded = true
+    let expanded = false
     const toggleExpanded = () => {
         expanded = !expanded
     }
