@@ -31,7 +31,7 @@
         if (featureMaxLat > maxLat) maxLat = featureMaxLat;
     });
 
-    const stateBounds = [[minLng, minLat], [maxLng, maxLat]];
+    //const stateBounds = [[minLng, minLat], [maxLng, maxLat]];
 
     // resize the map when the window resizes
     function updateProjection() {

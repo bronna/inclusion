@@ -184,14 +184,14 @@
 
     .tooltip {
         display: none;
-        background-color: white;
-        padding: 8px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
         position: absolute;
         top: -6px;
         right: 10px;
         z-index: 1;
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.15);
-        border-radius: 3px;
+        border-radius: 4px;
         min-width: 200px;
     }
 </style>

@@ -110,45 +110,57 @@
     const donutLabels = [
         {
             line1: 'are in', 
+            colorKey1: null,
             x1: 122, 
             y1: 34,
             line2: 'an inclusive', 
+            colorKey2: "inclusive",
             x2: 116, 
             y2: 54,
             line3: 'setting',
+            colorKey3: null,
             x3: 88,
             y3: 74
         },
         {
             line1: 'are in a', 
+            colorKey1: null,
             x1: -126, 
             y1: 34, 
             line2: 'semi-inclusive', 
+            colorKey2: "semi-inclusive",
             x2: -122, 
             y2: 54,
             line3: 'setting',
+            colorKey3: null,
             x3: -86,
             y3: 74
         },
         {
             line1: 'are in a', 
+            colorKey1: null,
             x1: -86, 
             y1: -78,
             line2: 'non-inclusive',  
+            colorKey2: "non-inclusive",
             x2: -116, 
             y2: -58,
             line3: 'setting',
+            colorKey3: null,
             x3: -108,
             y3: -38
         },
         {
             line1: 'of students with IEPs', 
+            colorKey1: null,
             x1: 75, 
             y1: -92, 
             line2: 'are in a separate', 
+            colorKey2: "separate",
             x2: 106, 
             y2: -72,
             line3: 'setting',
+            colorKey3: null,
             x3: 98,
             y3: -52
         },
@@ -230,12 +242,16 @@
                                 </text>
                             {/each}
                             {#each pieData as d (d.data.group)}
-                                <text
-                                    x={donutLabels[d.index].x2}
-                                    y={donutLabels[d.index].y2}
-                                    class="setting-text"
-                                >
-                                    {donutLabels[d.index].line2}
+                                <text x={donutLabels[d.index].x2} y={donutLabels[d.index].y2} class="setting-text">
+                                    {#each donutLabels[d.index].line2.split(' ') as word}
+                                        <tspan
+                                            fill={word === donutLabels[d.index].colorKey2 ? colorScale(word) : 'currentcolor'}
+                                            font-weight={word === donutLabels[d.index].colorKey2 ? '700' : 'normal'}
+                                        >
+                                            {word}
+                                        </tspan>
+                                        <tspan dx="0.2em"></tspan> <!-- space between words -->
+                                    {/each}
                                 </text>
                             {/each}
                             {#each pieData as d (d.data.group)}
@@ -361,7 +377,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-top: 14px;
+        margin-top: 1rem;
     }
 
     .alert-icon {
@@ -385,7 +401,7 @@
         align-items: top;
         margin-top: 0.45rem;
         width: 200px;
-        line-height: 1.1rem;
+        line-height: 1.18rem;
     }
 
     .alert-icon-sm {
@@ -404,7 +420,7 @@
     }
 
     .alert-text {
-        font-size: 0.9rem;
+        font-size: 0.92rem;
         letter-spacing: 0.02rem;
         font-weight: 400;
         color: var(--dark-gray);
