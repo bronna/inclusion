@@ -29,6 +29,13 @@ export const getData = () => {
         if (typeof district.between === "number" && !isNaN(district.between)) {
             between += (district.between / 100) * district.students;
         }
+
+        district.weighted_inclusion = 
+            ( 
+                ( (district.eighty / 100) * district.students ) * 0.9
+                + ( (district.between / 100) * district.students ) * 0.6
+                + ( (district.forty / 100) * district.students ) * 0.2 
+            ) / district.students * 100
     });
 
     // Creating a new feature for the summary data

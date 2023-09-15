@@ -14,6 +14,7 @@
   import StateMap from "../components/StateMap.svelte";
   import StateCompare from "../components/StateCompare.svelte";
   import { scaleOrdinal } from "d3";
+    import { beforeUpdate } from "svelte";
 
   let data = getData()
 
@@ -25,6 +26,9 @@
   ]//.map(value => parseFloat(value.toFixed(2)));
 
   let numberDistricts = $districtsData.length
+
+  let maxStudents = Math.max(...$districtsData.map(district => district.students).filter(n => typeof n === 'number'));
+  let minStudents = Math.min(...$districtsData.map(district => district.students).filter(n => typeof n === 'number'));
 
   let backgroundSVG
 
@@ -38,17 +42,31 @@
 						.filter(district => district.GEOID !== undefined && district.GEOID !== null)
 						.map(district => district.GEOID)
 				);
-				minSize = 0;
-				maxSize = 9000
+				minSize = minStudents;
+				maxSize = maxStudents
 				values = [minSize, maxSize]
 				showMenu = false;
 			} 
+		},
+		{ 
+			name: 'Sort by size',
+			action: () => {
+				let sortedDistricts = $selectedDistrictsData
+					.sort((a, b) => b.students - a.students)
+					.map(district => district.GEOID)
+				selectedDistricts.set(sortedDistricts)
+				showMenu = false;
+			}  
+		},
+		{
+			name: 'Filter by size', 
+			action: filterBySize
 		},
         { 
 			name: 'Sort by most inclusive', 
 			action: () => {
 				let sortedDistricts = $selectedDistrictsData
-					.sort((a, b) => (b.eighty + b.between) - (a.eighty + a.between))
+					.sort((a, b) => b.weighted_inclusion - a.weighted_inclusion)
 					.map(district => district.GEOID)
 				selectedDistricts.set(sortedDistricts)
 				showMenu = false;
@@ -58,7 +76,7 @@
 			name: 'Sort by least inclusive', 
 			action: () => {
 				let sortedDistricts = $selectedDistrictsData
-					.sort((a, b) => (b.forty + b.separate) - (a.forty + a.separate))
+					.sort((a, b) => a.weighted_inclusion - b.weighted_inclusion)
 					.map(district => district.GEOID)
 				selectedDistricts.set(sortedDistricts)
 				showMenu = false;
@@ -75,20 +93,6 @@
 			} 
 		},
 		// { name: 'Filter by disability', action: () => console.log('Filter disability') },
-		{ 
-			name: 'Sort by size',
-			action: () => {
-				let sortedDistricts = $selectedDistrictsData
-					.sort((a, b) => b.students - a.students)
-					.map(district => district.GEOID)
-				selectedDistricts.set(sortedDistricts)
-				showMenu = false;
-			}  
-		},
-		{
-			name: 'Filter by size', 
-			action: filterBySize
-		},
     ];
 
 	let showMenu = false;
@@ -118,12 +122,11 @@
 	});
 
 	function filterBySize() {
-		let filteredDistricts = $selectedDistrictsData
+		let filteredDistricts = $districtsData
 			.filter(district => district.students >= minSize && district.students <= maxSize)
 			.map(district => district.GEOID);
 		
 		selectedDistricts.set(filteredDistricts);
-		console.log($selectedDistricts)
 	}
 
 	// set state for filter option
@@ -216,8 +219,8 @@
 									<RangeSlider 
 										bind:values
 										range={true} 
-										min={0} 
-										max={10000} 
+										min={minStudents} 
+										max={maxStudents} 
 										float={true} 
 										first={true}
 										last={true}
@@ -263,8 +266,8 @@
 		<StateCompare stateData={stateData} />
 	
 		<div class="comparison-bars">
-			{#each $selectedDistrictsData as district}
-				{#if district.name}
+			{#each $selectedDistrictsData as district (district.GEOID)}
+				{#if district.name && district.GEOID !== null}
 					<DistrictData districtData={district} />
 				{/if}
 			{/each}

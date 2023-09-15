@@ -17,14 +17,23 @@ export const districtsData = writable(data.slice(1));
 
 export const selectedDistrictsData = derived(
     [selectedDistricts, districtsData],
-    ([$selectedDistricts, $districtsData]) => $selectedDistricts
-        .map(GEOID => {
-            const districtData = $districtsData.find(d => d.GEOID === GEOID);
+    ([$selectedDistricts, $districtsData]) => {
+        // Create a map for faster lookups
+        const districtsDataMap = new Map();
+        $districtsData.forEach(district => {
+            districtsDataMap.set(district.GEOID, district);
+        });
+
+        const result = [];
+        $selectedDistricts.forEach(GEOID => {
+            const districtData = districtsDataMap.get(GEOID);
             if (!districtData) {
                 console.error(`No data found for district with GEOID: ${GEOID}`);
-                return null;
+            } else {
+                result.push(districtData);
             }
-            return districtData;
-        })
-        .filter(districtData => districtData !== null)  // remove any null values from the result
+        });
+
+        return result;
+    }
 );
