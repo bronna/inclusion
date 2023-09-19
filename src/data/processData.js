@@ -9,6 +9,14 @@ export const getData = () => {
     let separate = 0
     let between = 0
 
+    function weightedInclusion(district) {
+        return (
+            ( (district.eighty / 100) * district.students ) * 0.9
+            + ( (district.between / 100) * district.students ) * 0.6
+            + ( (district.forty / 100) * district.students ) * 0.2
+        ) / district.students * 100
+    }
+
     data.forEach((district) => {
         if (typeof district.students === "number" && !isNaN(district.students)) {
             totalStudents += district.students;
@@ -30,12 +38,7 @@ export const getData = () => {
             between += (district.between / 100) * district.students;
         }
 
-        district.weighted_inclusion = 
-            ( 
-                ( (district.eighty / 100) * district.students ) * 0.9
-                + ( (district.between / 100) * district.students ) * 0.6
-                + ( (district.forty / 100) * district.students ) * 0.2 
-            ) / district.students * 100
+        district.weighted_inclusion = weightedInclusion(district)
     });
 
     // Creating a new feature for the summary data
@@ -49,6 +52,7 @@ export const getData = () => {
             forty: forty / totalStudents,
             separate: separate / totalStudents,
             between: between / totalStudents,
+            weighted_inclusion: weightedInclusion({students: totalStudents, eighty: eighty / totalStudents, forty: forty / totalStudents, separate: separate / totalStudents, between: between / totalStudents})
         },
         geometry: null  // Since this is a summary, I'm assuming no specific geometry, but adjust as needed
     };

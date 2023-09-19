@@ -201,11 +201,15 @@
                 {/if}
             </button>
             
-              
+            <p class="metric-value">
+                {#if districtData.students}
+                    {districtData.weighted_inclusion.toFixed(0)}
+                {/if}
+            </p>
         </div>
     
         {#if districtData.students === 0 && !expanded}
-            <p class="smallDistrict" transition:slide={{duration: 200}}>no students with IEPs</p>
+            <p class="zeroDistrict" transition:slide={{duration: 200}}>no students with IEPs</p>
         {:else if districtData.students < 500 && !expanded}
             <p class="smallDistrict" transition:slide={{duration: 200}}>less than 500 students with IEPs</p>
         {/if}
@@ -364,6 +368,17 @@
         /* font-family: 'Source Serif 4', serif; */
     }
 
+    .metric-value {
+        margin-left: auto;
+        background-color: white;
+        color: var(--color-text);
+        font-size: 1.9rem;
+        letter-spacing: 0.02rem;
+        font-weight: 400;
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+
     .setting-text {
         text-anchor: middle;
         font-size: 0.95rem;
@@ -444,6 +459,16 @@
     }
 
     .smallDistrict {
+        font-size: 0.85rem;
+        letter-spacing: 0.02rem;
+        font-weight: 400;
+        color: var(--dark-gray);
+        margin: 0;
+        padding: 0;
+        margin-top: -8px;
+    }
+
+    .zeroDistrict {
         font-size: 0.85rem;
         letter-spacing: 0.02rem;
         font-weight: 400;

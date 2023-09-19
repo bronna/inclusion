@@ -1,16 +1,31 @@
 <script>
     import { onMount } from 'svelte';
-    import { geoBounds, geoTransverseMercator, geoPath } from 'd3';
+    import { geoBounds, geoTransverseMercator, geoPath, scaleLinear } from 'd3';
     import { selectedDistricts } from '../stores/stores.js';
     import { colors } from "../styles/colors";
 
     // Import and format the data
     export let data
+    console.log(data)
 
     const featureCollection = {
       type: "FeatureCollection",
       features: data
     }
+
+    // Color scale
+    const minWeightedInclusion = Math.min(...data
+      .filter(district => district.students > 500)
+      .map(district => district.weighted_inclusion)
+    )
+    const maxWeightedInclusion = Math.max(...data
+      .filter(district => district.students > 500)
+      .map(district => district.weighted_inclusion)
+    )
+
+    const colorScale = scaleLinear()
+      .domain([minWeightedInclusion, maxWeightedInclusion])
+      .range(['#fff', colors[0]]);
   
     // Set initial values for dimensions and projection
     let dims = {}
@@ -107,24 +122,43 @@
 <div id="map">
     <svg width={dims.width} height={dims.height}>
       {#if districtPathGenerator}
-        <g style={{ clipPath: "url(#districts)" }}>
-          {#each data as district}
-            {#if district.GEOID !== "999999"}
-              <path
-                class="districtShape"
-                key={district.GEOID}
-                d={districtPathGenerator(district)}
-                fill={$selectedDistricts.includes(district.GEOID) ? colors[0] : "lightgray"}
-                stroke="white"
-                stroke-width="0.75"
-                on:mouseover={() => showTooltip(district.name)}
-                on:mousemove={updateTooltipPosition}
-                on:mouseout={hideTooltip}
-                on:click={e => handleDistrictClick(e, district)}
-              ></path>
-            {/if}
-          {/each}
-        </g>
+          <g style={{ clipPath: "url(#districts)" }}>
+              
+              {#each data as district}
+                  {#if district.GEOID !== "999999" && !$selectedDistricts.includes(district.GEOID)}
+                      <path
+                          class="districtShape"
+                          key={district.GEOID}
+                          d={districtPathGenerator(district)}
+                          fill={district.students ? colorScale(district.weighted_inclusion) : "lightgray"}
+                          stroke="white"
+                          stroke-width="0.75"
+                          on:mouseover={() => showTooltip(district.name)}
+                          on:mousemove={updateTooltipPosition}
+                          on:mouseout={hideTooltip}
+                          on:click={e => handleDistrictClick(e, district)}
+                      ></path>
+                  {/if}
+              {/each}
+
+              {#each data as district}
+                  {#if district.GEOID !== "999999" && $selectedDistricts.includes(district.GEOID)}
+                      <path
+                          class="districtShape"
+                          key={district.GEOID}
+                          d={districtPathGenerator(district)}
+                          fill={district.students ? colorScale(district.weighted_inclusion) : "lightgray"}
+                          stroke="black"
+                          stroke-width="1.2"
+                          on:mouseover={() => showTooltip(district.name)}
+                          on:mousemove={updateTooltipPosition}
+                          on:mouseout={hideTooltip}
+                          on:click={e => handleDistrictClick(e, district)}
+                      ></path>
+                  {/if}
+              {/each}
+              
+          </g>
       {/if}
     </svg>
 </div>

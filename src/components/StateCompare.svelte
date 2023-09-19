@@ -16,9 +16,14 @@
     }
 </script>
 
-<p class="title">
-    statewide inclusion rate
-</p>
+<div class="metric">
+    <p class="title">
+        statewide
+    </p>
+    <p class="metric-value">
+        {stateData.properties.weighted_inclusion.toFixed(2) * 100}
+    </p>
+</div>
 
 <!-- <div class="color-legend">
     <span class="setting-name" style="background-color:{colors[0]}; color:white;">inclusive</span>
@@ -34,15 +39,31 @@
 </div>
 
 <style>
+    .metric {
+        display: flex;
+        justify-content: flex-end;
+        align-items: baseline;
+        /* margin-top: -0.4rem;
+        margin-bottom: -0.4rem; */
+    }
+
     .title {
         color: var(--dark-gray);
         font-size: 0.9rem;
         letter-spacing: 0.02rem;
         font-weight: 400;
-        margin-top: -0.4rem;
-        margin-bottom: 0.5rem;
         text-align: right;
-        /* text-transform: uppercase; */
+        margin: 0 8px 0 0;
+    }
+
+    .metric-value {
+        color: var(--color-text);
+        font-size: 1.9rem;
+        letter-spacing: 0.02rem;
+        font-weight: 400;
+        text-align: right;
+        margin-bottom: 0px;
+        margin-top: 0px;
     }
 
     .color-legend {
