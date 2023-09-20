@@ -11,13 +11,15 @@ export const getData = () => {
 
     function weightedInclusion(district) {
         return (
-            ( (district.eighty / 100) * district.students ) * 0.9
-            + ( (district.between / 100) * district.students ) * 0.6
-            + ( (district.forty / 100) * district.students ) * 0.2
-        ) / district.students * 100
+            (
+                ( (district.eighty / 100) * district.students ) * 0.9
+                + ( (district.between / 100) * district.students ) * 0.6
+                + ( (district.forty / 100) * district.students ) * 0.2
+            ) / district.students * 100
+        )
     }
 
-    data.forEach((district) => {
+    data.forEach(district => {
         if (typeof district.students === "number" && !isNaN(district.students)) {
             totalStudents += district.students;
         }
@@ -58,6 +60,37 @@ export const getData = () => {
     };
 
     data.push(summaryFeature)
+
+    // Find min and max weighted inclusion values
+    let minWeightedInclusion = Math.min(
+        ...data
+            .filter(district => district.students > 500)
+            .map(district => district.weighted_inclusion)
+    );
+    let maxWeightedInclusion = Math.max(
+        ...data
+            .filter(district => district.students > 500)
+            .map(district => district.weighted_inclusion)
+    );
+    let range = maxWeightedInclusion - minWeightedInclusion;
+
+    //  Calculate quartiles
+    let firstQuartile = minWeightedInclusion + (range * 0.25);
+    let secondQuartile = minWeightedInclusion + (range * 0.5);
+    let thirdQuartile = minWeightedInclusion + (range * 0.75);
+
+    // Assign quartile values to each district
+    data.forEach(district => {
+        if (district.weighted_inclusion < firstQuartile) {
+            district.quartile = 1;
+        } else if (district.weighted_inclusion < secondQuartile) {
+            district.quartile = 2;
+        } else if (district.weighted_inclusion < thirdQuartile) {
+            district.quartile = 3;
+        } else {
+            district.quartile = 4; 
+        }
+    });
 
     return data.sort((a, b) => {
       if (!a.properties.name && !b.properties.name) return 0;  // If both are missing, they're equal

@@ -37,3 +37,20 @@ export const selectedDistrictsData = derived(
         return result;
     }
 );
+
+// Calculate the min and max weighted inclusion values for districts above 500 students
+export const minWeightedInclusion = derived(districtsData, $districtsData => {
+    return Math.min(
+        ...$districtsData
+            .filter(district => district.students > 500)
+            .map(district => district.weighted_inclusion)
+    )
+});
+
+export const maxWeightedInclusion = derived(districtsData, $districtsData => {
+    return Math.max(
+        ...$districtsData
+            .filter(district => district.students > 500)
+            .map(district => district.weighted_inclusion)
+    )
+})

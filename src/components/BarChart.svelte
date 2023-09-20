@@ -38,7 +38,7 @@
         <div class={`bar ${shouldAddBorder(i) ? 'add-border' : ''}`} 
              style="background-color: {colorScale(d.group)}; width: calc({d.value}% - {gapPercentage}%);">
             {#if d.value >= 1.4}
-                <span class="bar-text">{(d.value).toFixed(0)}{i === 0 ? '%' : ''}</span>
+                <span class="bar-text">{(d.value).toFixed(0)}{d.value > 5 ? '%' : ''}</span>
             {/if}
         </div>
     {/each}

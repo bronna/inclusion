@@ -1,12 +1,11 @@
 <script>
     import { onMount } from 'svelte';
     import { geoBounds, geoTransverseMercator, geoPath, scaleLinear } from 'd3';
-    import { selectedDistricts } from '../stores/stores.js';
+    import { selectedDistricts, minWeightedInclusion, maxWeightedInclusion } from '../stores/stores.js';
     import { colors } from "../styles/colors";
 
     // Import and format the data
     export let data
-    console.log(data)
 
     const featureCollection = {
       type: "FeatureCollection",
@@ -14,17 +13,17 @@
     }
 
     // Color scale
-    const minWeightedInclusion = Math.min(...data
-      .filter(district => district.students > 500)
-      .map(district => district.weighted_inclusion)
-    )
-    const maxWeightedInclusion = Math.max(...data
-      .filter(district => district.students > 500)
-      .map(district => district.weighted_inclusion)
-    )
+    // const minWeightedInclusion = Math.min(...data
+    //   .filter(district => (district.students > 500))
+    //   .map(district => district.weighted_inclusion)
+    // )
+    // const maxWeightedInclusion = Math.max(...data
+    //   .filter(district => (district.students > 500))
+    //   .map(district => district.weighted_inclusion)
+    // )
 
     const colorScale = scaleLinear()
-      .domain([minWeightedInclusion, maxWeightedInclusion])
+      .domain([$minWeightedInclusion, $maxWeightedInclusion])
       .range(['#fff', colors[0]]);
   
     // Set initial values for dimensions and projection
@@ -183,7 +182,7 @@
   }
 
   .districtShape:hover {
-    fill: rgb(67,182,161,0.6);
+    opacity: 0.5;
   }
 </style>
   

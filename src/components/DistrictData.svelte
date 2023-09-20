@@ -4,6 +4,7 @@
     import { tick } from 'svelte';
     import { colors } from '../styles/colors';
     import BarChart from './BarChart.svelte';
+    import InclusionRing from './InclusionRing.svelte';
 
     export let districtData
 
@@ -203,7 +204,7 @@
             
             <p class="metric-value">
                 {#if districtData.students}
-                    {districtData.weighted_inclusion.toFixed(0)}
+                    <InclusionRing value={districtData.quartile} />
                 {/if}
             </p>
         </div>

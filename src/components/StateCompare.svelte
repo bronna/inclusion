@@ -1,6 +1,7 @@
 <script>
     import { colors } from '../styles/colors';
     import BarChartMin from "./BarChartMin.svelte";
+    // import InclusionRing from './InclusionRing.svelte';
 
     export let stateData;
 
@@ -16,21 +17,16 @@
     }
 </script>
 
-<div class="metric">
+<!-- <div class="metric">
     <p class="title">
-        statewide
+        statewide<br> 
+        <span class="align-baseline">inclusion score</span>
     </p>
     <p class="metric-value">
-        {stateData.properties.weighted_inclusion.toFixed(2) * 100}
+        <InclusionRing value={stateData.properties.weighted_inclusion.toFixed(2) * 100} />
     </p>
-</div>
-
-<!-- <div class="color-legend">
-    <span class="setting-name" style="background-color:{colors[0]}; color:white;">inclusive</span>
-    <span class="setting-name" style="background-color:{colors[1]}; color:white;">semi-inclusive</span>
-    <span class="setting-name" style="background-color:{colors[2]}; color:white;">non-inclusive</span>
-    <span class="setting-name" style="background-color:{colors[3]}; color:white;">separate</span> 
 </div> -->
+<p class="title">statewide</p>
 
 <div class="state-data">
     {#if stateData.students !== 0}
@@ -39,13 +35,20 @@
 </div>
 
 <style>
-    .metric {
+    /* .metric {
         display: flex;
         justify-content: flex-end;
-        align-items: baseline;
-        /* margin-top: -0.4rem;
-        margin-bottom: -0.4rem; */
+        align-items: flex-end;
     }
+
+    .title, .metric-value {
+        line-height: 1.2;
+        margin: 0;
+    }
+
+    .title .align-baseline {
+        align-self: baseline;
+    } */
 
     .title {
         color: var(--dark-gray);
@@ -53,31 +56,15 @@
         letter-spacing: 0.02rem;
         font-weight: 400;
         text-align: right;
-        margin: 0 8px 0 0;
+        margin-bottom: 5px;
+        /* margin-right: 8px; */
     }
 
-    .metric-value {
+    /* .metric-value {
         color: var(--color-text);
         font-size: 1.9rem;
         letter-spacing: 0.02rem;
         font-weight: 400;
         text-align: right;
-        margin-bottom: 0px;
-        margin-top: 0px;
-    }
-
-    .color-legend {
-        margin-top: 0.5rem;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .setting-name {
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        padding: 1px 6px;
-        letter-spacing: 0.04rem;
-        border-radius: 3px;
-    }
+    } */
 </style>
