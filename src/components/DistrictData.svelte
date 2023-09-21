@@ -202,6 +202,7 @@
                 {/if}
             </button>
             
+            <!-- <p class="score-label">inclusion score</p> -->
             <p class="metric-value">
                 {#if districtData.students}
                     <InclusionRing value={districtData.quartile} />
@@ -270,13 +271,13 @@
                             {/each}
                             
                             <!-- number of students in center of donut chart -->
-                            <text x="0" y="-11" text-anchor="middle" dominant-baseline="middle" font-size="1.6rem" font-weight="bold" fill="black">
+                            <text x="0" y="-14" text-anchor="middle" dominant-baseline="middle" font-size="1.6rem" font-weight="bold" fill="black">
                                 {data.students.toLocaleString('en-US')}
                             </text>
-                            <text x="0" y="11" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[8]}>
+                            <text x="0" y="8" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[8]}>
                                 students
                             </text>
-                            <text x="0" y="27" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[8]}>
+                            <text x="0" y="23" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[8]}>
                                 with IEPs
                             </text>
                         </g>
@@ -369,22 +370,12 @@
         /* font-family: 'Source Serif 4', serif; */
     }
 
-    .metric-value {
-        margin-left: auto;
-        background-color: white;
-        color: var(--color-text);
-        font-size: 1.9rem;
-        letter-spacing: 0.02rem;
-        font-weight: 400;
-        margin-bottom: 0px;
-        margin-top: 0px;
-    }
-
     .setting-text {
         text-anchor: middle;
         font-size: 0.95rem;
         font-weight: 400;
         letter-spacing: 0.02rem;
+        color: var(--dark-gray);
         fill: var(--dark-gray);
     }
 
@@ -449,6 +440,27 @@
         width: 1em;
         cursor: pointer;
         transform: translateY(2px);
+    }
+
+    .score-label {
+        margin-left: auto;
+        color: var(--dark-gray);
+        font-size: 0.9rem;
+        letter-spacing: 0.02rem;
+        font-weight: 400;
+        text-align: right;
+        margin-bottom: 5px;
+    }
+
+    .metric-value {
+        margin-left: auto;
+        background-color: white;
+        color: var(--color-text);
+        font-size: 1.9rem;
+        letter-spacing: 0.02rem;
+        font-weight: 400;
+        margin-bottom: 0px;
+        margin-top: 0px;
     }
 
     .bar-border-top {

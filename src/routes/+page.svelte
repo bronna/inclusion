@@ -267,7 +267,7 @@
 					y2="100%" 
 					stroke={lineColorScale(index)} 
 					stroke-width="2" 
-					stroke-dasharray="2, 2"
+					stroke-dasharray="2, 4"
 				/>
 			{/each}
 		</svg>

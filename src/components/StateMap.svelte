@@ -69,8 +69,8 @@
     let tooltip;
     let tooltipVisible = false
 
-    function showTooltip(name) {
-      tooltip.textContent = name;
+    function showTooltip(name, value) {
+      tooltip.textContent = `${name}: ${value}`
       tooltip.style.opacity = 1;
     }
 
@@ -91,7 +91,7 @@
 
     function handleDistrictClick(event, district) {
         if (!tooltipVisible) {
-            showTooltip(district.name);
+            showTooltip(district.name, Math.round(district.weighted_inclusion));
             updateTooltipPosition(event);
             tooltipVisible = true;
         } else {
@@ -132,7 +132,7 @@
                           fill={district.students ? colorScale(district.weighted_inclusion) : "lightgray"}
                           stroke="white"
                           stroke-width="0.75"
-                          on:mouseover={() => showTooltip(district.name)}
+                          on:mouseover={() => showTooltip(district.name, Math.round(district.weighted_inclusion))}
                           on:mousemove={updateTooltipPosition}
                           on:mouseout={hideTooltip}
                           on:click={e => handleDistrictClick(e, district)}
@@ -149,7 +149,7 @@
                           fill={district.students ? colorScale(district.weighted_inclusion) : "lightgray"}
                           stroke="black"
                           stroke-width="1.2"
-                          on:mouseover={() => showTooltip(district.name)}
+                          on:mouseover={() => showTooltip(district.name, Math.round(district.weighted_inclusion))}
                           on:mousemove={updateTooltipPosition}
                           on:mouseout={hideTooltip}
                           on:click={e => handleDistrictClick(e, district)}

@@ -6,7 +6,8 @@
     
     let colorScale = scaleOrdinal()
             .domain(data.map(d => d.group))
-            .range(colors);
+            //.range([colors[4], colors[5], colors[6], colors[7]]);
+            .range(colors)
 
     let containerWidth;
     let gapPercentage = 0;
@@ -47,7 +48,7 @@
 <style>
 .bar-chart {
     width: 100%;
-    height: 12px;
+    height: 6px;
     display: flex;
     align-items: center;
 }

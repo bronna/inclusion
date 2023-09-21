@@ -44,11 +44,11 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-53%, -128%);
+        transform: translate(-50%, -120%);
         color: var(--color-text);
         font-size: 1.8rem;
         letter-spacing: 0.02rem;
-        font-weight: 400;
+        font-weight: 600;
     }
 </style>
 
