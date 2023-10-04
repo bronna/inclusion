@@ -6,7 +6,6 @@
     
     let colorScale = scaleOrdinal()
             .domain(data.map(d => d.group))
-            //.range([colors[4], colors[5], colors[6], colors[7]]);
             .range(colors)
 
     let containerWidth;

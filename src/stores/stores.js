@@ -2,18 +2,17 @@ import { getData } from "../data/processData.js";
 import { writable, derived } from 'svelte/store';
 
 let data = getData()
-
-//export const selectedDistricts = writable([4101620, 4100023, 4110040, 4110820, 4111290]);
+console.log(data)
 
 let initialSelectedDistricts = data
-    .filter(district => district.name !== undefined && district.GEOID !== '999999')
-    .sort((a, b) => b.students - a.students)
+    .filter(district => district.properties["Total Student Count"] !== undefined && district.properties.GEOID !== '999999')
+    .sort((a, b) => b.properties["Total Student Count"] - a.properties["Total Student Count"])
     .slice(0, 5)
-    .map(district => district.GEOID);
+    .map(district => district.properties.GEOID);
 
 export const selectedDistricts = writable(initialSelectedDistricts);
 
-export const districtsData = writable(data.slice(1));
+export const districtsData = writable(data);
 
 export const selectedDistrictsData = derived(
     [selectedDistricts, districtsData],
@@ -21,7 +20,7 @@ export const selectedDistrictsData = derived(
         // Create a map for faster lookups
         const districtsDataMap = new Map();
         $districtsData.forEach(district => {
-            districtsDataMap.set(district.GEOID, district);
+            districtsDataMap.set(district.properties.GEOID, district);
         });
 
         const result = [];
@@ -42,15 +41,17 @@ export const selectedDistrictsData = derived(
 export const minWeightedInclusion = derived(districtsData, $districtsData => {
     return Math.min(
         ...$districtsData
-            .filter(district => district.students > 500)
-            .map(district => district.weighted_inclusion)
+            .filter(district => district.properties["Total Student Count"] > 500)
+            .filter(district => district.properties.weighted_inclusion)
+            .map(district => district.properties.weighted_inclusion)
     )
 });
 
 export const maxWeightedInclusion = derived(districtsData, $districtsData => {
     return Math.max(
         ...$districtsData
-            .filter(district => district.students > 500)
-            .map(district => district.weighted_inclusion)
+            .filter(district => district.properties["Total Student Count"] > 500)
+            .filter(district => district.properties.weighted_inclusion)
+            .map(district => district.properties.weighted_inclusion)
     )
 })

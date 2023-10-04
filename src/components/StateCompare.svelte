@@ -9,10 +9,10 @@
 
     $: {
         data = [
-            {group: "eighty", value: stateData.properties.eighty * 100},
-            {group: "between", value: stateData.properties.between * 100},
-            {group: "forty", value: stateData.properties.forty * 100},
-            {group: "separate", value: stateData.properties.separate * 100},
+            {group: "inclusive", value: stateData.properties["LRE Students >80%"]},
+            {group: "semiInclusive", value: stateData.properties["LRE Students >40% <80%"]},
+            {group: "nonInclusive", value: stateData.properties["LRE Students <40%"]},
+            {group: "separate", value: stateData.properties["LRE Students Separate Settings"]},
         ]
     }
 </script>
@@ -29,7 +29,7 @@
 <p class="title">statewide</p>
 
 <div class="state-data">
-    {#if stateData.students !== 0}
+    {#if stateData.properties["Total Student Count"] !== 0}
         <BarChartMin data={data} />
     {/if}
 </div>

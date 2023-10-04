@@ -1,101 +1,121 @@
-import originalData from "./OregonData.js"
+import * as topojson from "topojson-client"
+import OregonData from "./oregon_data.json"
 
 export const getData = () => {
-    let data = JSON.parse(JSON.stringify(originalData.features));  // Access the features array
-    
-    let totalStudents = 0
-    let eighty = 0
-    let forty = 0
-    let separate = 0
-    let between = 0
+    const objectName = "OR_SDs_merged";
+    const geojsonData = topojson.feature(OregonData, OregonData.objects[objectName])
+    let data = geojsonData.features
+
+    let totalStudents = 0;
+    let numInclusive = 0;
+    let numSemiInclusive = 0;
+    let numNonInclusive = 0;
+    let numSeparate = 0;
 
     function weightedInclusion(district) {
         return (
             (
-                ( (district.eighty / 100) * district.students ) * 0.9
-                + ( (district.between / 100) * district.students ) * 0.6
-                + ( (district.forty / 100) * district.students ) * 0.2
-            ) / district.students * 100
+                ( (district["LRE Students >80%"] / 100) * district["Total Student Count"] ) * 0.9
+                + ( (district["LRE Students >40% <80%"] / 100) * district["Total Student Count"] ) * 0.6
+                + ( (district["LRE Students <40%"] / 100) * district["Total Student Count"] ) * 0.2
+            ) / district["Total Student Count"] * 100
         )
     }
 
+    const alertColumns = [
+        "SuspExplFg",
+        "SuspExplRaceEthnicityFg",
+        "DisPrptnRprsntnFg",
+        "DisPrptnRprsntnDsbltyFg"
+    ];
+
     data.forEach(district => {
-        if (typeof district.students === "number" && !isNaN(district.students)) {
-            totalStudents += district.students;
+        if (typeof district.properties["Total Student Count"] === "number" && !isNaN(district.properties["Total Student Count"])) {
+            totalStudents += district.properties["Total Student Count"];
         }
         
-        if (typeof district.eighty === "number" && !isNaN(district.eighty)) {
-            eighty += (district.eighty / 100) * district.students;
+        if (typeof district.properties["LRE Students >80%"] === "number" && !isNaN(district.properties["LRE Students >80%"])) {
+            numInclusive += (district.properties["LRE Students >80%"] / 100) * district.properties["Total Student Count"];
         }
     
-        if (typeof district.forty === "number" && !isNaN(district.forty)) {
-            forty += (district.forty / 100) * district.students;
+        if (typeof district.properties["LRE Students >40% <80%"] === "number" && !isNaN(district.properties["LRE Students >40% <80%"])) {
+            numSemiInclusive += (district.properties["LRE Students >40% <80%"] / 100) * district.properties["Total Student Count"];
         }
     
-        if (typeof district.separate === "number" && !isNaN(district.separate)) {
-            separate += (district.separate / 100) * district.students;
-        }
-    
-        if (typeof district.between === "number" && !isNaN(district.between)) {
-            between += (district.between / 100) * district.students;
+        if (typeof district.properties["LRE Students <40%"] === "number" && !isNaN(district.properties["LRE Students <40%"])) {
+            numNonInclusive += (district.properties["LRE Students <40%"] / 100) * district.properties["Total Student Count"];
         }
 
-        district.weighted_inclusion = weightedInclusion(district)
+        if (typeof district.properties["LRE Students Separate Settings"] === "number" && !isNaN(district.properties["LRE Students Separate Settings"])) {
+            numSeparate += (district.properties["LRE Students Separate Settings"] / 100) * district.properties["Total Student Count"];
+        }
+
+        // Calculate the weighted inclusion
+        district.properties.weighted_inclusion = weightedInclusion(district.properties);
+        // console.log(district.properties["Institution Name"], district.properties.weighted_inclusion)
+
+        // Tallying up alerts for each district
+        let alertsCount = 0;
+        alertColumns.forEach(column => {
+            if (district.properties[column] === "Yes") {
+                alertsCount++;
+            }
+        });
+        district.properties.nAlerts = alertsCount;
     });
 
     // Creating a new feature for the summary data
     let summaryFeature = {
+        //id: 0,
         type: "Feature",
         properties: {
-            name: "Oregon",
+            "Institution Name": "Oregon",
             GEOID: "999999",
-            students: totalStudents,
-            eighty: eighty / totalStudents,
-            forty: forty / totalStudents,
-            separate: separate / totalStudents,
-            between: between / totalStudents,
-            weighted_inclusion: weightedInclusion({students: totalStudents, eighty: eighty / totalStudents, forty: forty / totalStudents, separate: separate / totalStudents, between: between / totalStudents})
+            "Total Student Count": totalStudents,
+            "LRE Students >80%": (numInclusive / totalStudents) * 100,
+            "LRE Students >40% <80%": (numSemiInclusive / totalStudents) * 100,
+            "LRE Students <40%": (numNonInclusive / totalStudents) * 100,
+            "LRE Students Separate Settings": (numSeparate / totalStudents) * 100
         },
-        geometry: null  // Since this is a summary, I'm assuming no specific geometry, but adjust as needed
+        geometry: null
     };
 
-    data.push(summaryFeature)
+    data.push(summaryFeature);
 
-    // Find min and max weighted inclusion values
     let minWeightedInclusion = Math.min(
         ...data
-            .filter(district => district.students > 500)
-            .map(district => district.weighted_inclusion)
+            .filter(district => district.properties["Total Student Count"] > 500 && district.properties.weighted_inclusion)
+            .map(district => district.properties.weighted_inclusion)
     );
     let maxWeightedInclusion = Math.max(
         ...data
-            .filter(district => district.students > 500)
-            .map(district => district.weighted_inclusion)
+            .filter(district => district.properties["Total Student Count"] > 500 && district.properties.weighted_inclusion)
+            .map(district => district.properties.weighted_inclusion)
     );
     let range = maxWeightedInclusion - minWeightedInclusion;
 
-    //  Calculate quartiles
     let firstQuartile = minWeightedInclusion + (range * 0.25);
     let secondQuartile = minWeightedInclusion + (range * 0.5);
     let thirdQuartile = minWeightedInclusion + (range * 0.75);
 
-    // Assign quartile values to each district
     data.forEach(district => {
-        if (district.weighted_inclusion < firstQuartile) {
-            district.quartile = 1;
-        } else if (district.weighted_inclusion < secondQuartile) {
-            district.quartile = 2;
-        } else if (district.weighted_inclusion < thirdQuartile) {
-            district.quartile = 3;
+        if (district.properties.weighted_inclusion < firstQuartile) {
+            district.properties.quartile = 1;
+        } else if (district.properties.weighted_inclusion < secondQuartile) {
+            district.properties.quartile = 2;
+        } else if (district.properties.weighted_inclusion < thirdQuartile) {
+            district.properties.quartile = 3;
         } else {
-            district.quartile = 4; 
+            district.properties.quartile = 4; 
         }
     });
 
-    return data.sort((a, b) => {
-      if (!a.properties.name && !b.properties.name) return 0;  // If both are missing, they're equal
-      if (!a.properties.name) return 1;  // If only a's name is missing, a is greater
-      if (!b.properties.name) return -1; // If only b's name is missing, b is greater
-      return a.properties.name.localeCompare(b.properties.name); // If neither is missing, do the actual comparison
-    });
+    return data
+        .filter(district => district.properties["Institution Name"])
+        .sort((a, b) => {
+            if (!a.properties["Institution Name"] && !b.properties["Institution Name"]) return 0;
+            if (!a.properties["Institution Name"]) return 1;
+            if (!b.properties["Institution Name"]) return -1;
+            return a.properties["Institution Name"].localeCompare(b.properties["Institution Name"]);
+        });
 };

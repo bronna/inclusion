@@ -8,10 +8,10 @@
 
     $: {
         data = [
-            {group: "eighty", value: stateData.properties.eighty * 100},
-            {group: "between", value: stateData.properties.between * 100},
-            {group: "forty", value: stateData.properties.forty * 100},
-            {group: "separate", value: stateData.properties.separate * 100},
+            {group: "inclusive", value: stateData.properties["LRE Students >80%"]},
+            {group: "semiInclusive", value: stateData.properties["LRE Students >40% <80%"]},
+            {group: "nonInclusive", value: stateData.properties["LRE Students <40%"]},
+            {group: "separate", value: stateData.properties["LRE Students Separate Settings"]},
         ]
     }
 
@@ -71,13 +71,13 @@
 </script>
 
 <div class="state-data">
-    {#if stateData.properties.students !== 0}
-        <BarChart data={data} />      
+    {#if stateData.properties["Total Student Count"] !== 0}
+        <BarChart {data} />      
     {/if}
 
     <div class="legend">
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[0]};">{(stateData.properties.eighty * 100).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[0]};">{(stateData.properties["LRE Students >80%"]).toFixed(0)}%</strong> 
             of students with IEPs
             are in an 
             <span class="setting-name" style="background-color:{colors[0]}; color:white;">inclusive</span>
@@ -88,7 +88,7 @@
             setting
         </div>
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[1]};">{(stateData.properties.between * 100).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[1]};">{(stateData.properties["LRE Students >40% <80%"]).toFixed(0)}%</strong> 
             are in a 
             <span class="setting-name" style="background-color:{colors[1]}; color:white;">semi-inclusive</span>
             <div class="tooltip-container">
@@ -98,7 +98,7 @@
             setting
         </div>
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[2]};">{(stateData.properties.forty * 100).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[2]};">{(stateData.properties["LRE Students <40%"]).toFixed(0)}%</strong> 
             are in a 
             <span class="setting-name" style="background-color:{colors[2]}; color:white;">non-inclusive</span> 
             <div class="tooltip-container">
@@ -108,7 +108,7 @@
             setting
         </div>
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[3]};">{(stateData.properties.separate * 100).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[3]};">{(stateData.properties["LRE Students Separate Settings"]).toFixed(0)}%</strong> 
             are in a 
             <span class="setting-name" style="background-color:{colors[3]}; color:white;">separate</span> 
             <div class="tooltip-container">
@@ -185,13 +185,14 @@
     .tooltip {
         display: none;
         padding: 10px;
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
+        color: var(--text-color);
+        background-color: white;
         position: absolute;
         top: -6px;
         right: 10px;
         z-index: 1;
         border-radius: 4px;
         min-width: 200px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     }
 </style>

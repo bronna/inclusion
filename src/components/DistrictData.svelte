@@ -23,17 +23,18 @@
     // For each data object, calculate start angle, end angle, and create a donut slice path using the arc generator
     let anglePerUnit = (2 * Math.PI) / totalValue;  // totalValue is the sum of all values
 
-    // Split the district name around 'SD'
-    let districtNameParts = districtData.name.split('SD');
-    // Remove leading/trailing spaces and 'SD' from the district name
-    districtNameParts = districtNameParts.map(namePart => namePart.trim());
+    // // Split the district name around 'SD'
+    // //let districtNameParts = districtData.properties["Institution Name"].split('SD');
+    // let districtNameParts = districtData.properties["Institution Name"]
+    // // Remove leading/trailing spaces and 'SD' from the district name
+    // districtNameParts = districtNameParts.map(namePart => namePart.trim());
 
     $: {
         data = [
-            {group: "eighty", value: districtData.eighty},
-            {group: "between", value: districtData.between},
-            {group: "forty", value: districtData.forty},
-            {group: "separate", value: districtData.separate},
+            {group: "inclusive", value: districtData.properties["LRE Students >80%"]},
+            {group: "semi-inclusive", value: districtData.properties["LRE Students >40% <80%"]},
+            {group: "non-inclusive", value: districtData.properties["LRE Students <40%"]},
+            {group: "separate", value: districtData.properties["LRE Students Separate Settings"]},
         ]
 
         xScale = scaleLinear()
@@ -166,6 +167,19 @@
             y3: -52
         },
     ]
+
+    // Helper function to split string while keeping multi-word terms
+    function splitString(str) {
+        const multiWordTerms = ["semi-inclusive", "non-inclusive"];
+        let words = [];
+        multiWordTerms.forEach(term => {
+            if (str.includes(term)) {
+                words.push(term);
+                str = str.replace(term, '').trim();
+            }
+        });
+        return words.concat(str.split(' '));
+    }
 </script>
 
 <!-- <div class="district-data" class:expanded={expanded}> -->
@@ -173,170 +187,166 @@
     <div class="district-info">
         <div class="header-wrapper">
             <h3 class="district-name">
-                {#if districtNameParts[0]}
+                <!-- {#if districtNameParts[0]}
                     {districtNameParts[0]}
                 {/if}
                 {#if districtNameParts[1]}
                     <span style="font-weight:400; margin-left:2px;">{districtNameParts[1]}</span>
-                {/if}
-                <!-- {districtData.name} -->
+                {/if} -->
+                {districtData.properties["Institution Name"]}
             
-                {#if districtData.nAlerts}
-                    {#each Array(districtData.nAlerts).fill() as _}
+                {#if districtData.properties.nAlerts}
+                    {#each Array(districtData.properties.nAlerts).fill() as _}
                         <span class="alert-icon">!</span>
                     {/each}
                 {/if}
             </h3>
 
-            <button on:click={toggleExpanded} class="expand-button">
-                {#if expanded}
-                    <!-- Chevron-up SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={colors[8]} stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="expand-icon">
-                        <polyline points="6 15 12 9 18 15"></polyline>
-                    </svg>
-                {:else}
-                    <!-- Chevron-down SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={colors[8]} stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="expand-icon">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                {/if}
-            </button>
+            {#if districtData.properties["Total Student Count"]}
+                <button on:click={toggleExpanded} class="expand-button">
+                    {#if expanded}
+                        <!-- Chevron-up SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={colors[4]} stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="expand-icon">
+                            <polyline points="6 15 12 9 18 15"></polyline>
+                        </svg>
+                    {:else}
+                        <!-- Chevron-down SVG -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={colors[4]} stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="expand-icon">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    {/if}
+                </button>
+            {/if}
             
             <!-- <p class="score-label">inclusion score</p> -->
             <p class="metric-value">
-                {#if districtData.students}
-                    <InclusionRing value={districtData.quartile} />
+                {#if districtData.properties["Total Student Count"]}
+                    <InclusionRing value={districtData.properties.quartile} />
                 {/if}
             </p>
         </div>
     
-        {#if districtData.students === 0 && !expanded}
+        {#if districtData.properties["Total Student Count"] === 0 && !expanded}
             <p class="zeroDistrict" transition:slide={{duration: 200}}>no students with IEPs</p>
-        {:else if districtData.students < 500 && !expanded}
+        {:else if districtData.properties["Total Student Count"] < 500 && !expanded}
             <p class="smallDistrict" transition:slide={{duration: 200}}>less than 500 students with IEPs</p>
         {/if}
 
-        {#each expanded ? [districtData] : [] as data (data.name)}
-            {#if districtData.students === 0}
-                <div class="expanded-content" transition:slide={{duration: 200}}>
-                    <p>No students with IEPs</p>
-                </div>
-            {:else}
-                <div class="expanded-content" transition:slide={{duration: 200}}>
-                    <svg width="100%" height="200" viewBox="0 0 343 200" class="donut-chart">
-                        <g transform="translate(171.5, 120)">
-                            {#each pieData as d (d.data.group)}
-                                <path
-                                    d={arcGenerator(d)}
-                                    fill={colorScale(d.data.group)}
-                                />
-                            {/each}
+        {#each expanded ? [districtData] : [] as data (data.properties["Institution Name"])}
+            <div class="expanded-content" transition:slide={{duration: 200}}>
+                <svg width="100%" height="200" viewBox="0 0 343 200" class="donut-chart">
+                    <g transform="translate(171.5, 120)">
+                        {#each pieData as d (d.data.group)}
+                            <path
+                                d={arcGenerator(d)}
+                                fill={colorScale(d.data.group)}
+                            />
+                        {/each}
 
-                            <!-- text labels for segments -->
-                            {#each pieData as d (d.data.group)}
-                                <text
-                                    x={donutLabels[d.index].x1}
-                                    y={donutLabels[d.index].y1}
-                                    class="setting-text"
-                                >
-                                    <tspan font-size="1.1rem" fill={colorScale(d.data.group)} font-weight="700">
-                                        {Math.round(d.value)}%
-                                    </tspan> 
-                                    <tspan dx="1"> <!-- shifts the second tspan a bit to the right -->
-                                        {donutLabels[d.index].line1}
-                                    </tspan>
-                                </text>
-                            {/each}
-                            {#each pieData as d (d.data.group)}
-                                <text x={donutLabels[d.index].x2} y={donutLabels[d.index].y2} class="setting-text">
-                                    {#each donutLabels[d.index].line2.split(' ') as word}
-                                        <tspan
-                                            fill={word === donutLabels[d.index].colorKey2 ? colorScale(word) : 'currentcolor'}
-                                            font-weight={word === donutLabels[d.index].colorKey2 ? '700' : 'normal'}
-                                        >
-                                            {word}
-                                        </tspan>
-                                        <tspan dx="0.2em"></tspan> <!-- space between words -->
-                                    {/each}
-                                </text>
-                            {/each}
-                            {#each pieData as d (d.data.group)}
-                                <text
-                                    x={donutLabels[d.index].x3}
-                                    y={donutLabels[d.index].y3}
-                                    class="setting-text"
-                                >
-                                    {donutLabels[d.index].line3}
-                                </text>
-                            {/each}
-                            
-                            <!-- number of students in center of donut chart -->
-                            <text x="0" y="-14" text-anchor="middle" dominant-baseline="middle" font-size="1.6rem" font-weight="bold" fill="black">
-                                {data.students.toLocaleString('en-US')}
+                        <!-- text labels for segments -->
+                        {#each pieData as d (d.data.group)}
+                            <text
+                                x={donutLabels[d.index].x1}
+                                y={donutLabels[d.index].y1}
+                                class="setting-text"
+                            >
+                                <tspan font-size="1.1rem" fill={colorScale(d.data.group)} font-weight="700">
+                                    {Math.round(d.value)}%
+                                </tspan> 
+                                <tspan dx="1"> <!-- shifts the second tspan a bit to the right -->
+                                    {donutLabels[d.index].line1}
+                                </tspan>
                             </text>
-                            <text x="0" y="8" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[8]}>
-                                students
-                            </text>
-                            <text x="0" y="23" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[8]}>
-                                with IEPs
-                            </text>
-                        </g>
-                    </svg>
-                    
-                    <!-- section for alerts, if there are any -->
-                    {#if districtData.nAlerts}
-                        <div class="alerts">
-                            <svg width="100%" height="12" viewBox="0 0 343 12">
-                                <g transform="translate(171.5, 0)">
-                                    <path 
-                                        fill=none 
-                                        stroke={colors[3]} 
-                                        stroke-width="2" 
-                                        d="M-90 10 L-4 10 L0 2 L4 10 L90 10"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
+                        {/each}
+                        {#each pieData as d (d.data.group)}
+                            <text x={donutLabels[d.index].x2} y={donutLabels[d.index].y2} class="setting-text">
+                                {#each splitString(donutLabels[d.index].line2) as word}
+                                    <tspan
+                                        fill={word === donutLabels[d.index].colorKey2 ? colorScale(word) : 'currentcolor'}
+                                        font-weight={word === donutLabels[d.index].colorKey2 ? '700' : 'normal'}
                                     >
-                                    </path>
-                                </g>
-                            </svg>
-                            {#if districtData.susp_iep === "Yes"}
-                                <div class="alert-label">
-                                    <span class="alert-icon-sm">!</span>
-                                    <span class="alert-text">disproportionate discipline of students with IEPs</span>
-                                </div>
-                            {/if}
-                            {#if districtData.susp_iep_race === "Yes"}
-                                <div class="alert-label">
-                                    <span class="alert-icon-sm">!</span>
-                                    <span class="alert-text">disproportionate discipline of students in specific racial groups with IEPs</span>
-                                </div>
-                            {/if}
-                            {#if districtData.proprtn_race === "Yes"}
-                                <div class="alert-label">
-                                    <span class="alert-icon-sm">!</span>
-                                    <span class="alert-text">disproportionate identification of students in specific racial groups as having disabilities</span>
-                                </div>
-                            {/if}
-                            {#if districtData.proprtn_race_specific === "Yes"}
-                                <div class="alert-label">
-                                    <span class="alert-icon-sm">!</span>
-                                    <span class="alert-text">disproportionate identification of students in specific racial groups as having specific disabilities</span>
-                                </div>
-                            {/if}
-                        </div>
-                    {/if}
-                </div>
-            {/if}
+                                        {word}
+                                    </tspan>
+                                    <tspan dx="0.2em"></tspan> <!-- space between words -->
+                                {/each}
+                            </text>
+                        {/each}
+                        {#each pieData as d (d.data.group)}
+                            <text
+                                x={donutLabels[d.index].x3}
+                                y={donutLabels[d.index].y3}
+                                class="setting-text"
+                            >
+                                {donutLabels[d.index].line3}
+                            </text>
+                        {/each}
+                        
+                        <!-- number of students in center of donut chart -->
+                        <text x="0" y="-14" text-anchor="middle" dominant-baseline="middle" font-size="1.6rem" font-weight="bold" fill="black">
+                            {data.properties["Total Student Count"].toLocaleString('en-US')}
+                        </text>
+                        <text x="0" y="8" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[5]}>
+                            students
+                        </text>
+                        <text x="0" y="23" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[5]}>
+                            with IEPs
+                        </text>
+                    </g>
+                </svg>
+                
+                <!-- section for alerts, if there are any -->
+                {#if districtData.properties.nAlerts}
+                    <div class="alerts">
+                        <svg width="100%" height="12" viewBox="0 0 343 12">
+                            <g transform="translate(171.5, 0)">
+                                <path 
+                                    fill=none 
+                                    stroke={colors[3]} 
+                                    stroke-width="2" 
+                                    d="M-90 10 L-4 10 L0 2 L4 10 L90 10"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                </path>
+                            </g>
+                        </svg>
+                        {#if districtData.properties["SuspExplFg"] === "Yes"}
+                            <div class="alert-label">
+                                <span class="alert-icon-sm">!</span>
+                                <span class="alert-text">disproportionate discipline of students with IEPs</span>
+                            </div>
+                        {/if}
+                        {#if districtData.properties["SuspExplRaceEthnicityFg"] === "Yes"}
+                            <div class="alert-label">
+                                <span class="alert-icon-sm">!</span>
+                                <span class="alert-text">disproportionate discipline of students in specific racial groups with IEPs</span>
+                            </div>
+                        {/if}
+                        {#if districtData.properties["DisPrptnRprsntnFg"] === "Yes"}
+                            <div class="alert-label">
+                                <span class="alert-icon-sm">!</span>
+                                <span class="alert-text">disproportionate identification of students in specific racial groups as having disabilities</span>
+                            </div>
+                        {/if}
+                        {#if districtData.properties["DisPrptnRprsntnDsbltyFg"] === "Yes"}
+                            <div class="alert-label">
+                                <span class="alert-icon-sm">!</span>
+                                <span class="alert-text">disproportionate identification of students in specific racial groups as having specific disabilities</span>
+                            </div>
+                        {/if}
+                    </div>
+                {/if}
+            </div>
         {/each}
     </div>
 
     {#if !expanded}
-        {#if districtData.students !== 0}
+        {#if districtData.properties["Total Student Count"] !== 0}
             <div class="bar-border-top bar-border-bottom">
                 <BarChart data={data} />
             </div>
         {:else}
-            <div class="bar-border-top"></div>
+            <div></div>
         {/if}
     {/if}
 

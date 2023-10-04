@@ -4,7 +4,7 @@
 </svelte:head>
 
 <script>
-  import { getData } from "../data/processData.js";
+   import { getData } from "../data/processData.js";
   import { selectedDistricts, districtsData, selectedDistrictsData } from "../stores/stores.js"
   import { colors } from '../styles/colors';
   import Svelecte from "svelecte";
@@ -19,15 +19,15 @@
 
   let stateData = data.find(row => row.properties.GEOID === "999999")
   let stateCompareLines = [
-	stateData.properties.eighty, 
-	stateData.properties.eighty + stateData.properties.between, 
-	stateData.properties.eighty + stateData.properties.between + stateData.properties.forty
+	stateData.properties["LRE Students >80%"], 
+	stateData.properties["LRE Students >80%"] + stateData.properties["LRE Students >40% <80%"], 
+	stateData.properties["LRE Students >80%"] + stateData.properties["LRE Students >40% <80%"] + stateData.properties["LRE Students <40%"]
   ]//.map(value => parseFloat(value.toFixed(2)));
 
   let numberDistricts = $districtsData.length
 
-  let maxStudents = Math.max(...$districtsData.map(district => district.students).filter(n => typeof n === 'number'));
-  let minStudents = Math.min(...$districtsData.map(district => district.students).filter(n => typeof n === 'number'));
+  let maxStudents = Math.max(...$districtsData.map(district => district.properties["Total Student Count"]).filter(n => typeof n === 'number'));
+  let minStudents = Math.min(...$districtsData.map(district => district.properties["Total Student Count"]).filter(n => typeof n === 'number'));
 
   let backgroundSVG
 
@@ -38,8 +38,8 @@
 			action: () => {
 				selectedDistricts.set(
 					$districtsData
-						.filter(district => district.GEOID !== undefined && district.GEOID !== null)
-						.map(district => district.GEOID)
+						.filter(district => district.properties.GEOID !== undefined && district.properties.GEOID !== null)
+						.map(district => district.properties.GEOID)
 				);
 				minSize = minStudents;
 				maxSize = maxStudents
@@ -51,8 +51,8 @@
 			name: 'Sort by size',
 			action: () => {
 				let sortedDistricts = $selectedDistrictsData
-					.sort((a, b) => b.students - a.students)
-					.map(district => district.GEOID)
+					.sort((a, b) => b.properties["Total Student Count"] - a.properties["Total Student Count"])
+					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
 				showMenu = false;
 			}  
@@ -65,8 +65,8 @@
 			name: 'Sort by most inclusive', 
 			action: () => {
 				let sortedDistricts = $selectedDistrictsData
-					.sort((a, b) => b.weighted_inclusion - a.weighted_inclusion)
-					.map(district => district.GEOID)
+					.sort((a, b) => b.properties.weighted_inclusion - a.properties.weighted_inclusion)
+					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
 				showMenu = false;
 			} 
@@ -75,8 +75,8 @@
 			name: 'Sort by least inclusive', 
 			action: () => {
 				let sortedDistricts = $selectedDistrictsData
-					.sort((a, b) => a.weighted_inclusion - b.weighted_inclusion)
-					.map(district => district.GEOID)
+					.sort((a, b) => a.properties.weighted_inclusion - b.properties.weighted_inclusion)
+					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
 				showMenu = false;
 			} 
@@ -85,8 +85,8 @@
 			name: 'Sort by name', 
 			action: () => {
 				let sortedDistricts = $selectedDistrictsData
-					.sort((a, b) => a.name.localeCompare(b.name))
-					.map(district => district.GEOID)
+					.sort((a, b) => a.properties["Institution Name"].localeCompare(b.properties["Institution Name"]))
+					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
             	showMenu = false;
 			} 
@@ -117,13 +117,13 @@
 
 	// create array of objects with id and name value for each item in the data array
 	let districtNames = $districtsData.map((district) => {
-		return { value: district.GEOID, label: district.name };
+		return { value: district.properties.GEOID, label: district.properties["Institution Name"] };
 	});
 
 	function filterBySize() {
 		let filteredDistricts = $districtsData
-			.filter(district => district.students >= minSize && district.students <= maxSize)
-			.map(district => district.GEOID);
+			.filter(district => district.properties["Total Student Count"] >= minSize && district.properties["Total Student Count"] <= maxSize)
+			.map(district => district.properties.GEOID);
 		
 		selectedDistricts.set(filteredDistricts);
 	}
@@ -136,7 +136,7 @@
 	// color scale for background average lines
 	let lineColorScale = scaleOrdinal()
 		.domain([0, 1, 2])
-		.range([colors[4], colors[5], colors[6]]);
+		.range([colors[0], colors[1], colors[2]]);
 </script>
 
 <section>
@@ -177,11 +177,11 @@
 	</aside>
 
 	<p class="text-width">
-		Taking all of these inclusion rates into account, we've rated states and school districts on how inclusive they are. Overall, Oregon ranks 11th out of 50 states. Individual districts within the state, however, vary widely. The map below shows the inclusion rates of each district in the state. The darker the color, the more inclusive the district is.
+		Overall, Oregon ranks 11th out of 50 states. Taking these inclusion rates into account, we've rated states' school districts on a scale of 1 to 4 on how inclusive they are. The map below shows the inclusion rates of each district in the state. The darker the color, the more inclusive the district is.
 	</p>
 
 	<p class="text-width" style="margin-bottom:3rem;">
-		To see more information about districts, select the ones you're interested in on the map, or in the drop-down below. You can also sort and filter districts by size or inclusion rate.
+		To see more information about individual districts, select the ones you're interested in. You can also sort and filter by number of students or inclusion rate.
 	</p>
 </section>
 
@@ -257,12 +257,12 @@
 	</div>
 
 	<div class="striped-background text-width">
-		<!-- SVG for the striped pattern -- see if there's a way to move each stripe back by 2.2px * index -->
+		<!-- SVG for the striped pattern -->
 		<svg bind:this={backgroundSVG} width="100%" height="100%">
 			{#each stateCompareLines as linePos, index (index)}
 				<line 
-					x1="{linePos * 100}%" 
-					x2="{linePos * 100}%" 
+					x1="{linePos}%" 
+					x2="{linePos}%" 
 					y1="50px" 
 					y2="100%" 
 					stroke={lineColorScale(index)} 
@@ -275,16 +275,16 @@
 		<StateCompare stateData={stateData} />
 	
 		<div class="comparison-bars">
-			{#each $selectedDistrictsData as district (district.GEOID)}
-				{#if district.name && district.GEOID !== null}
+			{#each $selectedDistrictsData as district (district.properties.GEOID)}
+				{#if district.properties["Institution Name"] && district.properties.GEOID !== null}
 					<DistrictData districtData={district} />
 				{/if}
 			{/each}
 		</div>
 	</div>
   
-	<div class="data-source">
-		<a href="https://www.oregon.gov/ode/reports-and-data/spedreports/pages/default.aspx" target="_blank">Data: Oregon Department of Education</a>
+	<div class="data-source text-width">
+		<a href="https://www.ode.state.or.us/data/reportcard/media.aspx" target="_blank">Data: Oregon Department of Education</a>
 	</div>
 </section>
 

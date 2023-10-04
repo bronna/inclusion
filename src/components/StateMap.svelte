@@ -3,6 +3,7 @@
     import { geoBounds, geoTransverseMercator, geoPath, scaleLinear } from 'd3';
     import { selectedDistricts, minWeightedInclusion, maxWeightedInclusion } from '../stores/stores.js';
     import { colors } from "../styles/colors";
+    import InclusionRing from './InclusionRing.svelte';
 
     // Import and format the data
     export let data
@@ -11,16 +12,6 @@
       type: "FeatureCollection",
       features: data
     }
-
-    // Color scale
-    // const minWeightedInclusion = Math.min(...data
-    //   .filter(district => (district.students > 500))
-    //   .map(district => district.weighted_inclusion)
-    // )
-    // const maxWeightedInclusion = Math.max(...data
-    //   .filter(district => (district.students > 500))
-    //   .map(district => district.weighted_inclusion)
-    // )
 
     const colorScale = scaleLinear()
       .domain([$minWeightedInclusion, $maxWeightedInclusion])
@@ -38,14 +29,17 @@
     let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
 
     data.forEach(feature => {
+      if(feature.geometry) {
         const [[featureMinLng, featureMinLat], [featureMaxLng, featureMaxLat]] = geoBounds(feature);
+
         if (featureMinLng < minLng) minLng = featureMinLng;
         if (featureMinLat < minLat) minLat = featureMinLat;
         if (featureMaxLng > maxLng) maxLng = featureMaxLng;
         if (featureMaxLat > maxLat) maxLat = featureMaxLat;
+      }
     });
 
-    //const stateBounds = [[minLng, minLat], [maxLng, maxLat]];
+    // const stateBounds = [[minLng, minLat], [maxLng, maxLat]];
 
     // resize the map when the window resizes
     function updateProjection() {
@@ -70,7 +64,15 @@
     let tooltipVisible = false
 
     function showTooltip(name, value) {
-      tooltip.textContent = `${name}: ${value}`
+      tooltip.textContent = `${name}`
+      
+      new InclusionRing({
+        target: tooltip,
+        props: {
+          value: value
+        }
+      })
+
       tooltip.style.opacity = 1;
     }
 
@@ -91,7 +93,7 @@
 
     function handleDistrictClick(event, district) {
         if (!tooltipVisible) {
-            showTooltip(district.name, Math.round(district.weighted_inclusion));
+            showTooltip(district.name, district.quartile);
             updateTooltipPosition(event);
             tooltipVisible = true;
         } else {
@@ -124,15 +126,16 @@
           <g style={{ clipPath: "url(#districts)" }}>
               
               {#each data as district}
-                  {#if district.GEOID !== "999999" && !$selectedDistricts.includes(district.GEOID)}
+                  {#if district.properties.GEOID !== "999999"}
                       <path
                           class="districtShape"
-                          key={district.GEOID}
+                          key={district.properties.GEOID}
                           d={districtPathGenerator(district)}
-                          fill={district.students ? colorScale(district.weighted_inclusion) : "lightgray"}
+                          fill={district.properties.weighted_inclusion ? colorScale(district.properties.weighted_inclusion) : "lightgray"}
                           stroke="white"
                           stroke-width="0.75"
-                          on:mouseover={() => showTooltip(district.name, Math.round(district.weighted_inclusion))}
+                          fill-rule="evenodd"
+                          on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.quartile)}
                           on:mousemove={updateTooltipPosition}
                           on:mouseout={hideTooltip}
                           on:click={e => handleDistrictClick(e, district)}
@@ -141,15 +144,15 @@
               {/each}
 
               {#each data as district}
-                  {#if district.GEOID !== "999999" && $selectedDistricts.includes(district.GEOID)}
+                  {#if district.properties.GEOID !== "999999" && $selectedDistricts.includes(district.properties.GEOID)}
                       <path
                           class="districtShape"
-                          key={district.GEOID}
+                          key={district.properties.GEOID}
                           d={districtPathGenerator(district)}
-                          fill={district.students ? colorScale(district.weighted_inclusion) : "lightgray"}
+                          fill={district.properties.weighted_inclusion ? colorScale(district.properties.weighted_inclusion) : "lightgray"}
                           stroke="black"
                           stroke-width="1.2"
-                          on:mouseover={() => showTooltip(district.name, Math.round(district.weighted_inclusion))}
+                          on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.quartile)}
                           on:mousemove={updateTooltipPosition}
                           on:mouseout={hideTooltip}
                           on:click={e => handleDistrictClick(e, district)}
@@ -173,12 +176,13 @@
   .tooltip {
     position: absolute;
     padding: 10px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
+    color: var(--text-color);
+    background-color: white;
     border-radius: 4px;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.2s ease;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .districtShape:hover {
@@ -186,4 +190,3 @@
   }
 </style>
   
-
