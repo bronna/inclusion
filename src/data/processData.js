@@ -99,7 +99,9 @@ export const getData = () => {
     let thirdQuartile = minWeightedInclusion + (range * 0.75);
 
     data.forEach(district => {
-        if (district.properties.weighted_inclusion < firstQuartile) {
+        if(!district.properties.weighted_inclusion) {
+            district.properties.quartile = null;
+        } else if (district.properties.weighted_inclusion < firstQuartile) {
             district.properties.quartile = 1;
         } else if (district.properties.weighted_inclusion < secondQuartile) {
             district.properties.quartile = 2;

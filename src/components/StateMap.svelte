@@ -64,14 +64,18 @@
     let tooltipVisible = false
 
     function showTooltip(name, value) {
-      tooltip.textContent = `${name}`
-      
-      new InclusionRing({
-        target: tooltip,
-        props: {
-          value: value
-        }
-      })
+      if(value) {
+        tooltip.textContent = `${name}`
+
+        new InclusionRing({
+          target: tooltip,
+          props: {
+            value: value
+          }
+        })
+      } else {
+        tooltip.innerHTML = `${name}<br><span class="tooltip-no-ieps">No students with IEPs</span>`
+      }
 
       tooltip.style.opacity = 1;
     }
@@ -187,6 +191,11 @@
 
   .districtShape:hover {
     opacity: 0.5;
+  }
+
+  .tooltip-no-ieps {
+    font-size: 0.6rem;
+    color: var(--dark-gray);
   }
 </style>
   

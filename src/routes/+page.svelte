@@ -139,53 +139,19 @@
 		.range([colors[0], colors[1], colors[2]]);
 </script>
 
-<section>
+<section id="rankings">
 	<h1 class="headline text-width">
-		How inclusive are Oregon's schools?
+		How inclusive are Oregon's school districts?
 	</h1>
 
 	<p class="text-width">
-		Data from the government shows how much students with disabilities are included in each state's schools. Districts report on how many disabled students spend most of their day in a regular classroom, part of the day in a regular classroom, a small or no portion of their day in a regular classroom, and how many are completely out of school--in a hospital, detention facility, or similar.
-	</p>
-
-	<p class="text-width">
-		Oregon's inclusion rates can be broken down as follows:
-	</p>
-
-	<div class="state text-width">
-		<StateLegend stateData={stateData} />
-	</div>
-
-	<aside class="aside text-width">
-		<div class="inner-content">
-			<!-- <Icon data="{comment}" scale="4" class="comment-icon" /> -->
-			<svg 
-				xmlns="http://www.w3.org/2000/svg" 
-				x="0px" 
-				y="0px" 
-				width="96" 
-				height="96" 
-				viewBox="0 0 32 32"
-				class="comment-icon"
-			>
-				<path 
-					d="M 16 3 C 12.210938 3 8.765625 4.113281 6.21875 5.976563 C 3.667969 7.835938 2 10.507813 2 13.5 C 2 17.128906 4.472656 20.199219 8 22.050781 L 8 29 L 14.746094 23.9375 C 15.15625 23.96875 15.570313 24 16 24 C 19.789063 24 23.234375 22.886719 25.78125 21.027344 C 28.332031 19.164063 30 16.492188 30 13.5 C 30 10.507813 28.332031 7.835938 25.78125 5.976563 C 23.234375 4.113281 19.789063 3 16 3 Z M 16 5 C 19.390625 5 22.445313 6.015625 24.601563 7.589844 C 26.757813 9.164063 28 11.246094 28 13.5 C 28 15.753906 26.757813 17.835938 24.601563 19.410156 C 22.445313 20.984375 19.390625 22 16 22 C 15.507813 22 15.015625 21.972656 14.523438 21.925781 L 14.140625 21.894531 L 10 25 L 10 20.859375 L 9.421875 20.59375 C 6.070313 19.019531 4 16.386719 4 13.5 C 4 11.246094 5.242188 9.164063 7.398438 7.589844 C 9.554688 6.015625 12.609375 5 16 5 Z">
-				</path>
-			</svg>
-			<p><strong>IEP</strong>s, or <strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans, are documents that teams of teachers, therapists, and families put together for individual students with disabilities, to decide what supports they need to succeed in a school setting</p>
-		</div>
-	</aside>
-
-	<p class="text-width">
-		Overall, Oregon ranks 11th out of 50 states. Taking these inclusion rates into account, we've rated states' school districts on a scale of 1 to 4 on how inclusive they are. The map below shows the inclusion rates of each district in the state. The darker the color, the more inclusive the district is.
+		Have you ever wondered how included students with disabilities are in your local schools? We've ranked all of Oregon's school districts on a scale of 1 to 10, with 10 being the most inclusive, and 1 being the least.
 	</p>
 
 	<p class="text-width" style="margin-bottom:3rem;">
-		To see more information about individual districts, select the ones you're interested in. You can also sort and filter by number of students or inclusion rate.
+		To see the rankings, select districts on the map, or in the dropdown below:
 	</p>
-</section>
 
-<section>
 	<StateMap data={$districtsData} />
 	
 	<div class="search text-width">
@@ -282,9 +248,42 @@
 			{/each}
 		</div>
 	</div>
-  
+</section>
+
+<section id="breakdown">
+	<p class="text-width">
+		Inclusion rankings are based on the rates published by school districts every year. They can be broken down as follows, using the entire state of Oregon as an example:
+	</p>
+
+	<div class="state text-width">
+		<StateLegend stateData={stateData} />
+	</div>
+
+	<aside class="aside text-width">
+		<div class="inner-content">
+			<!-- <Icon data="{comment}" scale="4" class="comment-icon" /> -->
+			<svg 
+				xmlns="http://www.w3.org/2000/svg" 
+				x="0px" 
+				y="0px" 
+				width="96" 
+				height="96" 
+				viewBox="0 0 32 32"
+				class="comment-icon"
+			>
+				<path 
+					d="M 16 3 C 12.210938 3 8.765625 4.113281 6.21875 5.976563 C 3.667969 7.835938 2 10.507813 2 13.5 C 2 17.128906 4.472656 20.199219 8 22.050781 L 8 29 L 14.746094 23.9375 C 15.15625 23.96875 15.570313 24 16 24 C 19.789063 24 23.234375 22.886719 25.78125 21.027344 C 28.332031 19.164063 30 16.492188 30 13.5 C 30 10.507813 28.332031 7.835938 25.78125 5.976563 C 23.234375 4.113281 19.789063 3 16 3 Z M 16 5 C 19.390625 5 22.445313 6.015625 24.601563 7.589844 C 26.757813 9.164063 28 11.246094 28 13.5 C 28 15.753906 26.757813 17.835938 24.601563 19.410156 C 22.445313 20.984375 19.390625 22 16 22 C 15.507813 22 15.015625 21.972656 14.523438 21.925781 L 14.140625 21.894531 L 10 25 L 10 20.859375 L 9.421875 20.59375 C 6.070313 19.019531 4 16.386719 4 13.5 C 4 11.246094 5.242188 9.164063 7.398438 7.589844 C 9.554688 6.015625 12.609375 5 16 5 Z">
+				</path>
+			</svg>
+			<p><strong>IEP</strong>s, or <strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans, are documents that teams of teachers, therapists, and families put together for individual students with disabilities, to decide what supports they need to succeed in a school setting</p>
+		</div>
+	</aside>
+
+	<hr class="text-width" />
+
 	<div class="data-source text-width">
-		<a href="https://www.ode.state.or.us/data/reportcard/media.aspx" target="_blank">Data: Oregon Department of Education</a>
+		<p>Data comes from the <a href="https://www.ode.state.or.us/data/reportcard/media.aspx" target="_blank">Oregon Department of Education</a> and the <a href="https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2022&layergroup=School+Districts" target="_blank">US Census</a></p>
+		<p>Data analysis and downloadable data files can be found on <a href="https://github.com/bronna/inclusion" target="_blank">Github</a></p>
 	</div>
 </section>
 
@@ -309,7 +308,7 @@
   }
 
   aside {
-	background-color: var(--light-light-gray);
+	background-color: var(--light-gray);
 	margin: 1rem 0;
   }
 
@@ -432,7 +431,25 @@
 	margin-top: 2.4rem;
   }
 
-  .data-source {
-	margin-top: 2rem;
+  #rankings {
+	margin-bottom: 5rem;
+  }
+
+  #breakdown {
+	background-color: var(--light-light-gray);
+	padding-top: 3rem;
+	padding-bottom: 4rem;
+  }
+
+  hr {
+	margin-top: 3rem;
+	border: 0;
+    height: 1px;
+    background-color: var(--dark-gray);
+    box-shadow: none;
+  }
+
+  .data-source p {
+	font-size: 1rem;
   }
 </style>
