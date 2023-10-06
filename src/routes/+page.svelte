@@ -26,8 +26,18 @@
 
   let numberDistricts = $districtsData.length
 
-  let maxStudents = Math.max(...$districtsData.map(district => district.properties["Total Student Count"]).filter(n => typeof n === 'number'));
-  let minStudents = Math.min(...$districtsData.map(district => district.properties["Total Student Count"]).filter(n => typeof n === 'number'));
+  let maxStudents = Math.max(
+	...$districtsData
+		.filter(district => district.properties.GEOID !=="999999")
+  		.map(district => district.properties["Total Student Count"])
+		.filter(n => typeof n === 'number')
+  );
+  let minStudents = Math.min(
+	...$districtsData
+		.filter(district => district.properties.GEOID !=="999999")
+		.map(district => district.properties["Total Student Count"])
+		.filter(n => typeof n === 'number')
+  );
 
   let backgroundSVG
 

@@ -18,6 +18,7 @@ export const getData = () => {
                 ( (district["LRE Students >80%"] / 100) * district["Total Student Count"] ) * 0.9
                 + ( (district["LRE Students >40% <80%"] / 100) * district["Total Student Count"] ) * 0.6
                 + ( (district["LRE Students <40%"] / 100) * district["Total Student Count"] ) * 0.2
+                - ( (district["LRE Students Separate Settings"] / 100) * district["Total Student Count"] ) * 0.5
             ) / district["Total Student Count"] * 100
         )
     }
