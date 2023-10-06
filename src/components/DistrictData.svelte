@@ -221,7 +221,7 @@
             <!-- <p class="score-label">inclusion score</p> -->
             <p class="metric-value">
                 {#if districtData.properties["Total Student Count"]}
-                    <InclusionRing value={districtData.properties.quartile} />
+                    <InclusionRing value={districtData.properties.decile} />
                 {/if}
             </p>
         </div>

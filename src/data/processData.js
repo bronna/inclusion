@@ -94,23 +94,44 @@ export const getData = () => {
     );
     let range = maxWeightedInclusion - minWeightedInclusion;
 
-    let firstQuartile = minWeightedInclusion + (range * 0.25);
-    let secondQuartile = minWeightedInclusion + (range * 0.5);
-    let thirdQuartile = minWeightedInclusion + (range * 0.75);
+    // Define the threshold for each decile
+    const thresholds = Array.from({ length: 10 }, (_, i) => minWeightedInclusion + (range * (i + 1) * 0.1));
 
     data.forEach(district => {
-        if(!district.properties.weighted_inclusion) {
-            district.properties.quartile = null;
-        } else if (district.properties.weighted_inclusion < firstQuartile) {
-            district.properties.quartile = 1;
-        } else if (district.properties.weighted_inclusion < secondQuartile) {
-            district.properties.quartile = 2;
-        } else if (district.properties.weighted_inclusion < thirdQuartile) {
-            district.properties.quartile = 3;
+        if (!district.properties.weighted_inclusion) {
+            district.properties.decile = null;
         } else {
-            district.properties.quartile = 4; 
+            for (let i = 0; i < 10; i++) {
+                if (district.properties.weighted_inclusion < thresholds[i]) {
+                    district.properties.decile = i + 1;
+                    break;
+                }
+            }
+        }
+
+        // Assign a value of 10 for the top decile (if not already assigned)
+        if (district.properties.weighted_inclusion && !district.properties.decile) {
+            district.properties.decile = 10;
         }
     });
+
+    // let firstQuartile = minWeightedInclusion + (range * 0.25);
+    // let secondQuartile = minWeightedInclusion + (range * 0.5);
+    // let thirdQuartile = minWeightedInclusion + (range * 0.75);
+
+    // data.forEach(district => {
+    //     if(!district.properties.weighted_inclusion) {
+    //         district.properties.quartile = null;
+    //     } else if (district.properties.weighted_inclusion < firstQuartile) {
+    //         district.properties.quartile = 1;
+    //     } else if (district.properties.weighted_inclusion < secondQuartile) {
+    //         district.properties.quartile = 2;
+    //     } else if (district.properties.weighted_inclusion < thirdQuartile) {
+    //         district.properties.quartile = 3;
+    //     } else {
+    //         district.properties.quartile = 4; 
+    //     }
+    // });
 
     return data
         .filter(district => district.properties["Institution Name"])

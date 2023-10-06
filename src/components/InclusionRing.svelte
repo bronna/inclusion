@@ -4,7 +4,7 @@
   
     export let value = 0;
 
-    let dataset = [{ label: 'filled', value: value }, { label: 'empty', value: 4 - value }];
+    let dataset = [{ label: 'filled', value: value }, { label: 'empty', value: 10 - value }];
   
     let width = 42;
     let height = 42;

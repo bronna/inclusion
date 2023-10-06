@@ -97,7 +97,7 @@
 
     function handleDistrictClick(event, district) {
         if (!tooltipVisible) {
-            showTooltip(district.name, district.quartile);
+            showTooltip(district.name, district.decile);
             updateTooltipPosition(event);
             tooltipVisible = true;
         } else {
@@ -139,7 +139,7 @@
                           stroke="white"
                           stroke-width="0.75"
                           fill-rule="evenodd"
-                          on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.quartile)}
+                          on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
                           on:mousemove={updateTooltipPosition}
                           on:mouseout={hideTooltip}
                           on:click={e => handleDistrictClick(e, district)}
@@ -156,7 +156,7 @@
                           fill={district.properties.weighted_inclusion ? colorScale(district.properties.weighted_inclusion) : "lightgray"}
                           stroke="black"
                           stroke-width="1.2"
-                          on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.quartile)}
+                          on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
                           on:mousemove={updateTooltipPosition}
                           on:mouseout={hideTooltip}
                           on:click={e => handleDistrictClick(e, district)}
