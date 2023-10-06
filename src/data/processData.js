@@ -53,7 +53,6 @@ export const getData = () => {
 
         // Calculate the weighted inclusion
         district.properties.weighted_inclusion = weightedInclusion(district.properties);
-        // console.log(district.properties["Institution Name"], district.properties.weighted_inclusion)
 
         // Tallying up alerts for each district
         let alertsCount = 0;
@@ -115,24 +114,6 @@ export const getData = () => {
             district.properties.decile = 10;
         }
     });
-
-    // let firstQuartile = minWeightedInclusion + (range * 0.25);
-    // let secondQuartile = minWeightedInclusion + (range * 0.5);
-    // let thirdQuartile = minWeightedInclusion + (range * 0.75);
-
-    // data.forEach(district => {
-    //     if(!district.properties.weighted_inclusion) {
-    //         district.properties.quartile = null;
-    //     } else if (district.properties.weighted_inclusion < firstQuartile) {
-    //         district.properties.quartile = 1;
-    //     } else if (district.properties.weighted_inclusion < secondQuartile) {
-    //         district.properties.quartile = 2;
-    //     } else if (district.properties.weighted_inclusion < thirdQuartile) {
-    //         district.properties.quartile = 3;
-    //     } else {
-    //         district.properties.quartile = 4; 
-    //     }
-    // });
 
     return data
         .filter(district => district.properties["Institution Name"])

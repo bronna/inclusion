@@ -13,6 +13,8 @@
       features: data
     }
 
+    let hideSmallDistricts = false
+
     const colorScale = scaleLinear()
       .domain([$minWeightedInclusion, $maxWeightedInclusion])
       .range(['#fff', colors[0]]);
@@ -122,6 +124,11 @@
     });
 </script>
 
+<label>
+  <input type="checkbox" bind:checked={hideSmallDistricts} />
+  Hide districts with less than 500 students with disabilities
+</label>
+
 <div class="tooltip" bind:this={tooltip}></div>
   
 <div id="map">
@@ -135,7 +142,13 @@
                           class="districtShape"
                           key={district.properties.GEOID}
                           d={districtPathGenerator(district)}
-                          fill={district.properties.weighted_inclusion ? colorScale(district.properties.weighted_inclusion) : "lightgray"}
+                          fill={
+                            hideSmallDistricts && district.properties["Total Student Count"] < 500 
+                            ? "lightgray" 
+                            : district.properties.weighted_inclusion 
+                              ? colorScale(district.properties.weighted_inclusion) 
+                              : "lightgray"
+                          }
                           stroke="white"
                           stroke-width="0.75"
                           fill-rule="evenodd"
@@ -153,7 +166,13 @@
                           class="districtShape"
                           key={district.properties.GEOID}
                           d={districtPathGenerator(district)}
-                          fill={district.properties.weighted_inclusion ? colorScale(district.properties.weighted_inclusion) : "lightgray"}
+                          fill={
+                            hideSmallDistricts && district.properties["Total Student Count"] < 500 
+                            ? "lightgray" 
+                            : district.properties.weighted_inclusion 
+                              ? colorScale(district.properties.weighted_inclusion) 
+                              : "lightgray"
+                          }
                           stroke="black"
                           stroke-width="1.2"
                           on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
