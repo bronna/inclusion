@@ -1,5 +1,7 @@
 <script>
     import { arc, pie } from 'd3-shape';
+    import { interpolate } from 'd3-interpolate'
+    import { scaleSequential } from 'd3-scale';
     import { colors } from '../styles/colors';
   
     export let value = 0;
@@ -20,6 +22,23 @@
         .value(d => d.value)(dataset);
   
     $: pathData = pieData.map(d => arcGenerator(d));
+
+    function fourPointInterpolator(t) {
+        const interpolators = [
+            interpolate(colors[0], colors[1]),
+            interpolate(colors[1], colors[2]),
+            interpolate(colors[2], colors[3]),
+        ]
+
+        if (t < 0.33) return interpolators[0](t * 3)
+        else if (t < 0.66) return interpolators[1]((t - 0.33) * 3)
+        else return interpolators[2]((t - 0.66) * 3)
+    }
+
+    const colorScale = scaleSequential(fourPointInterpolator)
+        .domain([10, 0])
+
+    let computedColor = colorScale(value)
 </script>
 
 <div class="donut-chart">
@@ -46,9 +65,9 @@
         left: 50%;
         transform: translate(-50%, -120%);
         color: var(--color-text);
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         letter-spacing: 0.02rem;
-        font-weight: 600;
+        font-weight: 700;
     }
 </style>
 

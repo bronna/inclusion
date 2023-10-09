@@ -124,9 +124,9 @@
     });
 </script>
 
-<label>
+<label class="rough-filters">
   <input type="checkbox" bind:checked={hideSmallDistricts} />
-  Hide districts with less than 500 students with disabilities
+  Hide small districts (less than 500 students with IEPs)
 </label>
 
 <div class="tooltip" bind:this={tooltip}></div>
@@ -206,6 +206,12 @@
     opacity: 0;
     transition: opacity 0.2s ease;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .rough-filters {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
   }
 
   .districtShape:hover {

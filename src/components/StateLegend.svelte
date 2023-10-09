@@ -70,7 +70,7 @@
 
 </script>
 
-<div class="state-data">
+<div class="state-data text-width">
     {#if stateData.properties["Total Student Count"] !== 0}
         <BarChart {data} />      
     {/if}

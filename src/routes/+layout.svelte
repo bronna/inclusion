@@ -27,14 +27,7 @@
     flex-direction: column;
     padding-top: 1rem;
     width: 100%;
-    /* max-width: 64rem; */
     margin: 0 auto;
     box-sizing: border-box;
-  }
-
-  @media (max-width: 768px) {
-    main {
-        padding: 1rem 1rem;
-    }
   }
 </style>
