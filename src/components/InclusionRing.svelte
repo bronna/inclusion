@@ -49,7 +49,11 @@
         {/each}
       </g>
     </svg>
-    <p class="metric-value">{value}</p>
+    {#if value}
+        <p class="metric-value">{value}</p>
+    {:else}
+        <p class="metric-value">—</p>
+    {/if}
 </div>
   
 <style>

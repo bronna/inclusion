@@ -9,11 +9,11 @@
             <th>DISTRICT</th>
             <th>SCORE</th>
             <th>ALERTS</th>
-            <th>NUMBER STUDENTS<br>WITH IEPs</th>
+            <th># OF STUDENTS WITH IEPs</th>
         </tr>
     </thead>
     <tbody>
-        {#each $selectedDistrictsData as district}
+        {#each $selectedDistrictsData as district (district.properties.GEOID)}
             <tr>
                 <td class="district-name">{district.properties["Institution Name"]}</td>
                 <td>

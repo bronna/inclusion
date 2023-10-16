@@ -215,7 +215,9 @@
   }
 
   .districtShape:hover {
-    opacity: 0.5;
+    /* opacity: 0.5; */
+    /* stroke: var(--inclusive-color);
+    stroke-width: 2px; */
   }
 
   .tooltip-no-ieps {

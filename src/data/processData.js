@@ -116,7 +116,7 @@ export const getData = () => {
     });
 
     return data
-        .filter(district => district.properties["Institution Name"])
+        //.filter(district => district.properties["Institution Name"])
         .sort((a, b) => {
             if (!a.properties["Institution Name"] && !b.properties["Institution Name"]) return 0;
             if (!a.properties["Institution Name"]) return 1;

@@ -43,14 +43,18 @@
 
   let backgroundSVG
 
+  function deepClone(arr) {
+	return JSON.parse(JSON.stringify(arr))
+  }
+
 	// Define the sort and filter actions
     let actions = [
         { 
 			name: `Select all (${numberDistricts})`, 
 			action: () => {
 				selectedDistricts.set(
-					$districtsData
-						.filter(district => district.properties.GEOID !== undefined && district.properties.GEOID !== null)
+					[...$districtsData]
+						.filter(district => district.properties.GEOID !== undefined && district.properties["Institution Name"])
 						.map(district => district.properties.GEOID)
 				);
 				minSize = minStudents;
@@ -62,7 +66,7 @@
 		{ 
 			name: 'Sort by size',
 			action: () => {
-				let sortedDistricts = $selectedDistrictsData
+				let sortedDistricts = deepClone($selectedDistrictsData)
 					.sort((a, b) => b.properties["Total Student Count"] - a.properties["Total Student Count"])
 					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
@@ -76,7 +80,9 @@
         { 
 			name: 'Sort by most inclusive', 
 			action: () => {
-				let sortedDistricts = $selectedDistrictsData
+				let sortedDistricts = deepClone($selectedDistrictsData)
+					.filter(district => district.properties.GEOID !== undefined && district.properties.GEOID !== '999999')
+					// .filter(district => district.properties.weighted_inclusion !== undefined && district.properties.weighted_inclusion !== null)
 					.sort((a, b) => b.properties.weighted_inclusion - a.properties.weighted_inclusion)
 					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
@@ -86,7 +92,7 @@
         { 
 			name: 'Sort by least inclusive', 
 			action: () => {
-				let sortedDistricts = $selectedDistrictsData
+				let sortedDistricts = deepClone($selectedDistrictsData)
 					.sort((a, b) => a.properties.weighted_inclusion - b.properties.weighted_inclusion)
 					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
@@ -96,7 +102,7 @@
 		{ 
 			name: 'Sort by name', 
 			action: () => {
-				let sortedDistricts = $selectedDistrictsData
+				let sortedDistricts = deepClone($selectedDistrictsData)
 					.sort((a, b) => a.properties["Institution Name"].localeCompare(b.properties["Institution Name"]))
 					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
@@ -133,7 +139,8 @@
 	});
 
 	function filterBySize() {
-		let filteredDistricts = $districtsData
+		//let filteredDistricts = [...$districtsData]
+		let filteredDistricts = deepClone($districtsData)
 			.filter(district => district.properties["Total Student Count"] >= minSize && district.properties["Total Student Count"] <= maxSize)
 			.map(district => district.properties.GEOID);
 		
@@ -157,7 +164,7 @@
 	</h1>
 
 	<p class="text-width" style="margin-bottom:3rem;">
-		Have you ever wondered how included students with disabilities are in your local schools? To see districts scored on their inclusion, on a scale of 1 to 10, select them on the map or in the dropdown below.
+		Have you ever wondered how included students with disabilities are in your local schools? To see districts' scores for inclusion, on a scale of 1 to 10, select them on the map or in the dropdown below.
 	</p>
 
 	<StateMap data={$districtsData} />
@@ -263,7 +270,7 @@
 
 <section id="breakdown">
 	<p class="text-width">
-		Inclusion scores are based on the rates published by school districts every year. Using the state of Oregon's numbers as an example, inclusion rates can be broken down as follows:
+		Inclusion scores are based on the rates published by school districts every year. Inclusion rates can be broken down as follows, using the entire state's numbers as an example:
 	</p>
 
 	<div class="state text-width">
