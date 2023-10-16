@@ -96,14 +96,29 @@
     }
 
     function handleDistrictClick(event, district) {
-        if (!tooltipVisible) {
-            showTooltip(district.name, district.decile);
-            updateTooltipPosition(event);
-            tooltipVisible = true;
-        } else {
-            hideTooltip();
-            tooltipVisible = false;
-        }
+      const districtId = district.properties.GEOID;
+
+      // check if the district is already selected
+      if ($selectedDistricts.includes(districtId)) {
+        // deselect it
+        selectedDistricts.update(currentSelected => {
+          return currentSelected.filter(id => id !== districtId)
+        })
+      } else {
+        // select it
+        selectedDistricts.update(currentSelected => {
+          return [...currentSelected, districtId]
+        })
+      }
+
+      if (!tooltipVisible) {
+          showTooltip(district.name, district.decile);
+          updateTooltipPosition(event);
+          tooltipVisible = true;
+      } else {
+          hideTooltip();
+          tooltipVisible = false;
+      }
     }
 
     // Adjust the dimensions and projection once the data is loaded
