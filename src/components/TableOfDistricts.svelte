@@ -1,5 +1,5 @@
 <script>
-    import { selectedDistrictsData } from '../stores/stores.js';
+    import { hideSmallDistricts, selectedDistrictsData } from '../stores/stores.js';
     import InclusionRing from './InclusionRing.svelte';
 </script>
 
@@ -14,18 +14,20 @@
     </thead>
     <tbody>
         {#each $selectedDistrictsData as district (district.properties.GEOID)}
-            <tr>
-                <td class="district-name">{district.properties["Institution Name"]}</td>
-                <td>
-                    <InclusionRing value={district.properties.decile} />
-                </td>
-                <td>
-                    {#if district.properties.nAlerts > 0}
-                        <span class="alert">{district.properties.nAlerts}</span>
-                    {/if}
-                </td>
-                <td class="student-count">{district.properties["Total Student Count"].toLocaleString()}</td>
-            </tr>
+            {#if !$hideSmallDistricts || (district.properties["Total Student Count"] > 500)}
+                <tr>
+                    <td class="district-name">{district.properties["Institution Name"]}</td>
+                    <td>
+                        <InclusionRing value={district.properties.decile} />
+                    </td>
+                    <td>
+                        {#if district.properties.nAlerts > 0}
+                            <span class="alert">{district.properties.nAlerts}</span>
+                        {/if}
+                    </td>
+                    <td class="student-count">{district.properties["Total Student Count"].toLocaleString()}</td>
+                </tr>
+            {/if}
         {/each}
     </tbody>
 </table>

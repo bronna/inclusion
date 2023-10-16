@@ -5,7 +5,7 @@
 
 <script>
    import { getData } from "../data/processData.js";
-  import { selectedDistricts, districtsData, selectedDistrictsData } from "../stores/stores.js"
+  import { hideSmallDistricts, selectedDistricts, districtsData, selectedDistrictsData } from "../stores/stores.js"
   import { colors } from '../styles/colors';
   import Svelecte from "svelecte";
   import RangeSlider from "svelte-range-slider-pips"
@@ -167,6 +167,11 @@
 		Have you ever wondered how included students with disabilities are in your local schools? To see districts' scores for inclusion, on a scale of 1 to 10, select them on the map or in the dropdown below.
 	</p>
 
+	<label class="rough-filter">
+		<input type="checkbox" bind:checked={$hideSmallDistricts} />
+		Hide small districts
+	</label>
+
 	<StateMap data={$districtsData} />
 	
 	<div class="search text-width">
@@ -270,7 +275,7 @@
 
 <section id="breakdown">
 	<p class="text-width">
-		Inclusion scores are based on the rates published by school districts every year. Inclusion rates can be broken down as follows, using the entire state's numbers as an example:
+		Inclusion scores are based on the rates published annually by school districts. Inclusion rates can be broken down as follows, using the entire state of Oregon as an example:
 	</p>
 
 	<div class="state text-width">

@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { geoBounds, geoTransverseMercator, geoPath, scaleLinear } from 'd3';
-    import { selectedDistricts, minWeightedInclusion, maxWeightedInclusion } from '../stores/stores.js';
+    import { hideSmallDistricts, selectedDistricts, minWeightedInclusion, maxWeightedInclusion } from '../stores/stores.js';
     import { colors } from "../styles/colors";
     import InclusionRing from './InclusionRing.svelte';
 
@@ -12,8 +12,6 @@
       type: "FeatureCollection",
       features: data
     }
-
-    let hideSmallDistricts = false
 
     const colorScale = scaleLinear()
       .domain([$minWeightedInclusion, $maxWeightedInclusion])
@@ -124,11 +122,6 @@
     });
 </script>
 
-<label class="rough-filters">
-  <input type="checkbox" bind:checked={hideSmallDistricts} />
-  Hide small districts (less than 500 students with IEPs)
-</label>
-
 <div class="tooltip" bind:this={tooltip}></div>
   
 <div id="map">
@@ -143,7 +136,7 @@
                           key={district.properties.GEOID}
                           d={districtPathGenerator(district)}
                           fill={
-                            hideSmallDistricts && district.properties["Total Student Count"] < 500 
+                            $hideSmallDistricts && district.properties["Total Student Count"] < 500 
                             ? "lightgray" 
                             : district.properties.weighted_inclusion 
                               ? colorScale(district.properties.weighted_inclusion) 
@@ -167,7 +160,7 @@
                           key={district.properties.GEOID}
                           d={districtPathGenerator(district)}
                           fill={
-                            hideSmallDistricts && district.properties["Total Student Count"] < 500 
+                            $hideSmallDistricts && district.properties["Total Student Count"] < 500 
                             ? "lightgray" 
                             : district.properties.weighted_inclusion 
                               ? colorScale(district.properties.weighted_inclusion) 
@@ -206,12 +199,6 @@
     opacity: 0;
     transition: opacity 0.2s ease;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .rough-filters {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
   }
 
   .districtShape:hover {

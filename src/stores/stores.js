@@ -4,6 +4,8 @@ import { writable, derived } from 'svelte/store';
 let data = getData()
 console.log(data)
 
+export const hideSmallDistricts = writable(false);
+
 let initialSelectedDistricts = data
     .filter(district => district.properties["Total Student Count"] !== undefined && district.properties.GEOID !== '999999')
     .sort((a, b) => b.properties["Total Student Count"] - a.properties["Total Student Count"])
