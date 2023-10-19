@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { geoBounds, geoTransverseMercator, geoPath, scaleLinear } from 'd3';
+    import { geoBounds, geoTransverseMercator, geoPath, scaleLinear, zoom, select } from 'd3';
     import { hideSmallDistricts, selectedDistricts, minWeightedInclusion, maxWeightedInclusion } from '../stores/stores.js';
     import { colors } from "../styles/colors";
     import InclusionRing from './InclusionRing.svelte';
@@ -18,7 +18,7 @@
       .range(['#fff', colors[0]]);
   
     // Set initial values for dimensions and projection
-    let dims = {}
+    let dims = { width: 0, height: 0 }
     let centralLat = 43.9
     let centralLong = -120.5
 
@@ -121,8 +121,56 @@
       }
     }
 
+    let svgElement
+    let gElement
+
+    // let currentZoomScale = 1
+    // let currentTranslateX = 0
+    // let currentTranslateY = 0
+
+    // function applyZoom(increment) {
+    //     if (typeof increment !== 'number' || isNaN(increment)) {
+    //       console.error('Invalid zoom increment:', increment);
+    //       return;  // Exit the function early if increment is invalid
+    //     }
+
+    //     // Calculate the new scale
+    //     const newScale = currentZoomScale * increment;
+
+    //     // Ensure the scale is within the limits [0.5, 8]
+    //     currentZoomScale = Math.max(0.5, Math.min(newScale, 8));
+
+    //     // Find the current center point within the view of the SVG element, taking into account the translation from panning
+    //     const centerX = (dims.width / 2 - currentTranslateX) / currentZoomScale;
+    //     const centerY = (dims.height / 2 - currentTranslateY) / currentZoomScale;
+
+    //     // Calculate the translation needed to keep the current view centered
+    //     currentTranslateX = dims.width / 2 - centerX * currentZoomScale;
+    //     currentTranslateY = dims.height / 2 - centerY * currentZoomScale;
+
+    //     // Apply the transformations directly to the element
+    //     gElement.setAttribute('transform', `translate(${currentTranslateX}, ${currentTranslateY}) scale(${currentZoomScale})`);
+    // }
+
     // Adjust the dimensions and projection once the data is loaded
     onMount(() => {
+      const d3SvgElement = select(svgElement)
+
+      const zoomBehavior = zoom()
+        .scaleExtent([0.5, 8])
+        .on("zoom", (event) => {
+          const {x, y, k} = event.transform; // k is scale, x and y are translation coordinates
+          gElement.setAttribute('transform', `translate(${x}, ${y}) scale(${k})`);
+        })
+
+      d3SvgElement.call(zoomBehavior)
+
+      svgElement.addEventListener('wheel', event => {
+        event.preventDefault()
+
+        zoomBehavior.on("zoom").call(svgElement, event)
+      }, { passive: false })
+
       updateProjection()
 
       const resizeHandler = () => {
@@ -138,61 +186,68 @@
 </script>
 
 <div class="tooltip" bind:this={tooltip}></div>
+
+<!-- <button on:click={() => applyZoom(1.2)}>+</button>
+<button on:click={() => applyZoom(0.8)}>-</button> -->
   
 <div id="map">
-    <svg width={dims.width} height={dims.height}>
-      {#if districtPathGenerator}
-          <g style={{ clipPath: "url(#districts)" }}>
-              
-              {#each data as district}
-                  {#if district.properties.GEOID !== "999999"}
-                      <path
-                          class="districtShape"
-                          key={district.properties.GEOID}
-                          d={districtPathGenerator(district)}
-                          fill={
-                            $hideSmallDistricts && district.properties["Total Student Count"] < 500 
-                            ? "lightgray" 
-                            : district.properties.weighted_inclusion 
-                              ? colorScale(district.properties.weighted_inclusion) 
-                              : "lightgray"
-                          }
-                          stroke="white"
-                          stroke-width="0.75"
-                          fill-rule="evenodd"
-                          on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
-                          on:mousemove={updateTooltipPosition}
-                          on:mouseout={hideTooltip}
-                          on:click={e => handleDistrictClick(e, district)}
-                      ></path>
-                  {/if}
-              {/each}
 
-              {#each data as district}
-                  {#if district.properties.GEOID !== "999999" && $selectedDistricts.includes(district.properties.GEOID)}
-                      <path
-                          class="districtShape"
-                          key={district.properties.GEOID}
-                          d={districtPathGenerator(district)}
-                          fill={
-                            $hideSmallDistricts && district.properties["Total Student Count"] < 500 
-                            ? "lightgray" 
-                            : district.properties.weighted_inclusion 
-                              ? colorScale(district.properties.weighted_inclusion) 
-                              : "lightgray"
-                          }
-                          stroke="black"
-                          stroke-width="1.2"
-                          on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
-                          on:mousemove={updateTooltipPosition}
-                          on:mouseout={hideTooltip}
-                          on:click={e => handleDistrictClick(e, district)}
-                      ></path>
-                  {/if}
-              {/each}
-              
-          </g>
-      {/if}
+    <svg bind:this={svgElement} width={dims.width} height={dims.height}>
+      <g bind:this={gElement}>
+        {#if districtPathGenerator}
+            <g style={{ clipPath: "url(#districts)" }}>
+                
+                {#each data as district}
+                    {#if district.properties.GEOID !== "999999"}
+                        <path
+                            class="districtShape"
+                            key={district.properties.GEOID}
+                            d={districtPathGenerator(district)}
+                            fill={
+                              $hideSmallDistricts && district.properties["Total Student Count"] < 500 
+                              ? "lightgray" 
+                              : district.properties.weighted_inclusion 
+                                ? colorScale(district.properties.weighted_inclusion) 
+                                : "lightgray"
+                            }
+                            stroke="white"
+                            stroke-width="0.75"
+                            fill-rule="evenodd"
+                            on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
+                            on:mousemove={updateTooltipPosition}
+                            on:mouseout={hideTooltip}
+                            on:click={e => handleDistrictClick(e, district)}
+                        ></path>
+                    {/if}
+                {/each}
+
+                {#each data as district}
+                    {#if district.properties.GEOID !== "999999" && $selectedDistricts.includes(district.properties.GEOID)}
+                        <path
+                            class="districtShape"
+                            key={district.properties.GEOID}
+                            d={districtPathGenerator(district)}
+                            fill={
+                              $hideSmallDistricts && district.properties["Total Student Count"] < 500 
+                              ? "lightgray" 
+                              : district.properties.weighted_inclusion 
+                                ? colorScale(district.properties.weighted_inclusion) 
+                                : "lightgray"
+                            }
+                            stroke="black"
+                            stroke-width="1.2"
+                            on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
+                            on:mousemove={updateTooltipPosition}
+                            on:mouseout={hideTooltip}
+                            on:click={e => handleDistrictClick(e, district)}
+                        ></path>
+                    {/if}
+                {/each}
+                
+            </g>
+        {/if}
+      </g>
+      
     </svg>
 </div>
 
