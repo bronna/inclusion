@@ -152,16 +152,35 @@
     //     gElement.setAttribute('transform', `translate(${currentTranslateX}, ${currentTranslateY}) scale(${currentZoomScale})`);
     // }
 
+    function zoomed(event) {
+        const {x, y, k} = event.transform; // k is scale, x and y are translation coordinates
+        gElement.setAttribute('transform', `translate(${x}, ${y}) scale(${k})`);
+
+        // Adjust stroke width based on zoom level
+        const newStrokeWidth = 0.75 / k;  // Normal stroke width divided by current scale
+        const newSelectedStrokeWidth = 1.2 / k;  // Selected stroke width divided by current scale
+
+        // Directly select all districtShape elements and adjust their stroke-width
+        const districtShapes = document.querySelectorAll('.districtShape');
+        districtShapes.forEach((path) => {
+          const districtId = path.getAttribute('key'); // Assuming 'key' holds the GEOID. Adjust if your attribute is different.
+
+          // Check if this district is selected and adjust the stroke-width accordingly.
+          if ($selectedDistricts.includes(districtId)) {
+            path.setAttribute('stroke-width', newSelectedStrokeWidth);
+          } else {
+            path.setAttribute('stroke-width', newStrokeWidth);
+          }
+        });
+    }
+
     // Adjust the dimensions and projection once the data is loaded
     onMount(() => {
       const d3SvgElement = select(svgElement)
 
       const zoomBehavior = zoom()
         .scaleExtent([0.5, 8])
-        .on("zoom", (event) => {
-          const {x, y, k} = event.transform; // k is scale, x and y are translation coordinates
-          gElement.setAttribute('transform', `translate(${x}, ${y}) scale(${k})`);
-        })
+        .on("zoom", (event) => zoomed(event))
 
       d3SvgElement.call(zoomBehavior)
 
