@@ -7,7 +7,7 @@
     <thead>
         <tr>
             <th>DISTRICT</th>
-            <th>SCORE</th>
+            <th>INCLUSION SCORE</th>
             <th>ALERTS</th>
             <th># OF STUDENTS WITH IEPs</th>
         </tr>
@@ -78,7 +78,6 @@
 
     th:nth-child(4),
     td:nth-child(4) {
-        text-align: right;
         width: 15%
     }
 

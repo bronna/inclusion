@@ -124,34 +124,6 @@
     let svgElement
     let gElement
 
-    // let currentZoomScale = 1
-    // let currentTranslateX = 0
-    // let currentTranslateY = 0
-
-    // function applyZoom(increment) {
-    //     if (typeof increment !== 'number' || isNaN(increment)) {
-    //       console.error('Invalid zoom increment:', increment);
-    //       return;  // Exit the function early if increment is invalid
-    //     }
-
-    //     // Calculate the new scale
-    //     const newScale = currentZoomScale * increment;
-
-    //     // Ensure the scale is within the limits [0.5, 8]
-    //     currentZoomScale = Math.max(0.5, Math.min(newScale, 8));
-
-    //     // Find the current center point within the view of the SVG element, taking into account the translation from panning
-    //     const centerX = (dims.width / 2 - currentTranslateX) / currentZoomScale;
-    //     const centerY = (dims.height / 2 - currentTranslateY) / currentZoomScale;
-
-    //     // Calculate the translation needed to keep the current view centered
-    //     currentTranslateX = dims.width / 2 - centerX * currentZoomScale;
-    //     currentTranslateY = dims.height / 2 - centerY * currentZoomScale;
-
-    //     // Apply the transformations directly to the element
-    //     gElement.setAttribute('transform', `translate(${currentTranslateX}, ${currentTranslateY}) scale(${currentZoomScale})`);
-    // }
-
     function zoomed(event) {
         const {x, y, k} = event.transform; // k is scale, x and y are translation coordinates
         gElement.setAttribute('transform', `translate(${x}, ${y}) scale(${k})`);
@@ -176,18 +148,18 @@
 
     // Adjust the dimensions and projection once the data is loaded
     onMount(() => {
-      const d3SvgElement = select(svgElement)
+      const d3GElement = select(gElement)
 
       const zoomBehavior = zoom()
         .scaleExtent([0.5, 8])
         .on("zoom", (event) => zoomed(event))
 
-      d3SvgElement.call(zoomBehavior)
+      d3GElement.call(zoomBehavior)
 
-      svgElement.addEventListener('wheel', event => {
+      gElement.addEventListener('wheel', event => {
         event.preventDefault()
 
-        zoomBehavior.on("zoom").call(svgElement, event)
+        zoomBehavior.on("zoom").call(gElement, event)
       }, { passive: false })
 
       updateProjection()

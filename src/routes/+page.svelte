@@ -164,7 +164,7 @@
 	</h1>
 
 	<p class="text-width" style="margin-bottom:3rem;">
-		Have you ever wondered how included students with disabilities are in your local schools? To see districts' scores for inclusion, on a scale of 1 to 10, select them on the map or in the dropdown below.
+		Have you ever wondered how included students with disabilities are in your local schools? To see districts' scores for inclusion, on a scale of 1 to 10, select them on the map, or in the dropdown, below.
 	</p>
 
 	<label class="rough-filter">
