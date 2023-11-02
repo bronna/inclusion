@@ -171,9 +171,6 @@
 </script>
 
 <div class="tooltip" bind:this={tooltip}></div>
-
-<button on:click={() => applyZoom(1.2)}>+</button>
-<button on:click={() => applyZoom(0.8)}>-</button>
   
 <div id="map">
 
@@ -236,6 +233,11 @@
     </svg>
 </div>
 
+<div class="zoom-controls">
+  <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
+  <button class="zoom-button" on:click={() => applyZoom(0.8)}>-</button>
+</div>
+
 <style>
   #map {
     width: 100%;
@@ -265,6 +267,28 @@
   .tooltip-no-ieps {
     font-size: 0.6rem;
     color: var(--dark-gray);
+  }
+
+  .zoom-controls {
+      display: flex;
+      gap: 4px;
+      margin-top: 1rem;
+  }
+
+  .zoom-button {
+      background-color: white;
+      border: 1.25px solid var(--color-text);
+      color: var(--color-text);
+      cursor: pointer;
+      padding: 0 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: background-color 0.3s;
+  }
+
+  .zoom-button:hover {
+      background-color: gray;
   }
 </style>
   

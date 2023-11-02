@@ -18,7 +18,6 @@ export const getData = () => {
                 ( (district["LRE Students >80%"] / 100) * district["Total Student Count"] ) * 0.9
                 + ( (district["LRE Students >40% <80%"] / 100) * district["Total Student Count"] ) * 0.6
                 + ( (district["LRE Students <40%"] / 100) * district["Total Student Count"] ) * 0.2
-                - ( (district["LRE Students Separate Settings"] / 100) * district["Total Student Count"] ) * 0.5
             ) / district["Total Student Count"] * 100
         )
     }
@@ -101,7 +100,7 @@ export const getData = () => {
         if (!district.properties.weighted_inclusion) {
             district.properties.decile = null;
         } else {
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 9; i++) {
                 if (district.properties.weighted_inclusion < thresholds[i]) {
                     district.properties.decile = i + 1;
                     break;
@@ -116,7 +115,6 @@ export const getData = () => {
     });
 
     return data
-        //.filter(district => district.properties["Institution Name"])
         .sort((a, b) => {
             if (!a.properties["Institution Name"] && !b.properties["Institution Name"]) return 0;
             if (!a.properties["Institution Name"]) return 1;
