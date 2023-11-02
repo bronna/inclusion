@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
-    import { geoBounds, geoTransverseMercator, geoPath, scaleLinear, zoom, select } from 'd3';
+    import { writable } from 'svelte/store';
+    import { geoBounds, geoTransverseMercator, geoPath, scaleLinear, zoom, zoomIdentity, select } from 'd3';
     import { hideSmallDistricts, selectedDistricts, minWeightedInclusion, maxWeightedInclusion } from '../stores/stores.js';
     import { colors } from "../styles/colors";
     import InclusionRing from './InclusionRing.svelte';
@@ -121,65 +122,58 @@
       }
     }
 
+    let currentTransform = writable({ x: 0, y: 0, k: 1 })
     let svgElement
     let gElement
 
-    function zoomed(event) {
-        const {x, y, k} = event.transform; // k is scale, x and y are translation coordinates
+    function zoomed(event, transform) {
+        // If event is not defined, use the provided transform directly
+        if(!event) {
+            const {x, y, k} = transform;
+            gElement.setAttribute('transform', `translate(${x}, ${y}) scale(${k})`);
+            return;
+        }
+        
+        // Else use the transform from the D3 zoom event
+        const {x, y, k} = event.transform;
         gElement.setAttribute('transform', `translate(${x}, ${y}) scale(${k})`);
 
-        // Adjust stroke width based on zoom level
-        const newStrokeWidth = 0.75 / k;  // Normal stroke width divided by current scale
-        const newSelectedStrokeWidth = 1.2 / k;  // Selected stroke width divided by current scale
+        // Update the store
+        currentTransform.set({ x, y, k });
+    }
 
-        // Directly select all districtShape elements and adjust their stroke-width
-        const districtShapes = document.querySelectorAll('.districtShape');
-        districtShapes.forEach((path) => {
-          const districtId = path.getAttribute('key'); // Assuming 'key' holds the GEOID. Adjust if your attribute is different.
+    let zoomBehavior
+    let d3GElement
 
-          // Check if this district is selected and adjust the stroke-width accordingly.
-          if ($selectedDistricts.includes(districtId)) {
-            path.setAttribute('stroke-width', newSelectedStrokeWidth);
-          } else {
-            path.setAttribute('stroke-width', newStrokeWidth);
-          }
-        });
+    function applyZoom(factor) {
+        // Instead of manually calculating new scales and translations, we'll use the D3 API to do it
+        d3GElement.call(zoomBehavior.scaleBy, factor);
     }
 
     // Adjust the dimensions and projection once the data is loaded
     onMount(() => {
-      const d3GElement = select(gElement)
+      d3GElement = select(gElement)
 
-      const zoomBehavior = zoom()
+      zoomBehavior = zoom()
         .scaleExtent([0.5, 8])
-        .on("zoom", (event) => zoomed(event))
+        .on("zoom", zoomed)
 
       d3GElement.call(zoomBehavior)
 
-      gElement.addEventListener('wheel', event => {
-        event.preventDefault()
-
-        zoomBehavior.on("zoom").call(gElement, event)
-      }, { passive: false })
-
       updateProjection()
 
-      const resizeHandler = () => {
-        updateProjection()
-      }
-
-      window.addEventListener('resize', resizeHandler)
+      window.addEventListener('resize', updateProjection)
 
       return () => {
-        window.removeEventListener('resize', resizeHandler)
+        window.removeEventListener('resize', updateProjection)
       }
     });
 </script>
 
 <div class="tooltip" bind:this={tooltip}></div>
 
-<!-- <button on:click={() => applyZoom(1.2)}>+</button>
-<button on:click={() => applyZoom(0.8)}>-</button> -->
+<button on:click={() => applyZoom(1.2)}>+</button>
+<button on:click={() => applyZoom(0.8)}>-</button>
   
 <div id="map">
 
@@ -202,7 +196,7 @@
                                 : "lightgray"
                             }
                             stroke="white"
-                            stroke-width="0.75"
+                            stroke-width={0.75 / $currentTransform.k}
                             fill-rule="evenodd"
                             on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
                             on:mousemove={updateTooltipPosition}
@@ -226,7 +220,7 @@
                                 : "lightgray"
                             }
                             stroke="black"
-                            stroke-width="1.2"
+                            stroke-width={1.2 / $currentTransform.k}
                             on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
                             on:mousemove={updateTooltipPosition}
                             on:mouseout={hideTooltip}
