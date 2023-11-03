@@ -290,8 +290,8 @@
 </div>
 
 <div class="zoom-controls">
-  <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
   <button class="zoom-button" on:click={() => applyZoom(0.8)}>-</button>
+  <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
 </div>
 
 <style>
