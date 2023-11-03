@@ -84,8 +84,8 @@
     function updateTooltipPosition(event) {
       // Check if event has touches (is a touch event)
       if (event.touches) {
-          tooltip.style.left = event.touches[0].clientX + "px";
-          tooltip.style.top = (event.touches[0].clientY + 20) + "px";
+          tooltip.style.left = event.touches[0].pageX + "px";
+          tooltip.style.top = event.touches[0].pageY + "px";
       } else {
           tooltip.style.left = event.pageX + "px";
           tooltip.style.top = event.pageY + "px";
