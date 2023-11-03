@@ -96,6 +96,23 @@
       tooltip.style.opacity = 0;
     }
 
+    let isTouched = false;
+
+    function handleTouchStart(event, district) {
+        isTouched = true;
+        showTooltip(district.properties["Institution Name"], district.properties.decile);
+        updateTooltipPosition(event);
+    }
+
+    function handleTouchMove(event) {
+        updateTooltipPosition(event);
+    }
+
+    function handleTouchEnd() {
+        isTouched = false;
+        hideTooltip();
+    }
+
     function handleDistrictClick(event, district) {
       const districtId = district.properties.GEOID;
 
@@ -195,10 +212,30 @@
                             stroke="white"
                             stroke-width={0.75 / $currentTransform.k}
                             fill-rule="evenodd"
-                            on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
-                            on:mousemove={updateTooltipPosition}
-                            on:mouseout={hideTooltip}
-                            on:click={e => handleDistrictClick(e, district)}
+                            on:touchstart={e => {
+                              e.preventDefault();
+                              handleTouchStart(e, district);
+                            }}
+                            on:touchmove={e => {
+                                e.preventDefault();
+                                handleTouchMove(e);
+                            }}
+                            on:touchend={e => {
+                                e.preventDefault();
+                                handleTouchEnd();
+                            }}
+                            on:mouseover={e => {
+                                if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile);
+                            }}
+                            on:mousemove={e => {
+                                if (!isTouched) updateTooltipPosition(e);
+                            }}
+                            on:mouseout={e => {
+                                if (!isTouched) hideTooltip();
+                            }}
+                            on:click={e => {
+                                if (!isTouched) handleDistrictClick(e, district);
+                            }}
                         ></path>
                     {/if}
                 {/each}
@@ -218,10 +255,30 @@
                             }
                             stroke="black"
                             stroke-width={1.2 / $currentTransform.k}
-                            on:mouseover={() => showTooltip(district.properties["Institution Name"], district.properties.decile)}
-                            on:mousemove={updateTooltipPosition}
-                            on:mouseout={hideTooltip}
-                            on:click={e => handleDistrictClick(e, district)}
+                            on:touchstart={e => {
+                              e.preventDefault();
+                              handleTouchStart(e, district);
+                            }}
+                            on:touchmove={e => {
+                                e.preventDefault();
+                                handleTouchMove(e);
+                            }}
+                            on:touchend={e => {
+                                e.preventDefault();
+                                handleTouchEnd();
+                            }}
+                            on:mouseover={e => {
+                                if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile);
+                            }}
+                            on:mousemove={e => {
+                                if (!isTouched) updateTooltipPosition(e);
+                            }}
+                            on:mouseout={e => {
+                                if (!isTouched) hideTooltip();
+                            }}
+                            on:click={e => {
+                                if (!isTouched) handleDistrictClick(e, district);
+                            }}
                         ></path>
                     {/if}
                 {/each}
