@@ -85,7 +85,7 @@
       // Check if event has touches (is a touch event)
       if (event.touches) {
           tooltip.style.left = event.touches[0].clientX + "px";
-          tooltip.style.top = event.touches[0].clientY + "px";
+          tooltip.style.top = (event.touches[0].clientY + 20) + "px";
       } else {
           tooltip.style.left = event.pageX + "px";
           tooltip.style.top = event.pageY + "px";
@@ -110,7 +110,6 @@
 
     function handleTouchEnd() {
         isTouched = false;
-        hideTooltip();
     }
 
     function handleDistrictClick(event, district) {
