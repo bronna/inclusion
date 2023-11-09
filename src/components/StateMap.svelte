@@ -289,14 +289,22 @@
     </svg>
 </div>
 
-<div class="zoom-controls">
-  <button class="zoom-button" on:click={() => applyZoom(0.8)}>-</button>
-  <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
+<div class="controls-container text-width">
+  <label class="rough-filter">
+    <input type="checkbox" bind:checked={$hideSmallDistricts} />
+    Hide small districts
+  </label>
+  
+  <div class="zoom-controls">
+    <button class="zoom-button" on:click={() => applyZoom(0.8)}>-</button>
+    <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
+  </div>
 </div>
 
 <style>
   #map {
     width: 100%;
+    max-width: 72rem;
     min-height: 300px;
     display: flex;
     justify-content: center;
@@ -325,21 +333,41 @@
     color: var(--dark-gray);
   }
 
+  .text-width {
+    max-width: 40rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.8rem;
+  }
+
+  .rough-filter {
+    display: flex;
+    align-items: center;
+  }
+
   .zoom-controls {
       display: flex;
       gap: 4px;
-      margin-top: 1rem;
   }
 
   .zoom-button {
-      background-color: white;
-      border: 1.25px solid var(--color-text);
+      background-color: var(--background-color);
+      border: 2px solid var(--color-text);
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
       color: var(--color-text);
       cursor: pointer;
       padding: 0 8px;
       cursor: pointer;
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: 800;
       transition: background-color 0.3s;
   }
 

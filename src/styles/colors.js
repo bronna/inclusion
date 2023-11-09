@@ -4,7 +4,7 @@ export const colors = [
     'rgba(247, 134, 68, 1.0)', // #F5813D orange
     'rgba(222, 84, 102, 1.0)',  // #DB4162 dark pink
     '#777677', // dark gray
-    '#001A17', // text dark
+    '#011C18', // text dark
     '#e6e6e6', // light gray
     '#f2f2f2', // light light gray
 ]

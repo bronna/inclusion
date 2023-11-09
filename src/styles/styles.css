@@ -2,13 +2,13 @@
 
 :root {
 	--font-body: 'Source Sans 3', sans-serif;
-	--font-headers: 'Source Serif 4', serif;
+	--font-headers: 'Bitter', serif;
 	--color-bg-0: rgb(202, 216, 228);
 	--color-bg-1: hsl(209, 36%, 86%);
 	--color-bg-2: hsl(224, 44%, 95%);
 	--color-theme-1: #ff3e00;
 	--color-theme-2: #4075a6;
-	--color-text: #001A17;
+	--color-text: #011C18;
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
@@ -17,10 +17,11 @@
     --semi-inclusive-color: rgba(248, 170, 22, 1.0);
 	--non-inclusive-color: rgba(247, 134, 68, 1.0);
 	--separate-color: rgba(222, 84, 102, 1.0);
-    --dark-gray: #777677;
+    --dark-gray: #403F3D;
 	--medium-gray: #b3b3b3;
-	--light-gray: #e6e6e6;
-	--light-light-gray: #f2f2f2;
+	--light-gray: #E0DCD7;
+	--light-light-gray: #EBE8E4;
+	--background-color: #F5F2ED;
 }
 
 body {

@@ -12,7 +12,7 @@ let initialSelectedDistricts = data
     .slice(0, 5)
     .map(district => district.properties.GEOID);
 
-export const selectedDistricts = writable(initialSelectedDistricts);
+export const selectedDistricts = writable([]);
 
 export const districtsData = writable(data);
 

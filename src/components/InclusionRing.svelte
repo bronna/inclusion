@@ -11,7 +11,7 @@
     let width = 42;
     let height = 42;
     let radius = Math.min(width, height) / 2;
-    let donutWidth = 3;
+    let donutWidth = 5;
   
     let arcGenerator = arc()
         .innerRadius(radius - donutWidth)

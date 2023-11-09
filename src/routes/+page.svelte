@@ -5,26 +5,18 @@
 
 <script>
    import { getData } from "../data/processData.js";
-  import { hideSmallDistricts, selectedDistricts, districtsData, selectedDistrictsData } from "../stores/stores.js"
+  import { selectedDistricts, districtsData, selectedDistrictsData } from "../stores/stores.js"
   import { colors } from '../styles/colors';
   import Svelecte from "svelecte";
   import RangeSlider from "svelte-range-slider-pips"
   import StateLegend from "../components/StateLegend.svelte";
-  import DistrictData from "../components/DistrictData.svelte";
   import StateMap from "../components/StateMap.svelte";
-  import StateCompare from "../components/StateCompare.svelte";
   import TableOfDistricts from "../components/TableOfDistricts.svelte";
-  import DistrictCards from "../components/DistrictCards.svelte";
   import { scaleOrdinal } from "d3";
 
   let data = getData()
 
   let stateData = data.find(row => row.properties.GEOID === "999999")
-  let stateCompareLines = [
-	stateData.properties["LRE Students >80%"], 
-	stateData.properties["LRE Students >80%"] + stateData.properties["LRE Students >40% <80%"], 
-	stateData.properties["LRE Students >80%"] + stateData.properties["LRE Students >40% <80%"] + stateData.properties["LRE Students <40%"]
-  ]//.map(value => parseFloat(value.toFixed(2)));
 
   let numberDistricts = $districtsData.length
 
@@ -40,8 +32,6 @@
 		.map(district => district.properties["Total Student Count"])
 		.filter(n => typeof n === 'number')
   );
-
-  let backgroundSVG
 
   function deepClone(arr) {
 	return JSON.parse(JSON.stringify(arr))
@@ -60,7 +50,6 @@
 				minSize = minStudents;
 				maxSize = maxStudents
 				values = [minSize, maxSize]
-				showMenu = false;
 			} 
 		},
 		{ 
@@ -70,7 +59,6 @@
 					.sort((a, b) => b.properties["Total Student Count"] - a.properties["Total Student Count"])
 					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
-				showMenu = false;
 			}  
 		},
 		{
@@ -78,25 +66,13 @@
 			action: filterBySize
 		},
         { 
-			name: 'Sort by most inclusive', 
+			name: 'Sort by inclusion', 
 			action: () => {
 				let sortedDistricts = deepClone($selectedDistrictsData)
 					.filter(district => district.properties.GEOID !== undefined && district.properties.GEOID !== '999999')
-					// .filter(district => district.properties.weighted_inclusion !== undefined && district.properties.weighted_inclusion !== null)
 					.sort((a, b) => b.properties.weighted_inclusion - a.properties.weighted_inclusion)
 					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
-				showMenu = false;
-			} 
-		},
-        { 
-			name: 'Sort by least inclusive', 
-			action: () => {
-				let sortedDistricts = deepClone($selectedDistrictsData)
-					.sort((a, b) => a.properties.weighted_inclusion - b.properties.weighted_inclusion)
-					.map(district => district.properties.GEOID)
-				selectedDistricts.set(sortedDistricts)
-				showMenu = false;
 			} 
 		},
 		{ 
@@ -106,32 +82,9 @@
 					.sort((a, b) => a.properties["Institution Name"].localeCompare(b.properties["Institution Name"]))
 					.map(district => district.properties.GEOID)
 				selectedDistricts.set(sortedDistricts)
-            	showMenu = false;
 			} 
 		},
-		// { name: 'Filter by disability', action: () => console.log('Filter disability') },
     ];
-
-	let showMenu = false;
-
-	function clickOutside(element, callbackFunction) {
-		function onClick(event) {
-			if (!element.contains(event.target)) {
-				callbackFunction();
-			}
-		}
-		
-		document.body.addEventListener('click', onClick);
-		
-		return {
-			update(newCallbackFunction) {
-				callbackFunction = newCallbackFunction;
-			},
-			destroy() {
-				document.body.removeEventListener('click', onClick);
-			}
-		}
-	}
 
 	// create array of objects with id and name value for each item in the data array
 	let districtNames = $districtsData.map((district) => {
@@ -139,7 +92,6 @@
 	});
 
 	function filterBySize() {
-		//let filteredDistricts = [...$districtsData]
 		let filteredDistricts = deepClone($districtsData)
 			.filter(district => district.properties["Total Student Count"] >= minSize && district.properties["Total Student Count"] <= maxSize)
 			.map(district => district.properties.GEOID);
@@ -152,28 +104,25 @@
 	let maxSize = 9000
 	let values = [minSize, maxSize]
 
-	// color scale for background average lines
-	let lineColorScale = scaleOrdinal()
-		.domain([0, 1, 2])
-		.range([colors[0], colors[1], colors[2]]);
 </script>
 
 <section id="scores">
-	<h1 class="headline text-width">
-		How inclusive are Oregon's school districts?
+	<h1 class="headline">
+		How included are students with disabilities in your local schools?
 	</h1>
 
-	<p class="text-width" style="margin-bottom:3rem;">
-		How included are students with disabilities in your local schools? To see districts' scores for inclusion, on a scale of 1 to 10, select them on the map or in the dropdown below.
+	<p class="text-width">
+		Advocates around the country work for children with disabilities to be included in their communities and in their schools. Inclusion ensures that students with disabilities spend more time in regular classrooms, actively participating alongside their non-disabled peers. Mounting research indicates that when supported appropriately, inclusive educational settings benefit all students, regardless of their abilities.
 	</p>
 
-	<label class="rough-filter">
-		<input type="checkbox" bind:checked={$hideSmallDistricts} />
-		Hide small districts
-	</label>
+	<p class="text-width">
+		This tool allows you to explore inclusion data from school districts across Oregon. You can compare districts to each other, or to the state as a whole. You can also filter and sort districts by size, or by their inclusion scores.
+	</p>
 
-	<StateMap data={$districtsData} />
-	
+	<p class="text-width">
+		To get started, select districts in the dropdown or on the map below.
+	</p>
+
 	<div class="search text-width">
 		<p class="search-description text-width">
 			Find a school district
@@ -187,90 +136,48 @@
 				collapseSelection={$selectedDistricts.length < 6 ? false : true}
 				placeholder={"find a school district"}
 			/>
-
-			<div class="menu-container">
-				<button 
-					on:click={(event) => {
-						showMenu = true
-						event.stopPropagation()
-					}}
-					class="icon-btn"
-					style="visibility: {showMenu ? 'hidden' : 'visible'}"
-				>
-					<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-						<circle cx="6" cy="12" r="2" />
-						<circle cx="14" cy="12" r="2" />
-						<circle cx="22" cy="12" r="2" />
-					</svg>
-				</button>
-				{#if showMenu}
-					<ul class="menu" use:clickOutside={() => {
-						showMenu = false
-					}}>
-						{#each actions as action (action.name)}
-							{#if action.name === 'Filter by size'}
-								<li>
-									<span style="margin:0; padding:0.5rem 1rem;">Filter by size</span>
-									<RangeSlider 
-										bind:values
-										range={true} 
-										min={minStudents} 
-										max={maxStudents} 
-										float={true} 
-										first={true}
-										last={true}
-										id="range-slider"
-										aria-labels={["Minimum number of students", "Maximum number of students"]}
-										on:stop={() => {
-											minSize = values[0]
-											maxSize = values[1]
-
-											filterBySize()
-										}}
-									/>
-								</li>
-							{:else}
-								<li>
-									<button on:click={action.action} style="margin:0; padding:0.5rem 1rem;">
-									{action.name}
-								</li>
-							{/if}
-						{/each}
-					</ul>
-				{/if}
-			</div>
 		</div>
 	</div>
 
-	<!-- <DistrictCards /> -->
+	<StateMap data={$districtsData} />
 
-	<TableOfDistricts />
-
-	<!-- <div class="striped-background text-width">
-		<svg bind:this={backgroundSVG} width="100%" height="100%">
-			{#each stateCompareLines as linePos, index (index)}
-				<line 
-					x1="{linePos}%" 
-					x2="{linePos}%" 
-					y1="50px" 
-					y2="100%" 
-					stroke={lineColorScale(index)} 
-					stroke-width="2" 
-					stroke-dasharray="2, 4"
+	<div class="filter-sort text-width">
+		<div class="menu-container">
+			<!-- Filter by size action -->
+			<!-- <div class="filter-size">
+				<span>Filter by # of students with IEPs:</span>
+				<RangeSlider 
+				  bind:values
+				  range={true} 
+				  min={minStudents} 
+				  max={maxStudents} 
+				  float={true} 
+				  first={true}
+				  last={true}
+				  id="range-slider"
+				  aria-labels={["Minimum number of students", "Maximum number of students"]}
+				  on:stop={() => {
+					minSize = values[0]
+					maxSize = values[1]
+					filterBySize()
+				  }}
 				/>
-			{/each}
-		</svg>
-	
-		<StateCompare stateData={stateData} />
-	
-		<div class="comparison-bars">
-			{#each $selectedDistrictsData as district (district.properties.GEOID)}
-				{#if district.properties["Institution Name"] && district.properties.GEOID !== null}
-					<DistrictData districtData={district} />
+			</div> -->
+			  
+			<!-- Other actions -->
+			{#each actions as action (action.name)}
+				{#if action.name !== 'Filter by size'}
+				  <button 
+					on:click={action.action} 
+					class="rounded-button">
+					{action.name}
+				  </button>
 				{/if}
 			{/each}
 		</div>
-	</div> -->
+	</div>
+
+	<TableOfDistricts />
 </section>
 
 <section id="breakdown">
@@ -284,7 +191,6 @@
 
 	<aside class="aside text-width">
 		<div class="inner-content">
-			<!-- <Icon data="{comment}" scale="4" class="comment-icon" /> -->
 			<svg 
 				xmlns="http://www.w3.org/2000/svg" 
 				x="0px" 
@@ -319,10 +225,22 @@
 
   h1 {
     width: 100%;
+	max-width: 68rem;
 	padding-top: 2rem;
 	font-size: 3rem;
 	line-height: 3.5rem;
 	text-align: center;
+	font-weight: 800;
+	letter-spacing: 0.09rem;
+	color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+		line-height: 2.5rem;
+		max-width: 96%;
+    }
   }
 
   p {
@@ -360,7 +278,7 @@
   }
 
   .text-width {
-	max-width: 36rem;
+	max-width: 40rem;
 	width: 100%;
 	box-sizing: border-box;
   }
@@ -377,24 +295,40 @@
   }
 
   .search-description {
-	color: var(--dark-gray);
-	font-size: 1rem;
+	color: var(--color-text);
+	font-size: 1.2rem;
 	letter-spacing: 0.01rem;
 	font-weight: 600;
-	/* text-transform: uppercase; */
   }
 
   .search {
 	width: 100%;
-	padding: 2rem 0;
+	padding: 1rem 0 2rem 0;
   }
 
-  .icon-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-		fill: var(--dark-gray);
-    }
+  .filter-sort {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem; /* Adjust as needed */
+    gap: 4rem; /* Space between elements */
+    flex-wrap: wrap; /* Wrap items to new line on small screens if necessary */
+  }
+
+  .filter-size {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between label and slider */
+  }
+
+  .rounded-button {
+    padding: 0.25rem 0.5rem;
+    margin: 0;
+    border-radius: 20px; /* Adjust as needed for rounded corners */
+    cursor: pointer;
+	stroke: 2px solid var(--color-text);
+	background-color: var(--color-background);
+  }
 
 	.search-container {
 		display: flex;
@@ -403,9 +337,9 @@
 	}
 
 	.menu-container {
-		position: relative; /* to position the dropdown menu */
-		z-index: 10;
-		margin-left: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
   .menu {
@@ -436,29 +370,6 @@
     
   .menu li:hover {
         background: #eee;
-  }
-
-    .striped-background {
-		position: relative;
-		margin-top: 1rem;
-	}
-
-	.striped-background > svg {
-		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: 0; /* This ensures SVG stays behind other content */
-	}
-
-	/* Ensure other children of .striped-background stay above the SVG */
-	.striped-background > * {
-		position: relative;
-		z-index: 1;
-	}
-
-
-  .comparison-bars {
-	margin-top: 2.4rem;
   }
 
   #scores {

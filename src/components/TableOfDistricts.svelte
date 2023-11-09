@@ -82,9 +82,11 @@
     }
 
     .district-name {
-        font-size: 1.2rem;
-        font-weight: 600;
+        font-family: 'Bitter', serif;
+        font-size: 1.08rem;
+        font-weight: 700;
         line-height: 1.5rem;
+        letter-spacing: 0.04rem;
     }
 
     .student-count {
