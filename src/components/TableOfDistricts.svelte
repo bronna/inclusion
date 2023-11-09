@@ -54,7 +54,7 @@
         line-height: 1rem;
         font-size: 0.8rem;
         letter-spacing: 0.03rem;
-        color: var(--dark-gray);
+        color: var(--dark-gray); /* make lighter */
     }
 
     tr:hover {

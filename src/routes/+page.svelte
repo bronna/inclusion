@@ -135,6 +135,7 @@
 				multiple={true} 
 				collapseSelection={$selectedDistricts.length < 6 ? false : true}
 				placeholder={"find a school district"}
+				closeAfterSelect={true}
 			/>
 		</div>
 	</div>
