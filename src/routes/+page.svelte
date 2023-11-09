@@ -170,7 +170,7 @@
 				{#if action.name !== 'Filter by size'}
 				  <button 
 					on:click={action.action} 
-					class="rounded-button">
+					class="action-button">
 					{action.name}
 				  </button>
 				{/if}
@@ -222,6 +222,10 @@
     display: flex;
     flex-direction: column;
 	align-items: center;
+  }
+
+  p {
+	margin: 0.6rem 0;
   }
 
   h1 {
@@ -322,13 +326,18 @@
     gap: 0.5rem; /* Space between label and slider */
   }
 
-  .rounded-button {
-    padding: 0.25rem 0.5rem;
+  .action-button {
+    padding: 0.25rem 0.75rem;
     margin: 0;
     border-radius: 20px; /* Adjust as needed for rounded corners */
     cursor: pointer;
-	stroke: 2px solid var(--color-text);
-	background-color: var(--color-background);
+	background-color: var(--dark-gray);
+	color: white;
+	transition: background-color 0.3s;
+  }
+
+  .action-button:hover {
+      background-color: gray;
   }
 
 	.search-container {

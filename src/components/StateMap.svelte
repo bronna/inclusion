@@ -322,17 +322,6 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .districtShape:hover {
-    /* opacity: 0.5; */
-    /* stroke: var(--inclusive-color);
-    stroke-width: 2px; */
-  }
-
-  .tooltip-no-ieps {
-    font-size: 0.6rem;
-    color: var(--dark-gray);
-  }
-
   .text-width {
     max-width: 40rem;
     width: 100%;
@@ -357,15 +346,13 @@
   }
 
   .zoom-button {
-      background-color: var(--background-color);
-      border: 2px solid var(--color-text);
+      background-color: var(--dark-gray);
       width: 1.8rem;
       height: 1.8rem;
       border-radius: 50%;
-      color: var(--color-text);
+      color: white;
       cursor: pointer;
       padding: 0 8px;
-      cursor: pointer;
       font-size: 1.1rem;
       font-weight: 800;
       transition: background-color 0.3s;
