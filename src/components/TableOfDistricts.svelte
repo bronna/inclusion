@@ -91,11 +91,6 @@
 </table>
 
 <style>
-    .text-width {
-        max-width: 40rem;
-        width: 100%;
-    }
-
     table {
         border-collapse: collapse;
         width: 100%;

@@ -266,12 +266,6 @@
 	margin-bottom: 1rem;
   }
 
-  .text-width {
-	max-width: 40rem;
-	width: 100%;
-	box-sizing: border-box;
-  }
-
   @media (max-width: 768px) {
     .text-width {
         padding: 0 1rem;

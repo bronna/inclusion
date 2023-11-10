@@ -99,3 +99,9 @@ button:focus:not(:focus-visible) {
 	width: 1px;
 	white-space: nowrap;
 }
+
+.text-width {
+	max-width: 40rem;
+	width: 100%;
+	box-sizing: border-box;
+}
