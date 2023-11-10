@@ -241,44 +241,46 @@
 
                 {#each data as district}
                     {#if district.properties.GEOID !== "999999" && $selectedDistricts.includes(district.properties.GEOID)}
-                        <path
-                            class="districtShape"
-                            key={district.properties.GEOID}
-                            d={districtPathGenerator(district)}
-                            fill={
-                              $hideSmallDistricts && district.properties["Total Student Count"] < 500 
-                              ? "lightgray" 
-                              : district.properties.weighted_inclusion 
-                                ? colorScale(district.properties.weighted_inclusion) 
-                                : "lightgray"
-                            }
-                            stroke="black"
-                            stroke-width={1.2 / $currentTransform.k}
-                            on:touchstart={e => {
-                              e.preventDefault();
-                              handleTouchStart(e, district);
-                            }}
-                            on:touchmove={e => {
+                        {#if ($hideSmallDistricts && district.properties["Total Student Count"] >= 500) || !$hideSmallDistricts}
+                          <path
+                              class="districtShape"
+                              key={district.properties.GEOID}
+                              d={districtPathGenerator(district)}
+                              fill={
+                                $hideSmallDistricts && district.properties["Total Student Count"] < 500 
+                                ? "lightgray" 
+                                : district.properties.weighted_inclusion 
+                                  ? colorScale(district.properties.weighted_inclusion) 
+                                  : "lightgray"
+                              }
+                              stroke="black"
+                              stroke-width={1.2 / $currentTransform.k}
+                              on:touchstart={e => {
                                 e.preventDefault();
-                                handleTouchMove(e);
-                            }}
-                            on:touchend={e => {
-                                e.preventDefault();
-                                handleTouchEnd();
-                            }}
-                            on:mouseover={e => {
-                                if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile);
-                            }}
-                            on:mousemove={e => {
-                                if (!isTouched) updateTooltipPosition(e);
-                            }}
-                            on:mouseout={e => {
-                                if (!isTouched) hideTooltip();
-                            }}
-                            on:click={e => {
-                                if (!isTouched) handleDistrictClick(e, district);
-                            }}
-                        ></path>
+                                handleTouchStart(e, district);
+                              }}
+                              on:touchmove={e => {
+                                  e.preventDefault();
+                                  handleTouchMove(e);
+                              }}
+                              on:touchend={e => {
+                                  e.preventDefault();
+                                  handleTouchEnd();
+                              }}
+                              on:mouseover={e => {
+                                  if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile);
+                              }}
+                              on:mousemove={e => {
+                                  if (!isTouched) updateTooltipPosition(e);
+                              }}
+                              on:mouseout={e => {
+                                  if (!isTouched) hideTooltip();
+                              }}
+                              on:click={e => {
+                                  if (!isTouched) handleDistrictClick(e, district);
+                              }}
+                          ></path>
+                        {/if}
                     {/if}
                 {/each}
                 
@@ -287,75 +289,43 @@
       </g>
       
     </svg>
-</div>
 
-<div class="controls-container text-width">
-  <label class="rough-filter">
-    <input type="checkbox" bind:checked={$hideSmallDistricts} />
-    Hide small districts
-  </label>
-  
-  <div class="zoom-controls">
-    <button class="zoom-button" on:click={() => applyZoom(0.8)}>-</button>
-    <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
-  </div>
+    <div class="zoom-controls">
+      <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
+      <button class="zoom-button" on:click={() => applyZoom(0.8)}>-</button>
+    </div>
 </div>
 
 <style>
   #map {
-    width: 100%;
-    max-width: 72rem;
-    min-height: 300px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .tooltip {
-    position: absolute;
-    padding: 10px;
-    color: var(--text-color);
-    background-color: white;
-    border-radius: 4px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .text-width {
-    max-width: 40rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .controls-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.8rem;
-  }
-
-  .rough-filter {
-    display: flex;
-    align-items: center;
+      position: relative; /* Needed for absolute positioning of children */
+      width: 100%;
+      max-width: 72rem;
+      min-height: 300px;
+      display: flex;
+      justify-content: center;
   }
 
   .zoom-controls {
+      position: absolute;
+      bottom: 10px; /* Adjust as needed */
+      right: 10px; /* Adjust as needed */
       display: flex;
-      gap: 4px;
+      flex-direction: column;
+      gap: 2px;
   }
 
   .zoom-button {
-      background-color: var(--dark-gray);
-      width: 1.8rem;
-      height: 1.8rem;
+      background-color: var(--background-color);
+      width: 1.6rem;
+      height: 1.6rem;
       border-radius: 50%;
-      color: white;
+      color: var(--color-text);
       cursor: pointer;
-      padding: 0 8px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 800;
-      transition: background-color 0.3s;
+      transition: var(--background-color) 0.3s;
+      border: 1.5px solid var(--color-text);
   }
 
   .zoom-button:hover {

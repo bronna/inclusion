@@ -4,15 +4,13 @@
 </svelte:head>
 
 <script>
-   import { getData } from "../data/processData.js";
-  import { selectedDistricts, districtsData, selectedDistrictsData } from "../stores/stores.js"
-  import { colors } from '../styles/colors';
+  import { getData } from "../data/processData.js";
+  import { selectedDistricts, districtsData, selectedDistrictsData, hideSmallDistricts } from "../stores/stores.js"
   import Svelecte from "svelecte";
   import RangeSlider from "svelte-range-slider-pips"
   import StateLegend from "../components/StateLegend.svelte";
   import StateMap from "../components/StateMap.svelte";
   import TableOfDistricts from "../components/TableOfDistricts.svelte";
-  import { scaleOrdinal } from "d3";
 
   let data = getData()
 
@@ -40,7 +38,7 @@
 	// Define the sort and filter actions
     let actions = [
         { 
-			name: `Select all (${numberDistricts})`, 
+			name: `Select all`, 
 			action: () => {
 				selectedDistricts.set(
 					[...$districtsData]
@@ -52,44 +50,24 @@
 				values = [minSize, maxSize]
 			} 
 		},
-		{ 
-			name: 'Sort by size',
-			action: () => {
-				let sortedDistricts = deepClone($selectedDistrictsData)
-					.sort((a, b) => b.properties["Total Student Count"] - a.properties["Total Student Count"])
-					.map(district => district.properties.GEOID)
-				selectedDistricts.set(sortedDistricts)
-			}  
-		},
+		// {
+		// 	name: 'Hide small districts',
+		// 	action: toggleHideSmallDistricts
+		// },
 		{
 			name: 'Filter by size', 
 			action: filterBySize
-		},
-        { 
-			name: 'Sort by inclusion', 
-			action: () => {
-				let sortedDistricts = deepClone($selectedDistrictsData)
-					.filter(district => district.properties.GEOID !== undefined && district.properties.GEOID !== '999999')
-					.sort((a, b) => b.properties.weighted_inclusion - a.properties.weighted_inclusion)
-					.map(district => district.properties.GEOID)
-				selectedDistricts.set(sortedDistricts)
-			} 
-		},
-		{ 
-			name: 'Sort by name', 
-			action: () => {
-				let sortedDistricts = deepClone($selectedDistrictsData)
-					.sort((a, b) => a.properties["Institution Name"].localeCompare(b.properties["Institution Name"]))
-					.map(district => district.properties.GEOID)
-				selectedDistricts.set(sortedDistricts)
-			} 
-		},
+		}
     ];
 
 	// create array of objects with id and name value for each item in the data array
 	let districtNames = $districtsData.map((district) => {
 		return { value: district.properties.GEOID, label: district.properties["Institution Name"] };
 	});
+
+	function toggleHideSmallDistricts() {
+		hideSmallDistricts.update(value => !value)
+	}
 
 	function filterBySize() {
 		let filteredDistricts = deepClone($districtsData)
@@ -142,10 +120,26 @@
 
 	<StateMap data={$districtsData} />
 
-	<div class="filter-sort text-width">
+	<div class="filter-sort">
 		<div class="menu-container">
+			<!-- Hide/show small districts-->
+			<button on:click={toggleHideSmallDistricts} class="action-button">
+				{$hideSmallDistricts ? 'Show small districts' : 'Hide small districts'}
+			</button>
+
+			<!-- Other actions -->
+			{#each actions as action (action.name)}
+				{#if action.name !== 'Filter by size'}
+				  <button 
+					on:click={action.action} 
+					class="action-button">
+					{action.name}
+				  </button>
+				{/if}
+			{/each}
+
 			<!-- Filter by size action -->
-			<!-- <div class="filter-size">
+			<div class="filter-size">
 				<span>Filter by # of students with IEPs:</span>
 				<RangeSlider 
 				  bind:values
@@ -163,18 +157,7 @@
 					filterBySize()
 				  }}
 				/>
-			</div> -->
-			  
-			<!-- Other actions -->
-			{#each actions as action (action.name)}
-				{#if action.name !== 'Filter by size'}
-				  <button 
-					on:click={action.action} 
-					class="action-button">
-					{action.name}
-				  </button>
-				{/if}
-			{/each}
+			</div>
 		</div>
 	</div>
 
@@ -301,23 +284,25 @@
 
   .search-description {
 	color: var(--color-text);
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	letter-spacing: 0.01rem;
-	font-weight: 600;
+	font-weight: 700;
+	font-family: 'Bitter', serif;
   }
 
   .search {
 	width: 100%;
-	padding: 1rem 0 2rem 0;
+	padding: 1.5rem 0 2rem 0;
   }
 
   .filter-sort {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem; /* Adjust as needed */
-    gap: 4rem; /* Space between elements */
+    padding: 1rem;
     flex-wrap: wrap; /* Wrap items to new line on small screens if necessary */
+	width: 100%;
+	max-width: 72rem;
   }
 
   .filter-size {
@@ -329,11 +314,13 @@
   .action-button {
     padding: 0.25rem 0.75rem;
     margin: 0;
-    border-radius: 20px; /* Adjust as needed for rounded corners */
+    border-radius: 20px;
     cursor: pointer;
 	background-color: var(--dark-gray);
 	color: white;
-	transition: background-color 0.3s;
+	transition: var(--background-color) 0.3s;
+	border: none;
+	font-size: 0.9rem;
   }
 
   .action-button:hover {
@@ -349,38 +336,8 @@
 	.menu-container {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 1rem;
 	}
-
-  .menu {
-        position: absolute;
-		right: 0;
-        background: white;
-        list-style: none;
-        margin: 0;
-		padding-left: 0;
-		min-width: 200px;
-		border-radius: 5px;
-		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .menu button {
-		width: 100%;
-		border: none;
-		background: none;
-		text-align: left;
-		padding: 10px;
-		cursor: pointer;
-  }
-    
-  .menu li {
-        padding: 10px;
-        cursor: pointer;
-  }
-    
-  .menu li:hover {
-        background: #eee;
-  }
 
   #scores {
 	margin-bottom: 5rem;
