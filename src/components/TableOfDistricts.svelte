@@ -92,7 +92,7 @@
 
 <style>
     .text-width {
-        max-width: 36rem;
+        max-width: 40rem;
         width: 100%;
     }
 
