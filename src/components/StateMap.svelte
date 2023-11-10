@@ -308,8 +308,8 @@
 
   .zoom-controls {
       position: absolute;
-      bottom: 10px; /* Adjust as needed */
-      right: 10px; /* Adjust as needed */
+      bottom: 10px;
+      right: 10px;
       display: flex;
       flex-direction: column;
       gap: 2px;
@@ -330,6 +330,19 @@
 
   .zoom-button:hover {
       background-color: gray;
+  }
+
+  .tooltip {
+    position: absolute;
+    padding: 10px;
+    color: var(--text-color);
+    background-color: white;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
   }
 </style>
   
