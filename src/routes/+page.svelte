@@ -120,45 +120,46 @@
 
 	<StateMap data={$districtsData} />
 
-	<div class="filter-sort">
-		<div class="menu-container">
-			<!-- Hide/show small districts-->
-			<button on:click={toggleHideSmallDistricts} class="action-button">
-				{$hideSmallDistricts ? 'Show small districts' : 'Hide small districts'}
-			</button>
+	<div class="filters">
+		<!-- Hide/show small districts-->
+		<button on:click={toggleHideSmallDistricts} class="action-button">
+			{$hideSmallDistricts ? 'Show small districts' : 'Hide small districts'}
+		</button>
 
-			<!-- Other actions -->
-			{#each actions as action (action.name)}
-				{#if action.name !== 'Filter by size'}
-				  <button 
-					on:click={action.action} 
-					class="action-button">
-					{action.name}
-				  </button>
-				{/if}
-			{/each}
+		<!-- Other actions -->
+		{#each actions as action (action.name)}
+			{#if action.name !== 'Filter by size'}
+				<button 
+				on:click={action.action} 
+				class="action-button">
+				{action.name}
+				</button>
+			{/if}
+		{/each}
 
-			<!-- Filter by size action -->
-			<div class="filter-size">
-				<span>Filter by # of students with IEPs:</span>
-				<RangeSlider 
-				  bind:values
-				  range={true} 
-				  min={minStudents} 
-				  max={maxStudents} 
-				  float={true} 
-				  first={true}
-				  last={true}
-				  id="range-slider"
-				  aria-labels={["Minimum number of students", "Maximum number of students"]}
-				  on:stop={() => {
+		<!-- Filter by size action -->
+		<!-- <div class="filter-size">
+			<div class="slider-label">
+				<span>Filter by # of</span>
+				<span>students with IEPs:</span>
+			</div>
+			<RangeSlider 
+				bind:values
+				range={true} 
+				min={minStudents} 
+				max={maxStudents} 
+				float={true} 
+				first={true}
+				last={true}
+				id="range-slider"
+				aria-labels={["Minimum number of students", "Maximum number of students"]}
+				on:stop={() => {
 					minSize = values[0]
 					maxSize = values[1]
 					filterBySize()
-				  }}
-				/>
-			</div>
-		</div>
+				}}
+			/>
+		</div> -->
 	</div>
 
 	<TableOfDistricts />
@@ -295,20 +296,43 @@
 	padding: 1.5rem 0 2rem 0;
   }
 
-  .filter-sort {
+  .filters {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
-    flex-wrap: wrap; /* Wrap items to new line on small screens if necessary */
-	width: 100%;
-	max-width: 72rem;
+    margin: 2rem 0 1rem 0;
+    width: 100%;
+    max-width: 72rem;
+    gap: 1rem;
   }
 
   .filter-size {
     display: flex;
     align-items: center;
     gap: 0.5rem; /* Space between label and slider */
+  }
+
+  .slider-label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Ensure the slider has a minimum width */
+	.rangeSlider {
+		min-width: 150px; /* Adjust as needed */
+		font-size: 2rem;
+	}
+
+  @media (max-width: 768px) {
+	.filters {
+		width: 100%;
+	}
+
+	.filter-size {
+        width: 100%;
+    }
   }
 
   .action-button {
@@ -321,6 +345,7 @@
 	transition: var(--background-color) 0.3s;
 	border: none;
 	font-size: 0.9rem;
+	white-space: nowrap;
   }
 
   .action-button:hover {
@@ -331,12 +356,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-	}
-
-	.menu-container {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
 	}
 
   #scores {

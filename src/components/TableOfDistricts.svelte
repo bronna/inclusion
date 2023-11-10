@@ -37,20 +37,36 @@
     <thead>
         <tr>
             <th on:click={() => sortBy("Institution Name")} class:sorted={$sortKey === "Institution Name"}>
-                DISTRICT
-                {@html $sortKey === "Institution Name" ? ($sortOrder === 1 ? arrowUp : arrowDown) : ''}
+                <span class="header-content">
+                    DISTRICT
+                    <span class="sort-arrow">
+                        {@html $sortKey === "Institution Name" ? ($sortOrder === 1 ? arrowUp : arrowDown) : arrowDown}
+                    </span>
+                </span>
             </th>
             <th on:click={() => sortBy("decile")} class:sorted={$sortKey === "decile"}>
-                INCLUSION SCORE
-                {@html $sortKey === "decile" ? ($sortOrder === 1 ? arrowUp : arrowDown) : ''}
+                <span class="header-content">
+                    INCLUSION SCORE
+                    <span class="sort-arrow">
+                        {@html $sortKey === "decile" ? ($sortOrder === 1 ? arrowUp : arrowDown) : arrowDown}
+                    </span>
+                </span>
             </th>
             <th on:click={() => sortBy("nAlerts")} class:sorted={$sortKey === "nAlerts"}>
-                ALERTS
-                {@html $sortKey === "nAlerts" ? ($sortOrder === 1 ? arrowUp : arrowDown) : ''}
+                <span class="header-content">
+                    ALERTS
+                    <span class="sort-arrow">
+                        {@html $sortKey === "nAlerts" ? ($sortOrder === 1 ? arrowUp : arrowDown) : arrowDown}
+                    </span>
+                </span>
             </th>
             <th on:click={() => sortBy("Total Student Count")} class:sorted={$sortKey === "Total Student Count"}>
-                # OF STUDENTS WITH IEPs
-                {@html $sortKey === "Total Student Count" ? ($sortOrder === 1 ? arrowUp : arrowDown) : ''}
+                <span class="header-content">
+                    # OF STUDENTS WITH IEPs
+                    <span class="sort-arrow">
+                        {@html $sortKey === "Total Student Count" ? ($sortOrder === 1 ? arrowUp : arrowDown) : arrowDown}
+                    </span>
+                </span>
             </th>
         </tr>
     </thead>
@@ -92,17 +108,37 @@
     th {
         border-bottom: 1px solid #e0e0e0;
         text-align: left;
-        vertical-align: bottom;
+        vertical-align: middle;
         line-height: 1rem;
         font-size: 0.8rem;
         letter-spacing: 0.03rem;
         color: var(--dark-gray); /* make lighter */
         cursor: pointer;
         position: relative; /* for arrow */
+        /* display: flex;
+        align-items: center;
+        justify-content: space-between; */
+        /* white-space: nowrap; */
+    }
+
+    .header-content {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px; /* Space between text and arrow */
+    }
+
+    .sort-arrow {
+        display: inline-block;
+        margin-left: 4px;
+        opacity: 0.3;
     }
 
     th.sorted {
         color: var(--separate-color);
+    }
+
+    th.sorted .sort-arrow {
+        opacity: 1;
     }
 
     /* th svg {
@@ -114,7 +150,7 @@
         transform: translateY(-50%);
     } */
 
-    tr:hover {
+    tbody tr:hover {
         background-color: #f9f9f9;
     }
 
@@ -133,9 +169,13 @@
         width: 15%; 
     }
 
-    th:nth-child(4),
+    th:nth-child(4) {
+        width: 15%;
+    }
+
     td:nth-child(4) {
-        width: 15%
+        width: 15%;
+        text-align: right;
     }
 
     .district-name {
