@@ -166,21 +166,6 @@
         d3GElement.call(zoomBehavior.scaleBy, factor);
     }
 
-    let zoomInActive = false;
-    let zoomOutActive = false;
-
-    function handleClickZoomIn() {
-        zoomInActive = true;
-        applyZoom(1.2);
-        setTimeout(() => zoomInActive = false, 100); // Reset after short delay
-    }
-
-    function handleClickZoomOut() {
-        zoomOutActive = true;
-        applyZoom(0.8);
-        setTimeout(() => zoomOutActive = false, 100); // Reset after short delay
-    }
-
     // Adjust the dimensions and projection once the data is loaded
     onMount(() => {
       d3GElement = select(gElement)
@@ -306,16 +291,8 @@
     </svg>
 
     <div class="zoom-controls">
-      <button
-        class="zoom-button"
-        class:active={zoomInActive}
-        on:click={handleClickZoomIn}
-      >+</button>
-      <button
-        class="zoom-button"
-        class:active={zoomOutActive}
-        on:click={handleClickZoomOut}
-      >-</button>
+      <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
+      <button class="zoom-button" on:click={() => applyZoom(0.8)}>-</button>
     </div>
 </div>
 
@@ -363,8 +340,8 @@
     }
   }
 
-  .zoom-button:hover, .zoom-button.active {
-    background-color: white;
+  .zoom-button:hover {
+      background-color: white;
   }
 
   .tooltip {

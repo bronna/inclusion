@@ -52,14 +52,14 @@
                     </span>
                 </span>
             </th>
-            <th on:click={() => sortBy("nAlerts")} class:sorted={$sortKey === "nAlerts"}>
+            <!-- <th on:click={() => sortBy("nAlerts")} class:sorted={$sortKey === "nAlerts"}>
                 <span class="header-content">
                     ALERTS
                     <span class="sort-arrow">
                         {@html $sortKey === "nAlerts" ? ($sortOrder === 1 ? arrowUp : arrowDown) : arrowDown}
                     </span>
                 </span>
-            </th>
+            </th> -->
             <th on:click={() => sortBy("Total Student Count")} class:sorted={$sortKey === "Total Student Count"}>
                 <span class="header-content">
                     # OF STUDENTS WITH IEPs
@@ -145,20 +145,12 @@
 
     th:nth-child(2), 
     td:nth-child(2) {
-        width: 20%; 
+        width: 35%; 
     }
 
     th:nth-child(3), 
     td:nth-child(3) {
-        width: 15%; 
-    }
-
-    th:nth-child(4) {
-        width: 15%;
-    }
-
-    td:nth-child(4) {
-        width: 15%;
+        width: 25%; 
         text-align: right;
     }
 
