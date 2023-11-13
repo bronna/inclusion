@@ -253,8 +253,8 @@
                                   ? colorScale(district.properties.weighted_inclusion) 
                                   : "lightgray"
                               }
-                              stroke="black"
-                              stroke-width={1.2 / $currentTransform.k}
+                              stroke={colors[4]}
+                              stroke-width={1.4 / $currentTransform.k}
                               on:touchstart={e => {
                                 e.preventDefault();
                                 handleTouchStart(e, district);
@@ -317,15 +317,15 @@
 
   .zoom-button {
       background-color: var(--background-color);
-      width: 1.6rem;
-      height: 1.6rem;
+      width: 2rem;
+      height: 2rem;
       border-radius: 50%;
       color: var(--color-text);
       cursor: pointer;
       font-size: 1rem;
       font-weight: 800;
       transition: var(--background-color) 0.3s;
-      border: 1.5px solid var(--color-text);
+      border: 2px solid var(--color-text);
   }
 
   .zoom-button:hover {

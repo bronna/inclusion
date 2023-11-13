@@ -105,15 +105,12 @@
         text-align: left;
         vertical-align: middle;
         line-height: 1rem;
-        font-size: 0.8rem;
-        letter-spacing: 0.03rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.01rem;
         color: var(--dark-gray); /* make lighter */
         cursor: pointer;
         position: relative; /* for arrow */
-        /* display: flex;
-        align-items: center;
-        justify-content: space-between; */
-        /* white-space: nowrap; */
+        opacity: 0.8;
     }
 
     .header-content {
@@ -130,20 +127,12 @@
 
     th.sorted {
         color: var(--separate-color);
+        opacity: 1;
     }
 
     th.sorted .sort-arrow {
         opacity: 1;
     }
-
-    /* th svg {
-        width: 0.5rem;
-        height: 0.5rem;
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-    } */
 
     tbody tr:hover {
         background-color: #f9f9f9;

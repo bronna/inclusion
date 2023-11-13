@@ -38,7 +38,7 @@
 	// Define the sort and filter actions
     let actions = [
         { 
-			name: `Select all`, 
+			name: `select all`, 
 			action: () => {
 				selectedDistricts.set(
 					[...$districtsData]
@@ -55,7 +55,7 @@
 		// 	action: toggleHideSmallDistricts
 		// },
 		{
-			name: 'Filter by size', 
+			name: 'filter by size', 
 			action: filterBySize
 		}
     ];
@@ -123,12 +123,12 @@
 	<div class="filters">
 		<!-- Hide/show small districts-->
 		<button on:click={toggleHideSmallDistricts} class="action-button">
-			{$hideSmallDistricts ? 'Show small districts' : 'Hide small districts'}
+			{$hideSmallDistricts ? 'show small districts' : 'hide small districts'}
 		</button>
 
 		<!-- Other actions -->
 		{#each actions as action (action.name)}
-			{#if action.name !== 'Filter by size'}
+			{#if action.name !== 'filter by size'}
 				<button 
 				on:click={action.action} 
 				class="action-button">
@@ -214,10 +214,10 @@
 
   h1 {
     width: 100%;
-	max-width: 68rem;
+	max-width: 60rem;
 	padding-top: 2rem;
-	font-size: 3rem;
-	line-height: 3.5rem;
+	font-size: 3.7rem;
+	line-height: 4.4rem;
 	text-align: center;
 	font-weight: 800;
 	letter-spacing: 0.09rem;
@@ -330,7 +330,7 @@
   }
 
   .action-button {
-    padding: 0.25rem 0.75rem;
+    padding: 0.5rem 1rem;
     margin: 0;
     border-radius: 20px;
     cursor: pointer;
@@ -340,6 +340,9 @@
 	border: none;
 	font-size: 0.9rem;
 	white-space: nowrap;
+	font-weight: 600;
+	letter-spacing: 0.02rem;
+	opacity: 0.85;
   }
 
   .action-button:hover {

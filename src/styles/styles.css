@@ -8,7 +8,8 @@
 	--color-bg-2: hsl(224, 44%, 95%);
 	--color-theme-1: #ff3e00;
 	--color-theme-2: #4075a6;
-	--color-text: #011C18;
+	/* --color-text: #011C18; */
+	--color-text: #403E3E;
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
@@ -17,11 +18,11 @@
     --semi-inclusive-color: rgba(248, 170, 22, 1.0);
 	--non-inclusive-color: rgba(247, 134, 68, 1.0);
 	--separate-color: rgba(222, 84, 102, 1.0);
-    --dark-gray: #403F3D;
-	--medium-gray: #b3b3b3;
-	--light-gray: #E0DCD7;
-	--light-light-gray: #EBE8E4;
-	--background-color: #F5F2ED;
+    --dark-gray: #403E3E;
+	--medium-gray: #BCB6B6;
+	--light-gray: #DBD7D7;
+	--light-light-gray: #E8E5E4;
+	--background-color: #F4F1F0;
 }
 
 body {
