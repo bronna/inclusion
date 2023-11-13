@@ -312,31 +312,42 @@
       right: 10px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
   }
 
   .zoom-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background-color: var(--background-color);
       width: 2rem;
       height: 2rem;
       border-radius: 50%;
       color: var(--color-text);
       cursor: pointer;
-      font-size: 1rem;
-      font-weight: 800;
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1;
       transition: var(--background-color) 0.3s;
       border: 2px solid var(--color-text);
   }
 
+  @media (max-width: 768px) {
+    .zoom-button {
+        width: 2.5rem; /* Larger size on mobile */
+        height: 2.5rem;
+    }
+  }
+
   .zoom-button:hover {
-      background-color: gray;
+      background-color: white;
   }
 
   .tooltip {
     position: absolute;
     padding: 10px;
     color: var(--text-color);
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.8);
     border-radius: 4px;
     pointer-events: none;
     opacity: 0;

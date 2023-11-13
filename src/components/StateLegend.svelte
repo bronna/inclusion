@@ -166,7 +166,7 @@
         left: -3px;
         width: 14px;
         height: 14px;
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.7);
         border-radius: 50%;
         border: 1.25px solid var(--color-text);
         margin-left: -5px;
