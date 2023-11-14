@@ -75,14 +75,14 @@
             {#if !$hideSmallDistricts || (district.properties["Total Student Count"] > 500)}
                 <tr>
                     <td class="district-name">{district.properties["Institution Name"]}</td>
-                    <td>
+                    <td class="district-metric">
                         <InclusionRing value={district.properties.decile} />
                     </td>
-                    <td>
+                    <!-- <td>
                         {#if district.properties.nAlerts > 0}
                             <span class="alert">{district.properties.nAlerts}</span>
                         {/if}
-                    </td>
+                    </td> -->
                     <td class="student-count">{district.properties["Total Student Count"].toLocaleString()}</td>
                 </tr>
             {/if}
@@ -98,6 +98,27 @@
     
     th, td {
         padding: 8px 12px;
+    }
+
+    @media (max-width: 768px) {
+        th, td {
+            font-size: 0.75rem; /* smaller font size on mobile */
+            padding: 6px 8px; /* even smaller padding on mobile */
+        }
+
+        th:nth-child(1), td:nth-child(1) {
+            width: 50%;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            width: 30%;
+            text-align: center;
+        }
+
+        th:nth-child(3), td:nth-child(3) {
+            width: 20%; /* since there are now only 3 columns */
+            text-align: right; /* for number of students */
+        }
     }
 
     th {
@@ -126,7 +147,7 @@
     }
 
     th.sorted {
-        color: var(--separate-color);
+        color: var(--inclusive-color);
         opacity: 1;
     }
 
@@ -141,6 +162,7 @@
     th:nth-child(1), 
     td:nth-child(1) {
         width: 50%; 
+        padding-left: 1rem;
     }
 
     th:nth-child(2), 
@@ -160,9 +182,19 @@
         font-weight: 700;
         line-height: 1.5rem;
         letter-spacing: 0.04rem;
+        white-space: normal;
+    }
+
+    .district-metric {
+        text-align: center;
+        white-space: normal;
+        padding-left: 2.25rem;
     }
 
     .student-count {
         font-size: 1.2rem;
+        white-space: normal;
+        text-align: right;
+        padding-right: 2rem;
     }
 </style>
