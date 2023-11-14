@@ -316,9 +316,9 @@
   }
 
   .zoom-button {
-      display: flex;
+      /* display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: center; */
       background-color: var(--background-color);
       width: 2rem;
       height: 2rem;
@@ -331,6 +331,7 @@
       transition: var(--background-color) 0.3s;
       border: 2px solid var(--color-text);
       box-sizing: border-box;
+      aspect-ratio: 1 / 1;
   }
 
   @media (max-width: 768px) {
