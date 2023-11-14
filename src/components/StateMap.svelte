@@ -115,17 +115,36 @@
       }
     }
 
-    function handleTouchStart(event, district) {
-        // Prevent default to avoid any browser specific touch actions
-        event.preventDefault();
+    let isDragging = false;
+    const dragThreshold = 10; // pixels
+    let touchStartX = 0;
+    let touchStartY = 0;
 
-        // Check if it's a single touch
-        if (event.touches.length === 1) {
-            isTouched = true;
-            toggleDistrictSelection(district);
-            showTooltip(district.properties["Institution Name"], district.properties.decile);
-            updateTooltipPosition(event);
+    function handleTouchStart(event, district) {
+        event.preventDefault();
+        isTouched = true;
+        isDragging = false;
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+    }
+
+    function handleTouchMove(event) {
+        updateTooltipPosition(event);
+        const moveX = event.touches[0].clientX;
+        const moveY = event.touches[0].clientY;
+
+        // Check if the movement is beyond the threshold
+        if (Math.abs(moveX - touchStartX) > dragThreshold || Math.abs(moveY - touchStartY) > dragThreshold) {
+            isDragging = true;
         }
+    }
+
+    function handleTouchEnd(event, district) {
+        if (!isDragging) {
+            toggleDistrictSelection(district);
+        }
+        isTouched = false;
+        isDragging = false;
     }
 
     function handleDistrictClick(event, district) {
@@ -139,14 +158,6 @@
           hideTooltip();
           tooltipVisible = false;
       }
-    }
-
-    function handleTouchMove(event) {
-        updateTooltipPosition(event);
-    }
-
-    function handleTouchEnd() {
-        isTouched = false;
     }
 
     // function handleDistrictClick(event, district) {
