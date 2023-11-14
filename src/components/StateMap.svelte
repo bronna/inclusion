@@ -115,36 +115,40 @@
       }
     }
 
-    let isDragging = false;
-    const dragThreshold = 10; // pixels
-    let touchStartX = 0;
-    let touchStartY = 0;
+    let touchStartPosition = { x: 0, y: 0 };
+    const tapThreshold = 10; // pixels, threshold to distinguish between tap and drag
 
     function handleTouchStart(event, district) {
         event.preventDefault();
         isTouched = true;
-        isDragging = false;
-        touchStartX = event.touches[0].clientX;
-        touchStartY = event.touches[0].clientY;
+        touchStartPosition.x = event.touches[0].clientX;
+        touchStartPosition.y = event.touches[0].clientY;
     }
 
     function handleTouchMove(event) {
         updateTooltipPosition(event);
-        const moveX = event.touches[0].clientX;
-        const moveY = event.touches[0].clientY;
-
-        // Check if the movement is beyond the threshold
-        if (Math.abs(moveX - touchStartX) > dragThreshold || Math.abs(moveY - touchStartY) > dragThreshold) {
-            isDragging = true;
-        }
     }
 
     function handleTouchEnd(event, district) {
-        if (!isDragging) {
+        const touchEndPosition = {
+            x: event.changedTouches[0].clientX,
+            y: event.changedTouches[0].clientY
+        };
+
+        // Calculate the distance moved
+        const distanceMoved = Math.sqrt(
+            Math.pow(touchEndPosition.x - touchStartPosition.x, 2) +
+            Math.pow(touchEndPosition.y - touchStartPosition.y, 2)
+        );
+
+        // If the distance moved is less than the threshold, treat it as a tap
+        if (distanceMoved < tapThreshold) {
             toggleDistrictSelection(district);
+            showTooltip(district.properties["Institution Name"], district.properties.decile);
+            updateTooltipPosition(event);
         }
+
         isTouched = false;
-        isDragging = false;
     }
 
     function handleDistrictClick(event, district) {
