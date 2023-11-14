@@ -98,10 +98,41 @@
 
     let isTouched = false;
 
+    function toggleDistrictSelection(district) {
+      const districtId = district.properties.GEOID;
+
+      // Check if the district is already selected
+      if ($selectedDistricts.includes(districtId)) {
+        // Deselect it
+        selectedDistricts.update(currentSelected => {
+          return currentSelected.filter(id => id !== districtId);
+        });
+      } else {
+        // Select it
+        selectedDistricts.update(currentSelected => {
+          return [...currentSelected, districtId];
+        });
+      }
+    }
+
     function handleTouchStart(event, district) {
         isTouched = true;
+        toggleDistrictSelection(district);
         showTooltip(district.properties["Institution Name"], district.properties.decile);
         updateTooltipPosition(event);
+    }
+
+    function handleDistrictClick(event, district) {
+      toggleDistrictSelection(district);
+      
+      if (!tooltipVisible) {
+          showTooltip(district.name, district.decile);
+          updateTooltipPosition(event);
+          tooltipVisible = true;
+      } else {
+          hideTooltip();
+          tooltipVisible = false;
+      }
     }
 
     function handleTouchMove(event) {
@@ -112,31 +143,31 @@
         isTouched = false;
     }
 
-    function handleDistrictClick(event, district) {
-      const districtId = district.properties.GEOID;
+    // function handleDistrictClick(event, district) {
+    //   const districtId = district.properties.GEOID;
 
-      // check if the district is already selected
-      if ($selectedDistricts.includes(districtId)) {
-        // deselect it
-        selectedDistricts.update(currentSelected => {
-          return currentSelected.filter(id => id !== districtId)
-        })
-      } else {
-        // select it
-        selectedDistricts.update(currentSelected => {
-          return [...currentSelected, districtId]
-        })
-      }
+    //   // check if the district is already selected
+    //   if ($selectedDistricts.includes(districtId)) {
+    //     // deselect it
+    //     selectedDistricts.update(currentSelected => {
+    //       return currentSelected.filter(id => id !== districtId)
+    //     })
+    //   } else {
+    //     // select it
+    //     selectedDistricts.update(currentSelected => {
+    //       return [...currentSelected, districtId]
+    //     })
+    //   }
 
-      if (!tooltipVisible) {
-          showTooltip(district.name, district.decile);
-          updateTooltipPosition(event);
-          tooltipVisible = true;
-      } else {
-          hideTooltip();
-          tooltipVisible = false;
-      }
-    }
+    //   if (!tooltipVisible) {
+    //       showTooltip(district.name, district.decile);
+    //       updateTooltipPosition(event);
+    //       tooltipVisible = true;
+    //   } else {
+    //       hideTooltip();
+    //       tooltipVisible = false;
+    //   }
+    // }
 
     let currentTransform = writable({ x: 0, y: 0, k: 1 })
     let svgElement
