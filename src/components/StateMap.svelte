@@ -290,10 +290,16 @@
       
     </svg>
 
-    <div class="zoom-controls">
+    <!-- <div class="zoom-controls">
       <button class="zoom-button" on:click={() => applyZoom(1.2)}>+</button>
       <button class="zoom-button" on:click={() => applyZoom(0.8)}>-</button>
+    </div> -->
+
+    <div class="basic-zoom-controls">
+      <button class="basic-zoom-button" on:click={() => applyZoom(1.2)}>+</button>
+      <button class="basic-zoom-button" on:click={() => applyZoom(0.8)}>-</button>
     </div>
+  
 </div>
 
 <style>
@@ -316,9 +322,9 @@
   }
 
   .zoom-button {
-      /* display: flex;
+      display: flex;
       align-items: center;
-      justify-content: center; */
+      justify-content: center;
       background-color: var(--background-color);
       width: 2rem;
       height: 2rem;
@@ -339,6 +345,36 @@
         font-size: 1.4rem;
     }
   }
+
+  .basic-zoom-controls {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.basic-zoom-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff; /* Example color */
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    border: none;
+    aspect-ratio: 1 / 1; /* Ensure circular shape */
+}
+
+@media (max-width: 768px) {
+    .basic-zoom-button {
+        font-size: 1.4rem;
+    }
+}
 
   .zoom-button:hover {
       background-color: white;
