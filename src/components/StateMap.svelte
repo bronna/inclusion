@@ -116,10 +116,16 @@
     }
 
     function handleTouchStart(event, district) {
-        isTouched = true;
-        toggleDistrictSelection(district);
-        showTooltip(district.properties["Institution Name"], district.properties.decile);
-        updateTooltipPosition(event);
+        // Prevent default to avoid any browser specific touch actions
+        event.preventDefault();
+
+        // Check if it's a single touch
+        if (event.touches.length === 1) {
+            isTouched = true;
+            toggleDistrictSelection(district);
+            showTooltip(district.properties["Institution Name"], district.properties.decile);
+            updateTooltipPosition(event);
+        }
     }
 
     function handleDistrictClick(event, district) {
