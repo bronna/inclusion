@@ -334,8 +334,6 @@
 
   @media (max-width: 768px) {
     .zoom-button {
-        width: 2.5rem; /* Larger size on mobile */
-        height: 2.5rem;
         font-size: 1.4rem;
     }
   }

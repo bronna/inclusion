@@ -103,7 +103,7 @@
     @media (max-width: 768px) {
         th, td {
             font-size: 0.75rem; /* smaller font size on mobile */
-            padding: 6px 8px; /* even smaller padding on mobile */
+            padding: 6px 8px; /* smaller padding on mobile */
         }
 
         th:nth-child(1), td:nth-child(1) {
@@ -116,8 +116,8 @@
         }
 
         th:nth-child(3), td:nth-child(3) {
-            width: 20%; /* since there are now only 3 columns */
-            text-align: right; /* for number of students */
+            width: 20%;
+            text-align: right;
         }
     }
 
@@ -128,7 +128,7 @@
         line-height: 1rem;
         font-size: 0.85rem;
         letter-spacing: 0.01rem;
-        color: var(--dark-gray); /* make lighter */
+        color: var(--dark-gray);
         cursor: pointer;
         position: relative; /* for arrow */
         opacity: 0.8;
