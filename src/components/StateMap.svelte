@@ -330,6 +330,7 @@
       line-height: 1;
       transition: var(--background-color) 0.3s;
       border: 2px solid var(--color-text);
+      box-sizing: border-box;
   }
 
   @media (max-width: 768px) {

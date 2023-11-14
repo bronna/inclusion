@@ -65,8 +65,8 @@
     
     .metric-value {
         position: absolute;
-        top: 50%;
-        left: 50%;
+        top: 52%;
+        left: 51%;
         transform: translate(-50%, -120%);
         color: var(--color-text);
         font-size: 1.6rem;
