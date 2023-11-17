@@ -5,7 +5,7 @@
   </div>
 
     <p>Created by <a href="https://bronna.github.io/" target="_blank">Brianna Wilson</a></p>
-    <p>2023</p>
+    <!-- <p>2023</p> -->
 </footer>
 
 <style>

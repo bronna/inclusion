@@ -90,15 +90,15 @@
 	</h1>
 
 	<p class="text-width">
-		Advocates around the country work for children with disabilities to be included in their communities and in their schools. Inclusion ensures that students with disabilities spend more time in regular classrooms, actively participating alongside their non-disabled peers. Mounting research indicates that when supported appropriately, inclusive educational settings benefit all students, regardless of their abilities.
+		Around the country, advocates work to ensure that students with disabilities are included in their school communities. This involves having them in regular classrooms alongside their peers as much as possible, with any needed supports. Mounting research indicates that such inclusive educational environments benefit all students, whether they are disabled or not.
 	</p>
 
 	<p class="text-width">
-		This tool allows you to explore inclusion data from school districts across Oregon. You can compare districts to each other, or to the state as a whole. You can also filter and sort districts by size, or by their inclusion scores.
+		This tool allows you to explore the most recent inclusion data from school districts across your state. You have the ability to compare districts to each other and to the state as a whole.
 	</p>
 
 	<p class="text-width">
-		To get started, select districts in the dropdown or on the map below.
+		To begin exploring, enter the name of a district below, or select one from the map.
 	</p>
 
 	<div class="search text-width">
@@ -166,15 +166,15 @@
 </section>
 
 <section id="breakdown">
-	<p class="text-width">
+	<!-- <p class="text-width">
 		Inclusion scores are based on the rates published annually by school districts. Inclusion rates can be broken down as follows, using the entire state of Oregon as an example:
 	</p>
 
 	<div class="state text-width">
 		<StateLegend stateData={stateData} />
-	</div>
+	</div> -->
 
-	<aside class="aside text-width">
+	<aside class="text-width">
 		<div class="inner-content">
 			<svg 
 				xmlns="http://www.w3.org/2000/svg" 
@@ -189,15 +189,15 @@
 					d="M 16 3 C 12.210938 3 8.765625 4.113281 6.21875 5.976563 C 3.667969 7.835938 2 10.507813 2 13.5 C 2 17.128906 4.472656 20.199219 8 22.050781 L 8 29 L 14.746094 23.9375 C 15.15625 23.96875 15.570313 24 16 24 C 19.789063 24 23.234375 22.886719 25.78125 21.027344 C 28.332031 19.164063 30 16.492188 30 13.5 C 30 10.507813 28.332031 7.835938 25.78125 5.976563 C 23.234375 4.113281 19.789063 3 16 3 Z M 16 5 C 19.390625 5 22.445313 6.015625 24.601563 7.589844 C 26.757813 9.164063 28 11.246094 28 13.5 C 28 15.753906 26.757813 17.835938 24.601563 19.410156 C 22.445313 20.984375 19.390625 22 16 22 C 15.507813 22 15.015625 21.972656 14.523438 21.925781 L 14.140625 21.894531 L 10 25 L 10 20.859375 L 9.421875 20.59375 C 6.070313 19.019531 4 16.386719 4 13.5 C 4 11.246094 5.242188 9.164063 7.398438 7.589844 C 9.554688 6.015625 12.609375 5 16 5 Z">
 				</path>
 			</svg>
-			<p><strong>IEP</strong>s, or <strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans, are documents put together by teams of teachers, therapists, and families for students with disabilities. They determine what supports the student will receive at school to help them work towards their educational goals</p>
+			<p><strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans (<strong>IEP</strong>s), are collaboratively crafted documents put together by teachers, therapists, students, and families. Designed for students with disabilities, these plans outline what supports each student will receive to assist in achieving their educational goals</p>
 		</div>
 	</aside>
 
 	<hr class="text-width" />
 
 	<div class="data-source text-width">
-		<p>Data is from the 2021-22 school year and comes from the <a href="https://www.ode.state.or.us/data/reportcard/media.aspx" target="_blank">Oregon Department of Education</a>. Geography data comes from the <a href="https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2022&layergroup=School+Districts" target="_blank">US Census</a></p>
-		<p>Methodology can be found on <a href="https://github.com/bronna/inclusion/tree/main/src/data" target="_blank">Github</a></p>
+		<p>Inclusion data is from the 2021-22 school year and comes from the <a href="https://www.ode.state.or.us/data/reportcard/media.aspx" target="_blank">Oregon Department of Education</a>. Geography data comes from the <a href="https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2022&layergroup=School+Districts" target="_blank">US Census</a></p>
+		<p><a href="https://github.com/bronna/inclusion/tree/main/src/data" target="_blank">Methodology</a></p>
 	</div>
 </section>
 
@@ -238,22 +238,20 @@
   }
 
   aside {
-	background-color: var(--light-gray);
 	margin: 1rem 0;
   }
 
   aside .inner-content {
 	display: flex;
 	align-items: top;
-    padding: 2% 7%;
   }
 
   .comment-icon {
-	margin-right: 10px;
+	padding-right: 0.5rem;
 	width: 60px;
 	min-width: 30px;
 	height: 60px;
-	transform: translateY(4px);
+	transform: translateY(-4px);
   }
 
   .inner-content svg {
@@ -363,6 +361,11 @@
 	background-color: var(--light-light-gray);
 	padding-top: 3rem;
 	padding-bottom: 4rem;
+  }
+
+  #breakdown a {
+	color: var(--inclusive-color);
+	font-weight: 600;
   }
 
   hr {
