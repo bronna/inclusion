@@ -1,6 +1,7 @@
 <script>
     import { hideSmallDistricts, selectedDistrictsData } from '../stores/stores.js'
     import { writable, derived } from 'svelte/store'
+    import { goto } from '$app/navigation'
     import InclusionRing from './InclusionRing.svelte'
 
     const sortKey = writable('null')
@@ -74,7 +75,14 @@
         {#each $sortedDistrictsData as district (district.properties.GEOID)}
             {#if !$hideSmallDistricts || (district.properties["Total Student Count"] > 500)}
                 <tr>
-                    <td class="district-name">{district.properties["Institution Name"]}</td>
+                    <td class="district-name">
+                        <span on:click={() => goto(`/${district.properties.GEOID}`)}>
+                            {district.properties["Institution Name"]}
+                            <svg viewBox="0 0 24 24" width="12" height="12" class="inline-arrow">
+                                <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="3" />
+                            </svg>
+                        </span>
+                    </td>
                     <td class="district-metric">
                         <InclusionRing value={district.properties.decile} />
                     </td>
@@ -155,8 +163,10 @@
         opacity: 1;
     }
 
-    tbody tr:hover {
-        background-color: #f9f9f9;
+    tbody tr td:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 3px;
     }
 
     th:nth-child(1), 

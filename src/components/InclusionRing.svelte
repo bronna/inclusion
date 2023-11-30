@@ -1,6 +1,6 @@
 <script>
     import { arc, pie } from 'd3-shape';
-    import { interpolate } from 'd3-interpolate'
+    import { interpolateHsl } from 'd3-interpolate'
     import { scaleSequential } from 'd3-scale';
     import { colors } from '../styles/colors';
   
@@ -25,9 +25,9 @@
 
     function fourPointInterpolator(t) {
         const interpolators = [
-            interpolate(colors[0], colors[1]),
-            interpolate(colors[1], colors[2]),
-            interpolate(colors[2], colors[3]),
+            interpolateHsl(colors[0], colors[1]),
+            interpolateHsl(colors[1], colors[2]),
+            interpolateHsl(colors[2], colors[3]),
         ]
 
         if (t < 0.33) return interpolators[0](t * 3)
@@ -45,7 +45,7 @@
     <svg width={width} height={height}>
       <g transform={`translate(${width / 2},${height / 2})`}>
         {#each pathData as d, i}
-          <path d={d} fill={i === 0 ? colors[0] : '#fff'} />
+          <path d={d} fill={i === 0 ? computedColor : colors[7]} />
         {/each}
       </g>
     </svg>
