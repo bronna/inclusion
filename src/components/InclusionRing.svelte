@@ -2,9 +2,12 @@
     import { arc, pie } from 'd3-shape';
     import { interpolateHsl } from 'd3-interpolate'
     import { scaleSequential } from 'd3-scale';
+    import { scaleLinear } from 'd3-scale';
     import { colors } from '../styles/colors';
+    import { minWeightedInclusion, maxWeightedInclusion } from '../stores/stores.js';
   
     export let value = 0;
+    export let weighted_inclusion = 0;
 
     let dataset = [{ label: 'filled', value: value }, { label: 'empty', value: 10 - value }];
   
@@ -12,6 +15,10 @@
     let height = 42;
     let radius = Math.min(width, height) / 2;
     let donutWidth = 5;
+
+    const colorScale = scaleLinear()
+      .domain([$minWeightedInclusion, $maxWeightedInclusion])
+      .range(['#fff', colors[0]]);
   
     let arcGenerator = arc()
         .innerRadius(radius - donutWidth)
@@ -35,21 +42,32 @@
         else return interpolators[2]((t - 0.66) * 3)
     }
 
-    const colorScale = scaleSequential(fourPointInterpolator)
-        .domain([10, 0])
+    // const colorScale = scaleSequential(fourPointInterpolator)
+    //     .domain([10, 0])
 
-    let computedColor = colorScale(value)
+    let computedColor = colorScale(weighted_inclusion)
 </script>
 
 <div class="donut-chart">
-    <svg width={width} height={height}>
+    <!-- <svg width={width} height={height}>
       <g transform={`translate(${width / 2},${height / 2})`}>
         {#each pathData as d, i}
           <path d={d} fill={i === 0 ? computedColor : colors[7]} />
         {/each}
       </g>
+    </svg> -->
+    <svg width={width} height={height}>
+        <g transform={`translate(${width / 2},${height / 2})`}>
+          <!-- {#each pathData as d, i}
+            <path d={d} fill={i === 0 ? computedColor : colors[7]} />
+          {/each} -->
+          <circle cx="0" cy="0" r="20" fill={value ? computedColor : "white"} stroke={colors[0]} />
+        </g>
     </svg>
     {#if value}
+        <!-- <svg width="200" height="100">
+            <text x="10" y="50" fill="white" stroke="black" stroke-width="1">My Text</text>
+        </svg>-->
         <p class="metric-value">{value}</p>
     {:else}
         <p class="metric-value">—</p>
@@ -68,7 +86,12 @@
         top: 52%;
         left: 51%;
         transform: translate(-50%, -120%);
-        color: var(--color-text);
+        color: white;
+        text-shadow:
+            -1px -1px 0 var(--inclusive-color),
+            1px -1px 0 var(--inclusive-color),
+            -1px 1px 0 var(--inclusive-color),
+            1px 1px 0 var(--inclusive-color); /* Simulates a stroke */
         font-size: 1.6rem;
         letter-spacing: 0.02rem;
         font-weight: 700;

@@ -49,7 +49,7 @@
                 <span class="header-content">
                     INCLUSION SCORE
                     <span class="sort-arrow">
-                        {@html $sortKey === "decile" ? ($sortOrder === 1 ? arrowUp : arrowDown) : arrowDown}
+                        {@html $sortKey === "weighted_inclusion" ? ($sortOrder === 1 ? arrowUp : arrowDown) : arrowDown}
                     </span>
                 </span>
             </th>
@@ -84,7 +84,7 @@
                         </span>
                     </td>
                     <td class="district-metric">
-                        <InclusionRing value={district.properties.decile} />
+                        <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
                     </td>
                     <!-- <td>
                         {#if district.properties.nAlerts > 0}
@@ -193,6 +193,7 @@
         line-height: 1.5rem;
         letter-spacing: 0.04rem;
         white-space: normal;
+        cursor: pointer;
     }
 
     .district-metric {

@@ -202,12 +202,6 @@
 </section>
 
 <style>
-  section {
-    display: flex;
-    flex-direction: column;
-	align-items: center;
-  }
-
   p {
 	margin: 0.6rem 0;
   }
