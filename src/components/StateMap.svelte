@@ -71,7 +71,8 @@
         new InclusionRing({
           target: tooltip,
           props: {
-            value: value
+            value: value,
+            weighted_inclusion: value
           }
         })
       } else {
@@ -288,6 +289,14 @@
                                 if (!isTouched) handleDistrictClick(e, district);
                             }}
                         ></path>
+
+                        <!-- Circle at center of district
+                        <circle
+                            cx={projection([district.properties.INTPTLON, district.properties.INTPTLAT])[0]}
+                            cy={projection([district.properties.INTPTLON, district.properties.INTPTLAT])[1]}
+                            r="2"
+                            fill="red"
+                        /> -->
                     {/if}
                 {/each}
 

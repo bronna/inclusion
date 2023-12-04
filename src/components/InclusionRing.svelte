@@ -61,7 +61,7 @@
           <!-- {#each pathData as d, i}
             <path d={d} fill={i === 0 ? computedColor : colors[7]} />
           {/each} -->
-          <circle cx="0" cy="0" r="20" fill={value ? computedColor : "white"} stroke={colors[0]} />
+          <circle cx="0" cy="0" r="20" fill={value ? computedColor : "white"} stroke={colors[5]} stroke-width="1.4" />
         </g>
     </svg>
     {#if value}
@@ -87,14 +87,14 @@
         left: 51%;
         transform: translate(-50%, -120%);
         color: white;
-        text-shadow:
-            -1px -1px 0 var(--inclusive-color),
-            1px -1px 0 var(--inclusive-color),
-            -1px 1px 0 var(--inclusive-color),
-            1px 1px 0 var(--inclusive-color); /* Simulates a stroke */
+        text-shadow: /* Simulates a stroke - H offset, V offset, blur R, color */
+            -1px -1px 0 var(--color-text), /* Bottom right shadow */
+            1px 1px 0 var(--color-text), /* Top left shadow */
+            -1px 1px 0 var(--color-text), /* Top right shadow */
+            1px -1px 0 var(--color-text); /* Bottom left shadow */
         font-size: 1.6rem;
         letter-spacing: 0.02rem;
-        font-weight: 700;
+        font-weight: 600;
     }
 </style>
 

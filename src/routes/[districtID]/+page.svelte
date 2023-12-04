@@ -1,6 +1,8 @@
 <script>
     import InclusionRing from '../../components/InclusionRing.svelte';
-    import DistrictData from '../../components/DistrictData.svelte';
+    import MiniHistogram from '../../components/MiniHistogram.svelte';
+    import DistrictDonut from '../../components/DistrictDonut.svelte';
+    import DonutLegend from '../../components/DonutLegend.svelte';
     export let data
 
     console.log(data)
@@ -10,13 +12,24 @@
     <h1 class="district-name">{data.properties["Institution Name"]}</h1>
 
     <div class="text-width metric" id="score">
-        <h3 class="metric-name">Inclusion Score: </h3>
-        <InclusionRing value={data.properties.decile} weighted_inclusion={data.properties.weighted_inclusion} />
+        <div class="score-label">
+            <h3 class="metric-name">Inclusion Score: </h3>
+            <InclusionRing value={data.properties.decile} weighted_inclusion={data.properties.weighted_inclusion} />
+        </div>
+        
+        <div class="comparison-hists">
+            <MiniHistogram 
+                metricName={"weighted_inclusion"} 
+                metric ={data.properties.weighted_inclusion}
+                metricLabel={data.properties.decile}
+            />
+        </div>
     </div>
 
     <div class="text-width metric">
         <h3 class="metric-name">Inclusion Breakdown</h3>
-        <DistrictData districtData={data} />
+        <DistrictDonut districtData={data} />
+        <DonutLegend districtData={data} />
     </div>
 
     <div class="text-width metric">
@@ -51,7 +64,23 @@
 <style>
     .metric {
         margin: 1rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
+
+    #score {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .score-label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
     .metric-name {
         color: var(--color-text);
         font-size: 1.3rem;
@@ -59,11 +88,5 @@
         font-weight: 700;
         font-family: 'Bitter', serif;
         margin-right: 1rem;
-    }
-
-    #score {
-        display: flex;
-        display-direction: row;
-        align-items: center;
     }
 </style>
