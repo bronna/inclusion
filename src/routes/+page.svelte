@@ -11,6 +11,7 @@
   import StateLegend from "../components/StateLegend.svelte";
   import StateMap from "../components/StateMap.svelte";
   import TableOfDistricts from "../components/TableOfDistricts.svelte";
+  import Sources from "../components/Sources.svelte";
 
   let data = getData()
 
@@ -193,12 +194,7 @@
 		</div>
 	</aside>
 
-	<hr class="text-width" />
-
-	<div class="data-source text-width">
-		<p>Inclusion data is from the 2021-22 school year and comes from the <a href="https://www.ode.state.or.us/data/reportcard/media.aspx" target="_blank">Oregon Department of Education</a>. Geography data comes from the <a href="https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2022&layergroup=School+Districts" target="_blank">US Census</a></p>
-		<p><a href="https://github.com/bronna/inclusion/tree/main/src/data" target="_blank">Methodology</a></p>
-	</div>
+	<Sources />
 </section>
 
 <style>
@@ -354,23 +350,5 @@
   #breakdown {
 	background-color: var(--light-light-gray);
 	padding-top: 3rem;
-	padding-bottom: 4rem;
-  }
-
-  #breakdown a {
-	color: var(--inclusive-color);
-	font-weight: 600;
-  }
-
-  hr {
-	margin-top: 3rem;
-	border: 0;
-    height: 1px;
-    background-color: var(--dark-gray);
-    box-shadow: none;
-  }
-
-  .data-source p {
-	font-size: 1rem;
   }
 </style>

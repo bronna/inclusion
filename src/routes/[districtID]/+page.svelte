@@ -3,6 +3,9 @@
     import MiniHistogram from '../../components/MiniHistogram.svelte';
     import DistrictDonut from '../../components/DistrictDonut.svelte';
     import DonutLegend from '../../components/DonutLegend.svelte';
+    import Sources from '../../components/Sources.svelte';
+    import DistrictCard from '../../components/DistrictCard.svelte';
+
     export let data
 
     console.log(data)
@@ -33,17 +36,13 @@
     </div>
 
     <div class="text-width metric">
-        <h3 class="metric-name">Discipline</h3>
+        <h3 class="metric-name">Alerts</h3>
         <p>
             {data.properties.SuspExplFg === "No" ? "No reports of disproportionate discipline of students with IEPs" : "This district reported disproportionate discipline of students with IEPs"}
         </p>
         <p>
             {data.properties.SuspExplRaceEthnicityFg === "No" ? "No reports of disproportionate discipline of students in certain racial groups with IEPs" : "This district reported disproportionate discipline of students in certain racial groups with IEPs"}
         </p>
-    </div>
-
-    <div class="text-width metric">
-        <h3 class="metric-name">Racial Representation</h3>
         <p>
             {data.properties.DisPrptnRprsntnFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a disability" : "This district reported disproportionate identification of students in certain racial groups as having a disability"}
         </p>
@@ -53,12 +52,19 @@
     </div>
 
     <div class="text-width metric">
-        <h3 class="metric-name">Graduation Rate</h3>
+        <h3 class="metric-name">4-Year Graduation Rate of Students with IEPs</h3>
+        <h1>
+            {Math.round(data.properties['IEP 4Yr Cohort Grad 18-19'])}%*
+        </h1>
+        <p>*from school year 2018-19</p>
     </div>
 
     <div class="text-width metric">
         <h3 class="metric-name">Nearby Districts</h3>
+        <DistrictCard district={data} />
     </div>
+
+    <Sources />
 </section>
 
 <style>
@@ -79,6 +85,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        margin-bottom: 1rem;
     }
 
     .metric-name {
