@@ -82,7 +82,7 @@
                         {/each}
                         
                         <!-- number of students in center of donut chart -->
-                        <text x="0" y="-14" text-anchor="middle" dominant-baseline="middle" font-size="1.6rem" font-weight="bold" fill="black">
+                        <text x="0" y="-14" text-anchor="middle" dominant-baseline="middle" font-size="1.6rem" font-weight="bold" fill={colors[5]}>
                             {data.properties["Total Student Count"].toLocaleString('en-US')}
                         </text>
                         <text x="0" y="8" text-anchor="middle" dominant-baseline="middle" font-size="0.9rem" fill={colors[5]}>

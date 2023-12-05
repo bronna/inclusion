@@ -64,7 +64,7 @@
     let tooltip;
     let tooltipVisible = false
 
-    function showTooltip(name, value) {
+    function showTooltip(name, value, rawInclusion) {
       if(value) {
         tooltip.textContent = `${name}`
 
@@ -72,7 +72,7 @@
           target: tooltip,
           props: {
             value: value,
-            weighted_inclusion: value
+            weighted_inclusion: rawInclusion
           }
         })
       } else {
@@ -145,7 +145,7 @@
         // If the distance moved is less than the threshold, treat it as a tap
         if (distanceMoved < tapThreshold) {
             toggleDistrictSelection(district);
-            showTooltip(district.properties["Institution Name"], district.properties.decile);
+            showTooltip(district.properties["Institution Name"], district.properties.decile, district.properties.weighted_inclusion);
             updateTooltipPosition(event);
         }
 
@@ -156,7 +156,7 @@
       toggleDistrictSelection(district);
       
       if (!tooltipVisible) {
-          showTooltip(district.name, district.decile);
+          showTooltip(district.properties["Institution Name"], district.properties.decile, district.properties.weighted_inclusion);
           updateTooltipPosition(event);
           tooltipVisible = true;
       } else {
@@ -164,32 +164,6 @@
           tooltipVisible = false;
       }
     }
-
-    // function handleDistrictClick(event, district) {
-    //   const districtId = district.properties.GEOID;
-
-    //   // check if the district is already selected
-    //   if ($selectedDistricts.includes(districtId)) {
-    //     // deselect it
-    //     selectedDistricts.update(currentSelected => {
-    //       return currentSelected.filter(id => id !== districtId)
-    //     })
-    //   } else {
-    //     // select it
-    //     selectedDistricts.update(currentSelected => {
-    //       return [...currentSelected, districtId]
-    //     })
-    //   }
-
-    //   if (!tooltipVisible) {
-    //       showTooltip(district.name, district.decile);
-    //       updateTooltipPosition(event);
-    //       tooltipVisible = true;
-    //   } else {
-    //       hideTooltip();
-    //       tooltipVisible = false;
-    //   }
-    // }
 
     let currentTransform = writable({ x: 0, y: 0, k: 1 })
     let svgElement
@@ -277,7 +251,7 @@
                                 handleTouchEnd();
                             }}
                             on:mouseover={e => {
-                                if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile);
+                                if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile, district.properties.weighted_inclusion);
                             }}
                             on:mousemove={e => {
                                 if (!isTouched) updateTooltipPosition(e);
@@ -329,7 +303,7 @@
                                   handleTouchEnd();
                               }}
                               on:mouseover={e => {
-                                  if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile);
+                                  if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile, district.properties.weighted_inclusion);
                               }}
                               on:mousemove={e => {
                                   if (!isTouched) updateTooltipPosition(e);

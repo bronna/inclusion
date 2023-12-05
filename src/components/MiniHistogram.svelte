@@ -16,7 +16,9 @@
     const height = 120 - margin.top - margin.bottom
 
     // extract the data values from districtsData for the specified metric
-    $: data = $districtsData.map(district => district.properties[metricName])
+    $: data = $districtsData
+        .filter(district => district.properties[metricName] > 0)
+        .map(district => district.properties[metricName])
     $: if (data && data.length > 0) {
         createHistogram()
     }
@@ -66,7 +68,7 @@
                 y1={-10}
                 y2={height + 11}
                 stroke={colors[0]}
-                stroke-width={4}
+                stroke-width={2.5}
             />
 
             <text
@@ -75,7 +77,7 @@
                 text-anchor="middle"
                 fill={colors[0]}
                 font-size="1.2rem"
-                font-weight="700"
+                font-weight="600"
             >
                 {metricLabel}
             </text>
