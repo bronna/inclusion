@@ -54,7 +54,13 @@
     <div class="text-width metric">
         <h3 class="metric-name">4-Year Graduation Rate of Students with IEPs</h3>
         <h1>
-            {Math.round(data.properties['IEP 4Yr Cohort Grad 18-19'])}%*
+            {#if data.properties['IEP 4Yr Cohort Grad 18-19'] === 5}
+                {'<' + Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%*'}
+            {:else if data.properties['IEP 4Yr Cohort Grad 18-19'] === 95}
+                {'>' + Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%*'}
+            {:else}
+                {Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%*'}
+            {/if}
         </h1>
         <p>*from school year 2018-19</p>
     </div>
