@@ -1,18 +1,7 @@
 <script>
     import { colors } from '../styles/colors';
 
-    export let districtData
-
-    let data
-
-    $: {
-        data = [
-            {group: "inclusive", value: districtData.properties["LRE Students >80%"]},
-            {group: "semiInclusive", value: districtData.properties["LRE Students >40% <80%"]},
-            {group: "nonInclusive", value: districtData.properties["LRE Students <40%"]},
-            {group: "separate", value: districtData.properties["LRE Students Separate Settings"]},
-        ]
-    }
+    export let data
 
     // This variable will hold the currently opened tooltip
     let currentOpenTooltip = null;
@@ -72,7 +61,7 @@
 <div class="state-data text-width">
     <div class="legend">
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[0]};">{(districtData.properties["LRE Students >80%"]).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[0]};">{(data.properties["LRE Students >80%"]).toFixed(0)}%</strong> 
             of students with IEPs
             are in an 
             <span class="setting-name" style="background-color:{colors[0]}; color:white;">inclusive</span>
@@ -83,7 +72,7 @@
             setting
         </div>
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[1]};">{(districtData.properties["LRE Students >40% <80%"]).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[1]};">{(data.properties["LRE Students >40% <80%"]).toFixed(0)}%</strong> 
             are in a 
             <span class="setting-name" style="background-color:{colors[1]}; color:white;">semi-inclusive</span>
             <div class="tooltip-container">
@@ -93,7 +82,7 @@
             setting
         </div>
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[2]};">{(districtData.properties["LRE Students <40%"]).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[2]};">{(data.properties["LRE Students <40%"]).toFixed(0)}%</strong> 
             are in a 
             <span class="setting-name" style="background-color:{colors[2]}; color:white;">non-inclusive</span> 
             <div class="tooltip-container">
@@ -103,7 +92,7 @@
             setting
         </div>
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[3]};">{(districtData.properties["LRE Students Separate Settings"]).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[3]};">{(data.properties["LRE Students Separate Settings"]).toFixed(0)}%</strong> 
             are in a 
             <span class="setting-name" style="background-color:{colors[3]}; color:white;">separate</span> 
             <div class="tooltip-container">

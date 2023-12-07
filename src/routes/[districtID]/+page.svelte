@@ -1,14 +1,39 @@
 <script>
+    import { colors } from '../../styles/colors';
     import InclusionRing from '../../components/InclusionRing.svelte';
     import MiniHistogram from '../../components/MiniHistogram.svelte';
-    import DistrictDonut from '../../components/DistrictDonut.svelte';
+    import DonutChart from '../../components/DonutChart.svelte';
     import DonutLegend from '../../components/DonutLegend.svelte';
     import Sources from '../../components/Sources.svelte';
     import DistrictCard from '../../components/DistrictCard.svelte';
 
     export let data
 
-    console.log(data)
+    let inclusionCategories
+    $: {
+        inclusionCategories = [
+            {group: "inclusive", value: data.properties["LRE Students >80%"]},
+            {group: "semi-inclusive", value: data.properties["LRE Students >40% <80%"]},
+            {group: "non-inclusive", value: data.properties["LRE Students <40%"]},
+            {group: "separate", value: data.properties["LRE Students Separate Settings"]},
+        ]
+    }
+
+    let gradRates
+    $: {
+        gradRates = [
+            {group: "graduated", value: data.properties["IEP 4Yr Cohort Grad 18-19"]},
+            {group: "notGraduated", value: 100 - data.properties["IEP 4Yr Cohort Grad 18-19"]},
+        ]
+    }
+    let gradDonutCenterText
+    if (data.properties['IEP 4Yr Cohort Grad 18-19'] === 5) {
+        gradDonutCenterText = '<' + Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+    } else if (data.properties['IEP 4Yr Cohort Grad 18-19'] === 95) {
+        gradDonutCenterText = '>' + Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+    } else {
+        gradDonutCenterText = Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+    }
 </script>
 
 <section>
@@ -31,8 +56,16 @@
 
     <div class="text-width metric">
         <h3 class="metric-name">Inclusion Breakdown</h3>
-        <DistrictDonut districtData={data} />
-        <DonutLegend districtData={data} />
+        {#if inclusionCategories && inclusionCategories.length > 0}
+            <DonutChart 
+                data = {inclusionCategories} 
+                chartColors = {colors}
+                centerText={data.properties["Total Student Count"].toLocaleString('en-US')}
+                centerText2="students"
+                centerText3="with IEPs"
+            />
+            <DonutLegend data={data} />
+        {/if}
     </div>
 
     <div class="text-width metric">
@@ -53,15 +86,15 @@
 
     <div class="text-width metric">
         <h3 class="metric-name">4-Year Graduation Rate of Students with IEPs</h3>
-        <h1>
-            {#if data.properties['IEP 4Yr Cohort Grad 18-19'] === 5}
-                {'<' + Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%*'}
-            {:else if data.properties['IEP 4Yr Cohort Grad 18-19'] === 95}
-                {'>' + Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%*'}
-            {:else}
-                {Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%*'}
-            {/if}
-        </h1>
+        <DonutChart 
+            height = {120}
+            outerRadius = {60}
+            innerRadius = {40}
+            barSpacing = {1}
+            data = {gradRates} 
+            chartColors = {[colors[0], colors[6]]}
+            centerText={gradDonutCenterText}
+        />
         <p>*from school year 2018-19</p>
     </div>
 
@@ -103,3 +136,4 @@
         margin-right: 1rem;
     }
 </style>
+

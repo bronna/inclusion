@@ -23,6 +23,11 @@
 	--light-gray: #DBD7D7;
 	--light-light-gray: #E8E5E4;
 	--background-color: #F4F1F0;
+
+	font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
