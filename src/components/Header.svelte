@@ -4,17 +4,17 @@
 
 <header>
   <div class="logo">
-    <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+    <svg width="52" height="52" xmlns="http://www.w3.org/2000/svg">
         <path 
-            d="M 25,2 A 23,23 0 1,1 7,11"
+            d="M 26,3 A 23,23 0 1,1 8,11"
             fill="none" 
             stroke={colors[0]} 
-            stroke-width="3"
+            stroke-width="4.5"
             stroke-linecap="round"
         />
     </svg>  
     <a href="/">
-      Data for<br>Caregivers
+      Inclusion<br>Data
     </a>
   </div>
 </header>
@@ -23,8 +23,9 @@
   header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-top: 4rem;
+    padding-left: 3rem;
+    padding-top: 4rem;
+    background-color: var(--background-color);
   }
 
   .logo {
@@ -41,6 +42,7 @@
     text-decoration: none;
     font-family: var(--font-headers);
     color: var(--inclusive-color);
+    font-weight: 800;
     font-size: 1.2rem;
     line-height: 1.1rem;
   }

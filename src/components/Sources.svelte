@@ -9,8 +9,8 @@
     hr {
         margin-top: 3rem;
         border: 0;
-        height: 1px;
-        background-color: var(--dark-gray);
+        height: 2px;
+        background-color: var(--light-gray);
         box-shadow: none;
     }
 

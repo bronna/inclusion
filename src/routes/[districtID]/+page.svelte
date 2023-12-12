@@ -43,13 +43,14 @@
         <div class="score-label">
             <h3 class="metric-name">Inclusion Score: </h3>
             <InclusionRing value={data.properties.decile} weighted_inclusion={data.properties.weighted_inclusion} />
+            <!-- {data.properties.weighted_inclusion} -->
         </div>
         
         <div class="comparison-hists">
             <MiniHistogram 
-                metricName={"weighted_inclusion"} 
-                metric ={data.properties.weighted_inclusion}
-                metricLabel={data.properties.decile}
+                metric1={"weighted_inclusion"}
+                currentMetric1Value={data.properties.weighted_inclusion}
+                metric2={"decile"}
             />
         </div>
     </div>

@@ -12,7 +12,7 @@ let initialSelectedDistricts = data
     .slice(0, 5)
     .map(district => district.properties.GEOID);
 
-export const selectedDistricts = writable([]);
+export const selectedDistricts = writable(initialSelectedDistricts);
 
 export const districtsData = writable(data);
 
@@ -38,6 +38,11 @@ export const selectedDistrictsData = derived(
         return result;
     }
 );
+
+// Data for large districts only
+export const largeDistrictsData = derived(districtsData, $districtsData => {
+    return $districtsData.filter(district => district.properties["Total Student Count"] > 500);
+});
 
 // Calculate the min and max weighted inclusion values for districts above 500 students
 export const minWeightedInclusion = derived(districtsData, $districtsData => {
