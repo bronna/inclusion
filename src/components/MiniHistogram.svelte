@@ -6,6 +6,7 @@
     export let metric1 // for line overlay
     export let currentMetric1Value // for line overlay
     export let metric2 // for hist bins, if applicable
+    export let largeDistricts = false
 
     let data1
     let metric1Domain
@@ -24,7 +25,7 @@
         .filter(district => district.properties[metric1] > 0)
         .map(district => district.properties[metric1])
 
-    $: data2 = $districtsData
+    $: data2 = (largeDistricts ? $largeDistrictsData : $districtsData)
         .filter(district => district.properties[metric2] > 0)
         .map(district => district.properties[metric2])
     $: if (data2 && data2.length > 0) {

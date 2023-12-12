@@ -47,11 +47,25 @@
         </div>
         
         <div class="comparison-hists">
-            <MiniHistogram 
-                metric1={"weighted_inclusion"}
-                currentMetric1Value={data.properties.weighted_inclusion}
-                metric2={"decile"}
-            />
+            <div class="hist-inclusion">
+                <span class="metric-sub-name">ALL DISTRICTS</span>
+                <MiniHistogram 
+                    metric1={"weighted_inclusion"}
+                    currentMetric1Value={data.properties.weighted_inclusion}
+                    metric2={"decile"}
+                />
+            </div>
+            {#if data.properties["Total Student Count"] > 500}
+                <div class="hist-inclusion">
+                    <span class="metric-sub-name">LARGE DISTRICTS</span>
+                    <MiniHistogram 
+                        metric1={"weighted_inclusion"}
+                        currentMetric1Value={data.properties.weighted_inclusion}
+                        metric2={"decile"}
+                        largeDistricts={true}
+                    />
+                </div>
+            {/if}
         </div>
     </div>
 
@@ -135,6 +149,28 @@
         font-weight: 700;
         font-family: 'Bitter', serif;
         margin-right: 1rem;
+    }
+
+    .comparison-hists {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .hist-inclusion {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .metric-sub-name {
+        color: var(--color-text);
+        font-size: 1rem;
+        letter-spacing: 0.01rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        margin-bottom: 1rem;;
     }
 </style>
 
