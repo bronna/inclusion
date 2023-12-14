@@ -8,44 +8,44 @@
     import DistrictCard from '../../components/DistrictCard.svelte';
 
     export let data
+    let { districtData, stateData } = data
 
     let inclusionCategories
     $: {
         inclusionCategories = [
-            {group: "inclusive", value: data.properties["LRE Students >80%"]},
-            {group: "semi-inclusive", value: data.properties["LRE Students >40% <80%"]},
-            {group: "non-inclusive", value: data.properties["LRE Students <40%"]},
-            {group: "separate", value: data.properties["LRE Students Separate Settings"]},
+            {group: "inclusive", value: districtData.properties["LRE Students >80%"]},
+            {group: "semi-inclusive", value: districtData.properties["LRE Students >40% <80%"]},
+            {group: "non-inclusive", value: districtData.properties["LRE Students <40%"]},
+            {group: "separate", value: districtData.properties["LRE Students Separate Settings"]},
         ]
     }
 
     let gradRates
     $: {
         gradRates = [
-            {group: "graduated", value: data.properties["IEP 4Yr Cohort Grad 18-19"]},
-            {group: "notGraduated", value: 100 - data.properties["IEP 4Yr Cohort Grad 18-19"]},
+            {group: "graduated", value: districtData.properties["IEP 4Yr Cohort Grad 18-19"]},
+            {group: "notGraduated", value: 100 - districtData.properties["IEP 4Yr Cohort Grad 18-19"]},
         ]
     }
     let gradDonutCenterText
-    if (data.properties['IEP 4Yr Cohort Grad 18-19'] === 5) {
-        gradDonutCenterText = '<' + Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
-    } else if (data.properties['IEP 4Yr Cohort Grad 18-19'] === 95) {
-        gradDonutCenterText = '>' + Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+    if (districtData.properties['IEP 4Yr Cohort Grad 18-19'] === 5) {
+        gradDonutCenterText = '<' + Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+    } else if (districtData.properties['IEP 4Yr Cohort Grad 18-19'] === 95) {
+        gradDonutCenterText = '>' + Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
     } else {
-        gradDonutCenterText = Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+        gradDonutCenterText = Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
     }
 
-    let stateAvgGradRate = 70.7 // update with data
+    let stateAvgGradRate = stateData.properties['IEP 4Yr Cohort Grad 18-19']
 </script>
 
 <section>
-    <h1 class="district-name">{data.properties["Institution Name"]}</h1>
+    <h1 class="district-name">{districtData.properties["Institution Name"]}</h1>
 
     <div class="text-width metric" id="score">
         <div class="score-label">
             <h3 class="metric-name">Inclusion Score: </h3>
-            <InclusionRing value={data.properties.decile} weighted_inclusion={data.properties.weighted_inclusion} />
-            <!-- {data.properties.weighted_inclusion} -->
+            <InclusionRing value={districtData.properties.decile} weighted_inclusion={districtData.properties.weighted_inclusion} />
         </div>
         
         <div class="comparison-hists">
@@ -53,16 +53,16 @@
                 <span class="metric-sub-name">ALL DISTRICTS</span>
                 <MiniHistogram 
                     metric1={"weighted_inclusion"}
-                    currentMetric1Value={data.properties.weighted_inclusion}
+                    currentMetric1Value={districtData.properties.weighted_inclusion}
                     metric2={"decile"}
                 />
             </div>
-            {#if data.properties["Total Student Count"] > 500}
+            {#if districtData.properties["Total Student Count"] > 500}
                 <div class="hist-inclusion">
                     <span class="metric-sub-name">LARGE DISTRICTS</span>
                     <MiniHistogram 
                         metric1={"weighted_inclusion"}
-                        currentMetric1Value={data.properties.weighted_inclusion}
+                        currentMetric1Value={districtData.properties.weighted_inclusion}
                         metric2={"decile"}
                         largeDistricts={true}
                     />
@@ -77,27 +77,27 @@
             <DonutChart 
                 data = {inclusionCategories} 
                 chartColors = {colors}
-                centerText={data.properties["Total Student Count"].toLocaleString('en-US')}
+                centerText={districtData.properties["Total Student Count"].toLocaleString('en-US')}
                 centerText2="students"
                 centerText3="with IEPs"
             />
-            <DonutLegend data={data} />
+            <DonutLegend data={districtData} />
         {/if}
     </div>
 
     <div class="text-width metric">
         <h3 class="metric-name">Alerts</h3>
         <p>
-            {data.properties.SuspExplFg === "No" ? "No reports of disproportionate discipline of students with IEPs" : "This district reported disproportionate discipline of students with IEPs"}
+            {districtData.properties.SuspExplFg === "No" ? "No reports of disproportionate discipline of students with IEPs" : "This district reported disproportionate discipline of students with IEPs"}
         </p>
         <p>
-            {data.properties.SuspExplRaceEthnicityFg === "No" ? "No reports of disproportionate discipline of students in certain racial groups with IEPs" : "This district reported disproportionate discipline of students in certain racial groups with IEPs"}
+            {districtData.properties.SuspExplRaceEthnicityFg === "No" ? "No reports of disproportionate discipline of students in certain racial groups with IEPs" : "This district reported disproportionate discipline of students in certain racial groups with IEPs"}
         </p>
         <p>
-            {data.properties.DisPrptnRprsntnFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a disability" : "This district reported disproportionate identification of students in certain racial groups as having a disability"}
+            {districtData.properties.DisPrptnRprsntnFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a disability" : "This district reported disproportionate identification of students in certain racial groups as having a disability"}
         </p>
         <p>
-            {data.properties.DisPrptnRprsntnDsbltyFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a certain disability" : "This district reported disproportionate identification of students in certain racial groups as having a certain disability"}
+            {districtData.properties.DisPrptnRprsntnDsbltyFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a certain disability" : "This district reported disproportionate identification of students in certain racial groups as having a certain disability"}
         </p>
     </div>
 
@@ -118,7 +118,7 @@
 
     <div class="text-width metric">
         <h3 class="metric-name">Nearby Districts</h3>
-        <DistrictCard district={data} />
+        <DistrictCard district={districtData} />
     </div>
 
     <Sources />

@@ -58,8 +58,8 @@
             />
             <!-- make label position dynmaic -->
             <text
-                x="-95"
-                y="20"
+                x="-80"
+                y="50"
                 dominant-baseline="middle"
                 text-anchor="middle"
                 fill={colors[5]}
