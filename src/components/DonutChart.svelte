@@ -56,10 +56,10 @@
                 stroke={colors[5]} 
                 stroke-width="2" 
             />
-            <!-- make label position dynmaic -->
+            <!-- make label position dynamic -->
             <text
-                x="-80"
-                y="50"
+                x={Math.cos(indicatorAngle) * (outerRadius + 45)}
+                y={Math.sin(indicatorAngle) * (outerRadius + 15)}
                 dominant-baseline="middle"
                 text-anchor="middle"
                 fill={colors[5]}
