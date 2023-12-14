@@ -34,6 +34,8 @@
     } else {
         gradDonutCenterText = Math.round(data.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
     }
+
+    let stateAvgGradRate = 70.7 // update with data
 </script>
 
 <section>
@@ -109,8 +111,9 @@
             data = {gradRates} 
             chartColors = {[colors[0], colors[6]]}
             centerText={gradDonutCenterText}
+            indicator={[{group: "gradRate", value: stateAvgGradRate}, {group: "notGradRate", value: 100 - stateAvgGradRate}]}
         />
-        <p>*from school year 2018-19</p>
+        <p>*school year 2018-19</p>
     </div>
 
     <div class="text-width metric">
@@ -156,6 +159,7 @@
         flex-wrap: wrap;
         align-items: flex-start;
         justify-content: flex-start;
+        margin-top: 1rem;
     }
 
     .hist-inclusion {

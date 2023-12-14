@@ -95,11 +95,7 @@
 	</p>
 
 	<p class="text-width">
-		This tool allows you to explore the most recent inclusion data from school districts across your state. You have the ability to compare districts to each other and to the state as a whole.
-	</p>
-
-	<p class="text-width">
-		To begin exploring, enter the name of a district below, or select one from the map.
+		This tool allows you to explore the most recent inclusion data from school districts across your state. To begin, enter the name of districts below, or select them on the map.
 	</p>
 
 	<div class="search text-width">

@@ -11,6 +11,9 @@ export const getData = () => {
     let numSemiInclusive = 0;
     let numNonInclusive = 0;
     let numSeparate = 0;
+    let sumHigherEdTrainingEmployed = 0
+    let sumIEP4YrCohortGrad = 0
+    let sumIEPDropout = 0
 
     function weightedInclusion(district) {
         return (
@@ -50,6 +53,18 @@ export const getData = () => {
             numSeparate += (district.properties["LRE Students Separate Settings"] / 100) * district.properties["Total Student Count"];
         }
 
+        if (typeof district.properties["Higher Ed/Training/Employed"] === "number" && !isNaN(district.properties["Higher Ed/Training/Employed"])) {
+            sumHigherEdTrainingEmployed += (district.properties["Higher Ed/Training/Employed"] / 100) * district.properties["Total Student Count"];
+        }
+
+        if (typeof district.properties["IEP 4Yr Cohort Grad 18-19"] === "number" && !isNaN(district.properties["IEP 4Yr Cohort Grad 18-19"])) {
+            sumIEP4YrCohortGrad += (district.properties["IEP 4Yr Cohort Grad 18-19"] / 100) * district.properties["Total Student Count"];
+        }
+
+        if (typeof district.properties["IEP Dropout 18-19"] === "number" && !isNaN(district.properties["IEP Dropout 18-19"])) {
+            sumIEPDropout += (district.properties["IEP Dropout 18-19"] / 100) * district.properties["Total Student Count"];
+        }
+
         // Calculate the weighted inclusion
         district.properties.weighted_inclusion = weightedInclusion(district.properties);
 
@@ -74,10 +89,15 @@ export const getData = () => {
             "LRE Students >80%": (numInclusive / totalStudents) * 100,
             "LRE Students >40% <80%": (numSemiInclusive / totalStudents) * 100,
             "LRE Students <40%": (numNonInclusive / totalStudents) * 100,
-            "LRE Students Separate Settings": (numSeparate / totalStudents) * 100
+            "LRE Students Separate Settings": (numSeparate / totalStudents) * 100,
+            "Higher Ed/Training/Employed": sumHigherEdTrainingEmployed / totalStudents * 100,
+            "IEP 4Yr Cohort Grad 18-19": sumIEP4YrCohortGrad / totalStudents * 100,
+            "IEP Dropout 18-19": sumIEPDropout / totalStudents * 100
         },
         geometry: null
     };
+
+    console.log(summaryFeature)
 
     data.push(summaryFeature);
 

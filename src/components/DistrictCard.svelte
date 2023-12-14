@@ -25,7 +25,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        max-width: 100px;
+        width: 140px;
     }
 
     .card-title {

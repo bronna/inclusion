@@ -35,7 +35,6 @@
     $: if (data1 && data1.length > 0) {
         metric1Domain = d3.extent(data1);
         metricScale.domain(metric1Domain)
-        console.log(`Domain: ${metric1Domain}`);
     }
 
     $: if (metric1Domain && currentMetric1Value !== undefined) {
@@ -46,8 +45,6 @@
         } else {
             xPos = metricScale(currentMetric1Value)
         }
-
-        console.log(`xPos: ${xPos}`);
     }
 
     function createHistogram() {
