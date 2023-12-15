@@ -1,6 +1,6 @@
 <svelte:head>
-  <title>Home</title>
-  <meta name="description" content="Svelte demo app" />
+  <title>Data on inclusion for students with disabilities</title>
+  <meta name="Inclusion Data" content="Data on inclusion for students with disabilities" />
 </svelte:head>
 
 <script>
@@ -248,12 +248,6 @@
   .state {
 	width: 100%;
 	margin-bottom: 1rem;
-  }
-
-  @media (max-width: 768px) {
-    .text-width {
-        padding: 0 1rem;
-    }
   }
 
   .search p {

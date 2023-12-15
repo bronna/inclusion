@@ -58,7 +58,7 @@
             />
             <!-- make label position dynamic -->
             <text
-                x={Math.cos(indicatorAngle) * (outerRadius + 45)}
+                x={Math.cos(indicatorAngle) * (outerRadius + 60)}
                 y={Math.sin(indicatorAngle) * (outerRadius + 15)}
                 dominant-baseline="middle"
                 text-anchor="middle"
@@ -66,7 +66,7 @@
                 font-size="0.8rem"
                 font-weight="600"
             >
-                State Avg
+                State Avg: {Math.round(indicator[0].value)}% <!-- make label text dynamic -->
             </text>
         {/if}
 
