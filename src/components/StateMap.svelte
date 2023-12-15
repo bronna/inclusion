@@ -120,18 +120,24 @@
     const tapThreshold = 10; // pixels, threshold to distinguish between tap and drag
 
     function handleTouchStart(event, district) {
+      console.log("touchstart", event)
+      if (event.touches && event.touches.length > 0) {
         // event.preventDefault();
         isTouched = true;
         touchStartPosition.x = event.touches[0].clientX;
         touchStartPosition.y = event.touches[0].clientY;
+      }
     }
 
     function handleTouchMove(event) {
+      console.log("touchmove", event)
+      if (event.touches && event.touches.length > 0) {
         updateTooltipPosition(event);
+      }
     }
 
     function handleTouchEnd(event, district) {
-      console.log(event)
+      console.log("touchend", event)
       if (event && event.changedTouches && event.changedTouches.length > 0) {
         const touchEndPosition = {
             x: event.changedTouches[0].clientX,
