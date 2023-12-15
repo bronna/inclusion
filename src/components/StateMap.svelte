@@ -131,6 +131,8 @@
     }
 
     function handleTouchEnd(event, district) {
+      console.log(event)
+      if (event && event.changedTouches && event.changedTouches.length > 0) {
         const touchEndPosition = {
             x: event.changedTouches[0].clientX,
             y: event.changedTouches[0].clientY
@@ -150,6 +152,7 @@
         }
 
         isTouched = false;
+      }
     }
 
     function handleDistrictClick(event, district) {
