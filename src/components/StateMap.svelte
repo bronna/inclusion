@@ -120,7 +120,7 @@
     const tapThreshold = 10; // pixels, threshold to distinguish between tap and drag
 
     function handleTouchStart(event, district) {
-        event.preventDefault();
+        // event.preventDefault();
         isTouched = true;
         touchStartPosition.x = event.touches[0].clientX;
         touchStartPosition.y = event.touches[0].clientY;
@@ -383,7 +383,7 @@
     position: absolute;
     padding: 10px;
     color: var(--text-color);
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 4px;
     pointer-events: none;
     opacity: 0;
