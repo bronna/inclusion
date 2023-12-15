@@ -239,16 +239,16 @@
                             stroke-width={0.75 / $currentTransform.k}
                             fill-rule="evenodd"
                             on:touchstart={e => {
-                              e.preventDefault();
+                              // e.preventDefault();
                               handleTouchStart(e, district);
                             }}
                             on:touchmove={e => {
-                                e.preventDefault();
+                                // e.preventDefault();
                                 handleTouchMove(e);
                             }}
                             on:touchend={e => {
-                                e.preventDefault();
-                                handleTouchEnd();
+                                // e.preventDefault();
+                                handleTouchEnd(e, district);
                             }}
                             on:mouseover={e => {
                                 if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile, district.properties.weighted_inclusion);
@@ -291,16 +291,16 @@
                               stroke={colors[4]}
                               stroke-width={1.4 / $currentTransform.k}
                               on:touchstart={e => {
-                                e.preventDefault();
+                                // e.preventDefault();
                                 handleTouchStart(e, district);
                               }}
                               on:touchmove={e => {
-                                  e.preventDefault();
+                                  // e.preventDefault();
                                   handleTouchMove(e);
                               }}
                               on:touchend={e => {
-                                  e.preventDefault();
-                                  handleTouchEnd();
+                                  // e.preventDefault();
+                                  handleTouchEnd(e, district);
                               }}
                               on:mouseover={e => {
                                   if (!isTouched) showTooltip(district.properties["Institution Name"], district.properties.decile, district.properties.weighted_inclusion);
