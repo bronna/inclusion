@@ -2,15 +2,15 @@ import * as topojson from "topojson-client"
 import OregonData from "./oregon_data.json"
 
 export const getData = () => {
-    const objectName = "OR_SDs_merged";
+    const objectName = "OR_SDs_merged"
     const geojsonData = topojson.feature(OregonData, OregonData.objects[objectName])
     let data = geojsonData.features
 
-    let totalStudents = 0;
-    let numInclusive = 0;
-    let numSemiInclusive = 0;
-    let numNonInclusive = 0;
-    let numSeparate = 0;
+    let totalStudents = 0
+    let numInclusive = 0
+    let numSemiInclusive = 0
+    let numNonInclusive = 0
+    let numSeparate = 0
     let sumHigherEdTrainingEmployed = 0
     let sumIEP4YrCohortGrad = 0
     let sumIEPDropout = 0
@@ -32,51 +32,58 @@ export const getData = () => {
         "DisPrptnRprsntnDsbltyFg"
     ];
 
-    data.forEach(district => {
+    const neighbors = topojson.neighbors(OregonData.objects[objectName].geometries);
+
+    data.forEach((district, index) => {
         if (typeof district.properties["Total Student Count"] === "number" && !isNaN(district.properties["Total Student Count"])) {
             totalStudents += district.properties["Total Student Count"];
         }
         
         if (typeof district.properties["LRE Students >80%"] === "number" && !isNaN(district.properties["LRE Students >80%"])) {
-            numInclusive += (district.properties["LRE Students >80%"] / 100) * district.properties["Total Student Count"];
+            numInclusive += (district.properties["LRE Students >80%"] / 100) * district.properties["Total Student Count"]
         }
     
         if (typeof district.properties["LRE Students >40% <80%"] === "number" && !isNaN(district.properties["LRE Students >40% <80%"])) {
-            numSemiInclusive += (district.properties["LRE Students >40% <80%"] / 100) * district.properties["Total Student Count"];
+            numSemiInclusive += (district.properties["LRE Students >40% <80%"] / 100) * district.properties["Total Student Count"]
         }
     
         if (typeof district.properties["LRE Students <40%"] === "number" && !isNaN(district.properties["LRE Students <40%"])) {
-            numNonInclusive += (district.properties["LRE Students <40%"] / 100) * district.properties["Total Student Count"];
+            numNonInclusive += (district.properties["LRE Students <40%"] / 100) * district.properties["Total Student Count"]
         }
 
         if (typeof district.properties["LRE Students Separate Settings"] === "number" && !isNaN(district.properties["LRE Students Separate Settings"])) {
-            numSeparate += (district.properties["LRE Students Separate Settings"] / 100) * district.properties["Total Student Count"];
+            numSeparate += (district.properties["LRE Students Separate Settings"] / 100) * district.properties["Total Student Count"]
         }
 
         if (typeof district.properties["Higher Ed/Training/Employed"] === "number" && !isNaN(district.properties["Higher Ed/Training/Employed"])) {
-            sumHigherEdTrainingEmployed += (district.properties["Higher Ed/Training/Employed"] / 100) * district.properties["Total Student Count"];
+            sumHigherEdTrainingEmployed += (district.properties["Higher Ed/Training/Employed"] / 100) * district.properties["Total Student Count"]
         }
 
         if (typeof district.properties["IEP 4Yr Cohort Grad 18-19"] === "number" && !isNaN(district.properties["IEP 4Yr Cohort Grad 18-19"])) {
-            sumIEP4YrCohortGrad += (district.properties["IEP 4Yr Cohort Grad 18-19"] / 100) * district.properties["Total Student Count"];
+            sumIEP4YrCohortGrad += (district.properties["IEP 4Yr Cohort Grad 18-19"] / 100) * district.properties["Total Student Count"]
         }
 
         if (typeof district.properties["IEP Dropout 18-19"] === "number" && !isNaN(district.properties["IEP Dropout 18-19"])) {
-            sumIEPDropout += (district.properties["IEP Dropout 18-19"] / 100) * district.properties["Total Student Count"];
+            sumIEPDropout += (district.properties["IEP Dropout 18-19"] / 100) * district.properties["Total Student Count"]
         }
 
         // Calculate the weighted inclusion
-        district.properties.weighted_inclusion = weightedInclusion(district.properties);
+        district.properties.weighted_inclusion = weightedInclusion(district.properties)
 
         // Tallying up alerts for each district
         let alertsCount = 0;
         alertColumns.forEach(column => {
             if (district.properties[column] === "Yes") {
-                alertsCount++;
+                alertsCount++
             }
         });
-        district.properties.nAlerts = alertsCount;
-    });
+        district.properties.nAlerts = alertsCount
+
+        // Add array of neighbors
+        district.properties.neighbors = neighbors[index].map(neighborIndex => {
+            return data[neighborIndex] ? data[neighborIndex].properties["GEOID"] : null
+        })
+    })
 
     // Creating a new feature for the summary data
     let summaryFeature = {
@@ -95,50 +102,48 @@ export const getData = () => {
             "IEP Dropout 18-19": sumIEPDropout / totalStudents * 100
         },
         geometry: null
-    };
+    }
 
-    console.log(summaryFeature)
-
-    data.push(summaryFeature);
+    data.push(summaryFeature)
 
     let minWeightedInclusion = Math.min(
         ...data
             .filter(district => district.properties["Total Student Count"] > 500 && district.properties.weighted_inclusion)
             .map(district => district.properties.weighted_inclusion)
-    );
+    )
     let maxWeightedInclusion = Math.max(
         ...data
             .filter(district => district.properties["Total Student Count"] > 500 && district.properties.weighted_inclusion)
             .map(district => district.properties.weighted_inclusion)
-    );
-    let range = maxWeightedInclusion - minWeightedInclusion;
+    )
+    let range = maxWeightedInclusion - minWeightedInclusion
 
     // Define the threshold for each decile
-    const thresholds = Array.from({ length: 10 }, (_, i) => minWeightedInclusion + (range * (i + 1) * 0.1));
+    const thresholds = Array.from({ length: 10 }, (_, i) => minWeightedInclusion + (range * (i + 1) * 0.1))
 
     data.forEach(district => {
         if (!district.properties.weighted_inclusion) {
-            district.properties.decile = null;
+            district.properties.decile = null
         } else {
             for (let i = 0; i < 9; i++) {
                 if (district.properties.weighted_inclusion < thresholds[i]) {
-                    district.properties.decile = i + 1;
-                    break;
+                    district.properties.decile = i + 1
+                    break
                 }
             }
         }
 
         // Assign a value of 10 for the top decile (if not already assigned)
         if (district.properties.weighted_inclusion && !district.properties.decile) {
-            district.properties.decile = 10;
+            district.properties.decile = 10
         }
     });
 
     return data
         .sort((a, b) => {
-            if (!a.properties["Institution Name"] && !b.properties["Institution Name"]) return 0;
-            if (!a.properties["Institution Name"]) return 1;
-            if (!b.properties["Institution Name"]) return -1;
-            return a.properties["Institution Name"].localeCompare(b.properties["Institution Name"]);
-        });
-};
+            if (!a.properties["Institution Name"] && !b.properties["Institution Name"]) return 0
+            if (!a.properties["Institution Name"]) return 1
+            if (!b.properties["Institution Name"]) return -1
+            return a.properties["Institution Name"].localeCompare(b.properties["Institution Name"])
+        })
+}

@@ -9,6 +9,7 @@
 
     export let data
     let { districtData, stateData } = data
+    console.log(districtData)
 
     let inclusionCategories
     $: {
@@ -118,7 +119,11 @@
 
     <div class="text-width metric">
         <h3 class="metric-name">Nearby Districts</h3>
-        <DistrictCard district={districtData} />
+        <div class="district-cards-container">
+            {#each districtData.properties.neighbors as neighbor}
+                <DistrictCard districtId={neighbor} />
+            {/each}
+        </div>
     </div>
 
     <Sources />
@@ -175,6 +180,15 @@
         margin-bottom: 0.5rem;
         text-align: center;
         margin-bottom: 1rem;;
+    }
+
+    .district-cards-container {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 1rem;
+        max-width: 100%;
+        white-space: nowrap;
     }
 </style>
 

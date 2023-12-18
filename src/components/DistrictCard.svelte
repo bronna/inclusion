@@ -1,25 +1,31 @@
 <script>
-    import InclusionRing from "./InclusionRing.svelte";
+    import { districtsData } from "../stores/stores.js"
+    import InclusionRing from "./InclusionRing.svelte"
 
-    export let district
+    export let districtId
+
+    $: matchedDistrict = $districtsData.find(district => district.properties.GEOID === districtId)
 
     function handleClick(district) {
         console.log('clicked')
     }
 </script>
 
-<div class="card" on:click={() => handleClick(district)}>
-    <div class="card-title">{district.properties["Institution Name"]}</div>
-    <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
-    <div class="card-info"><span class="highlight">{district.properties["Total Student Count"]}</span> students with IEPs</div>
-</div>
+{#if matchedDistrict}
+    <div class="card" on:click={() => handleClick(matchedDistrict)}>
+        <div class="card-title">{matchedDistrict.properties["Institution Name"]}</div>
+        <InclusionRing value={matchedDistrict.properties.decile} weighted_inclusion={matchedDistrict.properties.weighted_inclusion} />
+        <div class="card-info"><span class="highlight">{matchedDistrict.properties["Total Student Count"]}</span> students with IEPs</div>
+    </div>
+{/if}
 
 <style>
     .card {
+        flex: 0 0 auto;
         cursor: pointer;
         border-radius: 1rem;
         box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.15);
-        padding: 2rem 2rem;
+        padding: 1.5rem 1rem;
         margin: 1.5rem 0;
         display: flex;
         flex-direction: column;

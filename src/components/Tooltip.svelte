@@ -1,25 +1,25 @@
 <script>
-    import { onMount } from 'svelte';
+    import { onMount } from 'svelte'
 
-    export let content = '';
-    export let visible = false;
-    export let position = { x: 0, y: 0 };
+    export let content = ''
+    export let visible = false
+    export let position = { x: 0, y: 0 }
 
-    let tooltipElement;
+    let tooltipElement
 
     onMount(() => {
-        updatePosition();
-    });
+        updatePosition()
+    })
 
     $: if (visible) {
-        updatePosition();
+        updatePosition()
     }
 
     function updatePosition() {
         if (tooltipElement) {
-            tooltipElement.style.left = `${position.x}px`;
-            tooltipElement.style.top = `${position.y}px`;
-            tooltipElement.style.opacity = visible ? 1 : 0;
+            tooltipElement.style.left = `${position.x}px`
+            tooltipElement.style.top = `${position.y}px`
+            tooltipElement.style.opacity = visible ? 1 : 0
         }
     }
 </script>
