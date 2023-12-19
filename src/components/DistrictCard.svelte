@@ -1,22 +1,21 @@
 <script>
     import { districtsData } from "../stores/stores.js"
+    import { goto } from '$app/navigation'
     import InclusionRing from "./InclusionRing.svelte"
 
     export let districtId
 
     $: matchedDistrict = $districtsData.find(district => district.properties.GEOID === districtId)
-
-    function handleClick(district) {
-        console.log('clicked')
-    }
 </script>
 
 {#if matchedDistrict}
-    <div class="card" on:click={() => handleClick(matchedDistrict)}>
-        <div class="card-title">{matchedDistrict.properties["Institution Name"]}</div>
-        <InclusionRing value={matchedDistrict.properties.decile} weighted_inclusion={matchedDistrict.properties.weighted_inclusion} />
-        <div class="card-info"><span class="highlight">{matchedDistrict.properties["Total Student Count"]}</span> students with IEPs</div>
-    </div>
+    <a on:click={() => goto(`/${districtId}`)} class="card-link">
+        <div class="card">
+            <div class="card-title">{matchedDistrict.properties["Institution Name"]}</div>
+            <InclusionRing value={matchedDistrict.properties.decile} weighted_inclusion={matchedDistrict.properties.weighted_inclusion} />
+            <div class="card-info"><span class="highlight">{matchedDistrict.properties["Total Student Count"]}</span> students with IEPs</div>
+        </div>
+    </a>
 {/if}
 
 <style>
@@ -53,5 +52,10 @@
     .highlight {
         font-weight: 700;
         font-size: 1rem;
+    }
+
+    .card-link {
+        text-decoration: none;
+        color: inherit;
     }
 </style>

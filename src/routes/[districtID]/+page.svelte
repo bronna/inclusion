@@ -1,46 +1,52 @@
 <script>
-    import { colors } from '../../styles/colors';
-    import InclusionRing from '../../components/InclusionRing.svelte';
-    import MiniHistogram from '../../components/MiniHistogram.svelte';
-    import DonutChart from '../../components/DonutChart.svelte';
-    import DonutLegend from '../../components/DonutLegend.svelte';
-    import Sources from '../../components/Sources.svelte';
-    import DistrictCard from '../../components/DistrictCard.svelte';
+    import { page } from '$app/stores'
+    import { districtsData } from '../../stores/stores'
+    import { colors } from '../../styles/colors'
+    import InclusionRing from '../../components/InclusionRing.svelte'
+    import MiniHistogram from '../../components/MiniHistogram.svelte'
+    import DonutChart from '../../components/DonutChart.svelte'
+    import DonutLegend from '../../components/DonutLegend.svelte'
+    import Sources from '../../components/Sources.svelte'
+    import DistrictCard from '../../components/DistrictCard.svelte'
 
-    export let data
-    let { districtData, stateData } = data
-    console.log(districtData)
+    let districtData, stateData
 
-    let inclusionCategories
-    $: {
+    $: districtID = $page.params.districtID
+
+    $: if ($districtsData) {
+        districtData = $districtsData.find(d => d.properties.GEOID === districtID)
+        stateData = $districtsData.find(d => d.properties.GEOID === "999999")
+    }
+
+    let inclusionCategories, gradRates, gradDonutCenterText, stateAvgGradRate
+
+    $: if (districtData) {
         inclusionCategories = [
             {group: "inclusive", value: districtData.properties["LRE Students >80%"]},
             {group: "semi-inclusive", value: districtData.properties["LRE Students >40% <80%"]},
             {group: "non-inclusive", value: districtData.properties["LRE Students <40%"]},
             {group: "separate", value: districtData.properties["LRE Students Separate Settings"]},
         ]
-    }
 
-    let gradRates
-    $: {
         gradRates = [
             {group: "graduated", value: districtData.properties["IEP 4Yr Cohort Grad 18-19"]},
             {group: "notGraduated", value: 100 - districtData.properties["IEP 4Yr Cohort Grad 18-19"]},
         ]
-    }
-    let gradDonutCenterText
-    if (districtData.properties['IEP 4Yr Cohort Grad 18-19'] === 5) {
-        gradDonutCenterText = '<' + Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
-    } else if (districtData.properties['IEP 4Yr Cohort Grad 18-19'] === 95) {
-        gradDonutCenterText = '>' + Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
-    } else {
-        gradDonutCenterText = Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
-    }
 
-    let stateAvgGradRate = stateData.properties['IEP 4Yr Cohort Grad 18-19']
+        if (districtData.properties['IEP 4Yr Cohort Grad 18-19'] === 5) {
+            gradDonutCenterText = '<' + Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+        } else if (districtData.properties['IEP 4Yr Cohort Grad 18-19'] === 95) {
+            gradDonutCenterText = '>' + Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+        } else {
+            gradDonutCenterText = Math.round(districtData.properties['IEP 4Yr Cohort Grad 18-19']) + '%';
+        }
+
+        stateAvgGradRate = stateData.properties['IEP 4Yr Cohort Grad 18-19']
+        }
 </script>
 
 <section>
+{#if districtData}
     <h1 class="district-name">{districtData.properties["Institution Name"]}</h1>
 
     <div class="text-width metric" id="score">
@@ -127,6 +133,9 @@
     </div>
 
     <Sources />
+{:else}
+    <p>Loading...</p>
+{/if}
 </section>
 
 <style>
