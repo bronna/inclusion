@@ -1,15 +1,24 @@
+<script>
+  import Logo from "./Logo.svelte";
+</script>
+
 <footer>
   <!-- Resources -->
 
   <!-- Feedback -->
 
   <div class="footer-links">
-    <a href="/about" class="footer-link">about</a>
-    <a href="/contact" class="footer-link">contact</a>
+    Contact us: inclusiondata@protonmail.com
   </div>
 
-  <p>Created by <a href="https://bronna.github.io/" target="_blank">Brianna Wilson</a></p>
-  <!-- <p>2023</p> -->
+  <p>Created by: <a href="https://bronna.github.io/" target="_blank">Brianna Wilson</a></p>
+  <p class="year">2023</p>
+
+  <div class="logo">
+    <Logo />
+  </div>
+
+  
 </footer>
 
 <style>
@@ -20,6 +29,7 @@
     align-items: center;
     background-color: var(--dark-gray);
     color: white;
+    padding-bottom: 2rem;
   }
 
   footer a {
@@ -27,17 +37,17 @@
     color: white;
   }
 
-  .footer-links {
-    padding-top: 3rem;
-  }
-
-  .footer-link:not(:last-child)::after {
-    content: "|";
-    margin: 0 10px;  /* Adjust the space before and after the pipe as needed */
-}
   @media (min-width: 480px) {
     footer {
-      padding: 12px 0;
+      padding: 4rem 0;
     }
+  }
+
+  .logo {
+    margin-top: 1rem;
+  }
+
+  .year {
+    margin-top: 0rem;
   }
 </style>
