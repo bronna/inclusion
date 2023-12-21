@@ -21,6 +21,8 @@
     let inclusionCategories, gradRates, gradDonutCenterText, stateAvgGradRate
 
     $: if (districtData) {
+        console.log(districtData)
+        
         inclusionCategories = [
             {group: "inclusive", value: districtData.properties["LRE Students >80%"]},
             {group: "semi-inclusive", value: districtData.properties["LRE Students >40% <80%"]},

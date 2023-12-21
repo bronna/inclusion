@@ -92,7 +92,9 @@
             setting
         </div>
         <div class="legend-setting">
-            <strong class="setting-amount" style="color:{colors[3]};">{(data.properties["LRE Students Separate Settings"]).toFixed(0)}%</strong> 
+            <strong class="setting-amount" style="color:{colors[3]};">
+                {data.properties["LRE Students Separate Settings"] < 1 ? '<1' : (data.properties["LRE Students Separate Settings"]).toFixed(0)}%
+            </strong>
             are in a 
             <span class="setting-name" style="background-color:{colors[3]}; color:white;">separate</span> 
             <div class="tooltip-container">
