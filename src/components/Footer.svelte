@@ -8,10 +8,18 @@
   <!-- Feedback -->
 
   <div class="footer-links">
-    Contact us: inclusiondata@protonmail.com
+    <span class="label">
+      CONTACT US: inclusiondata@protonmail.com
+    </span>
   </div>
 
-  <p>Created by: <a href="https://bronna.github.io/" target="_blank">Brianna Wilson</a></p>
+  <div>
+    <span class="label">
+      CREATED BY:
+    </span> 
+    <a href="https://bronna.github.io/" target="_blank">Brianna Wilson</a>
+  </div>
+
   <p class="year">2023</p>
 
   <div class="logo">
@@ -41,6 +49,12 @@
     footer {
       padding: 4rem 0;
     }
+  }
+
+  .label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.02rem;
   }
 
   .logo {

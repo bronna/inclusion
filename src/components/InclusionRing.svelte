@@ -9,7 +9,8 @@
     export let value = 0;
     export let weighted_inclusion = 0;
 
-    let dataset = [{ label: 'filled', value: value }, { label: 'empty', value: 10 - value }];
+    let dataset  = [{ label: 'filled', value: value }, { label: 'empty', value: 10 - value }]
+    $: dataset = [{ label: 'filled', value: value }, { label: 'empty', value: 10 - value }]
   
     let width = 42;
     let height = 42;
@@ -46,6 +47,7 @@
     //     .domain([10, 0])
 
     let computedColor = colorScale(weighted_inclusion)
+    $: computedColor = colorScale(weighted_inclusion)
 </script>
 
 <div class="donut-chart">
