@@ -63,17 +63,23 @@
           <!-- {#each pathData as d, i}
             <path d={d} fill={i === 0 ? computedColor : colors[7]} />
           {/each} -->
-          <circle cx="0" cy="0" r="20" fill={value ? computedColor : "white"} stroke={colors[5]} stroke-width="1.4" />
+          <circle cx="0" cy="0" r="20" fill={value ? computedColor : "white"} stroke={colors[5]} stroke-width="2" />
+            <!-- SVG text element for displaying the value -->
+            <text x={0} y={2} text-anchor="middle" dominant-baseline="middle"
+                fill="white" stroke="black" stroke-width="2"
+                font-size="1.9rem" font-weight="900"
+            >
+                {value ? value : "—"}
+            </text>
+            <text x={0} y={2} text-anchor="middle" dominant-baseline="middle"
+                fill="white" stroke="none"
+                font-size="1.7rem" font-weight="400"
+            >
+                {value ? value : "—"}
+            </text>
         </g>
     </svg>
-    {#if value}
-        <!-- <svg width="200" height="100">
-            <text x="10" y="50" fill="white" stroke="black" stroke-width="1">My Text</text>
-        </svg>-->
-        <p class="metric-value">{value}</p>
-    {:else}
-        <p class="metric-value">—</p>
-    {/if}
+    
 </div>
   
 <style>
@@ -90,14 +96,12 @@
         transform: translate(-50%, -120%);
         color: white;
         text-shadow: /* Simulates a stroke - H offset, V offset, blur R, color */
-            -1px -1px 0 var(--color-text), /* Bottom right shadow */
-            1px 1px 0 var(--color-text), /* Top left shadow */
-            -1px 1px 0 var(--color-text), /* Top right shadow */
-            1px -1px 0 var(--color-text); /* Bottom left shadow */
+            -2px -2px 0 var(--color-text), /* Bottom right shadow */
+            2px 2px 0 var(--color-text), /* Top left shadow */
+            -2px 2px 0 var(--color-text), /* Top right shadow */
+            2px -2px 0 var(--color-text); /* Bottom left shadow */
         font-size: 1.6rem;
         letter-spacing: 0.02rem;
         font-weight: 600;
     }
 </style>
-
-  

@@ -45,7 +45,7 @@
                     </span>
                 </span>
             </th>
-            <th on:click={() => sortBy("decile")} class:sorted={$sortKey === "decile"}>
+            <th on:click={() => sortBy("weighted_inclusion")} class:sorted={$sortKey === "weighted_inclusion"}>
                 <span class="header-content">
                     INCLUSION SCORE
                     <span class="sort-arrow">
@@ -76,22 +76,32 @@
             {#if !$hideSmallDistricts || (district.properties["Total Student Count"] > 500)}
                 <tr>
                     <td class="district-name">
-                        <span on:click={() => goto(`/${district.properties.GEOID}`)}>
+                        <span on:click={district.properties["Total Student Count"] ? () => goto(`/${district.properties.GEOID}`) : null}>
                             {district.properties["Institution Name"]}
-                            <svg viewBox="0 0 24 24" width="12" height="12" class="inline-arrow">
-                                <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="3" />
-                            </svg>
+                            {#if district.properties["Total Student Count"]}
+                                <svg viewBox="0 0 24 24" width="12" height="12" class="inline-arrow">
+                                    <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="3" />
+                                </svg>
+                            {/if}
                         </span>
                     </td>
                     <td class="district-metric">
-                        <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
+                        {#if district.properties["Total Student Count"]}
+                            <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
+                        {/if}
                     </td>
                     <!-- <td>
                         {#if district.properties.nAlerts > 0}
                             <span class="alert">{district.properties.nAlerts}</span>
                         {/if}
                     </td> -->
-                    <td class="student-count">{district.properties["Total Student Count"].toLocaleString()}</td>
+                    <td class="student-count">
+                        {#if district.properties["Total Student Count"]}
+                            {district.properties["Total Student Count"].toLocaleString()}
+                        {:else}
+                            <span class="no-data">-</span>
+                        {/if}
+                    </td>
                 </tr>
             {/if}
         {/each}
@@ -130,7 +140,7 @@
     }
 
     th {
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 2px solid var(--dark-gray);
         text-align: left;
         vertical-align: middle;
         line-height: 1rem;
@@ -151,7 +161,7 @@
     .sort-arrow {
         display: inline-block;
         margin-left: 4px;
-        opacity: 0.3;
+        opacity: 0.5;
     }
 
     th.sorted {
@@ -208,4 +218,9 @@
         text-align: right;
         padding-right: 2rem;
     }
+
+    /* .no-data {
+        font-size: 0.9rem;
+        line-height: -10rem;
+    } */
 </style>

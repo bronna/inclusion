@@ -76,7 +76,7 @@
           }
         })
       } else {
-        tooltip.innerHTML = `${name}<br><span class="tooltip-no-ieps">No students with IEPs</span>`
+        tooltip.innerHTML = `${name}<br><span class="tooltip-no-ieps">Data not available</span>`
       }
 
       tooltip.style.opacity = 1;

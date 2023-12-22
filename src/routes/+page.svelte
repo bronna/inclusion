@@ -8,7 +8,6 @@
   import { selectedDistricts, districtsData, selectedDistrictsData, hideSmallDistricts } from "../stores/stores.js"
   import Svelecte from "svelecte";
   import RangeSlider from "svelte-range-slider-pips"
-  import StateLegend from "../components/StateLegend.svelte";
   import StateMap from "../components/StateMap.svelte";
   import TableOfDistricts from "../components/TableOfDistricts.svelte";
   import Sources from "../components/Sources.svelte";
@@ -36,31 +35,6 @@
 	return JSON.parse(JSON.stringify(arr))
   }
 
-	// Define the sort and filter actions
-    let actions = [
-        { 
-			name: `select all`, 
-			action: () => {
-				selectedDistricts.set(
-					[...$districtsData]
-						.filter(district => district.properties.GEOID !== undefined && district.properties["Institution Name"])
-						.map(district => district.properties.GEOID)
-				);
-				minSize = minStudents;
-				maxSize = maxStudents
-				values = [minSize, maxSize]
-			} 
-		},
-		// {
-		// 	name: 'Hide small districts',
-		// 	action: toggleHideSmallDistricts
-		// },
-		{
-			name: 'filter by size', 
-			action: filterBySize
-		}
-    ];
-
 	// create array of objects with id and name value for each item in the data array
 	let districtNames = $districtsData.map((district) => {
 		return { value: district.properties.GEOID, label: district.properties["Institution Name"] };
@@ -68,6 +42,24 @@
 
 	function toggleHideSmallDistricts() {
 		hideSmallDistricts.update(value => !value)
+	}
+
+	function selectAllDistricts() {
+		selectedDistricts.set(
+			[...$districtsData]
+				.filter(district => district.properties.GEOID !== undefined && district.properties["Institution Name"])
+				.map(district => district.properties.GEOID)
+		);
+		minSize = minStudents;
+		maxSize = maxStudents
+		values = [minSize, maxSize]
+	}
+
+	function clearSelectedDistricts() {
+		selectedDistricts.set([])
+		minSize = 0;
+		maxSize = 9000
+		values = [minSize, maxSize]
 	}
 
 	function filterBySize() {
@@ -118,21 +110,20 @@
 	<StateMap data={$districtsData} />
 
 	<div class="filters">
-		<!-- Hide/show small districts-->
-		<button on:click={toggleHideSmallDistricts} class="action-button">
+		<!-- Hide/show small districts -->
+		<button on:click={toggleHideSmallDistricts} class="action-button" id="hide-button">
 			{$hideSmallDistricts ? 'show small districts' : 'hide small districts'}
 		</button>
 
-		<!-- Other actions -->
-		{#each actions as action (action.name)}
-			{#if action.name !== 'filter by size'}
-				<button 
-				on:click={action.action} 
-				class="action-button">
-				{action.name}
-				</button>
-			{/if}
-		{/each}
+		<!-- Select all -->
+		<button on:click={selectAllDistricts} class="action-button" id="select-all-button">
+			select all
+		</button>
+
+		<!-- Select none -->
+		<button on:click={clearSelectedDistricts} class="action-button" id="select-none-button">
+			select none
+		</button>
 
 		<!-- Filter by size action -->
 		<!-- <div class="filter-size">
@@ -163,14 +154,6 @@
 </section>
 
 <section id="breakdown">
-	<!-- <p class="text-width">
-		Inclusion scores are based on the rates published annually by school districts. Inclusion rates can be broken down as follows, using the entire state of Oregon as an example:
-	</p>
-
-	<div class="state text-width">
-		<StateLegend stateData={stateData} />
-	</div> -->
-
 	<aside class="text-width">
 		<div class="inner-content">
 			<svg 
@@ -312,15 +295,26 @@
     margin: 0;
     border-radius: 20px;
     cursor: pointer;
-	background-color: var(--dark-gray);
 	color: white;
-	transition: var(--background-color) 0.3s;
-	border: none;
+	transition: background-color 0.3s, border-color 0.3s;
+  	border: 2px solid var(--dark-gray);
 	font-size: 0.9rem;
 	white-space: nowrap;
-	font-weight: 600;
+	font-weight: 700;
 	letter-spacing: 0.02rem;
 	opacity: 0.85;
+  }
+
+  #hide-button {
+	background-color: var(--separate-color);
+  }
+
+  #select-all-button {
+	background-color: var(--non-inclusive-color);
+  }
+
+  #select-none-button {
+	background-color: var(--semi-inclusive-color);
   }
 
   .action-button:hover {

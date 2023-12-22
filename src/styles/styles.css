@@ -3,13 +3,7 @@
 :root {
 	--font-body: 'Source Sans 3', sans-serif;
 	--font-headers: 'Bitter', serif;
-	--color-bg-0: rgb(202, 216, 228);
-	--color-bg-1: hsl(209, 36%, 86%);
-	--color-bg-2: hsl(224, 44%, 95%);
-	--color-theme-1: #ff3e00;
-	--color-theme-2: #4075a6;
-	/* --color-text: #011C18; */
-	--color-text: #403E3E;
+	--color-text: #333131;
 	--column-width: 42rem;
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
@@ -18,7 +12,7 @@
     --semi-inclusive-color: rgba(248, 170, 22, 1.0);
 	--non-inclusive-color: rgba(247, 134, 68, 1.0);
 	--separate-color: rgba(222, 84, 102, 1.0);
-    --dark-gray: #403E3E;
+    --dark-gray: #333131;
 	--medium-gray: #BCB6B6;
 	--light-gray: #DBD7D7;
 	--light-light-gray: #E8E5E4;
@@ -62,6 +56,13 @@ a {
 
 a:hover {
 	text-decoration: underline;
+}
+
+hr {
+	margin-top: 3rem;
+	border: 1px solid var(--dark-gray);
+	height: 0px;
+	box-shadow: none;
 }
 
 pre {
