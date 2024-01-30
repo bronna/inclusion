@@ -224,9 +224,4 @@
         text-align: right;
         padding-right: 2rem;
     }
-
-    /* .no-data {
-        font-size: 0.9rem;
-        line-height: -10rem;
-    } */
 </style>
