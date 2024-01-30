@@ -15,11 +15,11 @@
     const sortedDistrictsData = derived(
         [selectedDistrictsData, sortKey, sortOrder],
         ([$selectedDistrictsData, $sortKey, $sortOrder]) => {
-            if (!$sortKey) return $selectedDistrictsData;
+            if (!$sortKey) return $selectedDistrictsData
             return $selectedDistrictsData.slice().sort((a, b) => {
-                const aValue = a.properties[$sortKey];
-                const bValue = b.properties[$sortKey];
-                return $sortOrder * ((aValue > bValue) - (bValue > aValue));
+                const aValue = a.properties[$sortKey]
+                const bValue = b.properties[$sortKey]
+                return $sortOrder * ((aValue > bValue) - (bValue > aValue))
             });
         }
     )

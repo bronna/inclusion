@@ -68,7 +68,11 @@ export const getData = () => {
         }
 
         // Calculate the weighted inclusion
-        district.properties.weighted_inclusion = weightedInclusion(district.properties)
+        if (!district.properties["Total Student Count"]) {
+            district.properties.weighted_inclusion = null
+        } else {
+            district.properties.weighted_inclusion = weightedInclusion(district.properties)
+        }
 
         // Tallying up alerts for each district
         let alertsCount = 0;
@@ -99,7 +103,10 @@ export const getData = () => {
             "LRE Students Separate Settings": (numSeparate / totalStudents) * 100,
             "Higher Ed/Training/Employed": sumHigherEdTrainingEmployed / totalStudents * 100,
             "IEP 4Yr Cohort Grad 18-19": sumIEP4YrCohortGrad / totalStudents * 100,
-            "IEP Dropout 18-19": sumIEPDropout / totalStudents * 100
+            "IEP Dropout 18-19": sumIEPDropout / totalStudents * 100,
+            "weighted_inclusion": null,
+            "decile": null,
+            "nAlerts": null
         },
         geometry: null
     }
