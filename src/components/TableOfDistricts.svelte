@@ -86,9 +86,11 @@
                         </span>
                     </td>
                     <td class="district-metric">
-                        {#if district.properties["Total Student Count"]}
-                            <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
-                        {/if}
+                        <div class="metric-content">
+                            {#if district.properties["Total Student Count"]}
+                                <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
+                            {/if}
+                        </div>
                     </td>
                     <!-- <td>
                         {#if district.properties.nAlerts > 0}
@@ -210,6 +212,10 @@
         text-align: center;
         white-space: normal;
         padding-left: 2.25rem;
+    }
+
+    .district-metric .metric-content {
+        min-height: 42px;
     }
 
     .student-count {
