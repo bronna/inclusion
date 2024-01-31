@@ -13,7 +13,12 @@
         <div class="card">
             <div class="card-title">{matchedDistrict.properties["Institution Name"]}</div>
             <InclusionRing value={matchedDistrict.properties.decile} weighted_inclusion={matchedDistrict.properties.weighted_inclusion} />
+            {#if matchedDistrict.properties["Total Student Count"]}
             <div class="card-info"><span class="highlight">{matchedDistrict.properties["Total Student Count"]}</span> students with IEPs</div>
+            {:else}
+                <div class="card-info"><span class="highlight">No</span> students with IEPs</div>
+            {/if}
+            
         </div>
     </a>
 {/if}

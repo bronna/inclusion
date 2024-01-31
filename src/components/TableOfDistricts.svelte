@@ -87,9 +87,7 @@
                     </td>
                     <td class="district-metric">
                         <div class="metric-content">
-                            {#if district.properties["Total Student Count"]}
-                                <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
-                            {/if}
+                            <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
                         </div>
                     </td>
                     <!-- <td>
