@@ -59,14 +59,15 @@
         
         <div class="comparison-hists">
             <div class="hist-inclusion">
-                <span class="metric-sub-name">ALL DISTRICTS</span>
                 <MiniHistogram 
                     metric1={"weighted_inclusion"}
                     currentMetric1Value={districtData.properties.weighted_inclusion}
                     metric2={"decile"}
+                    currentMetric2Value={districtData.properties.decile}
+                    districtName={districtData.properties["Institution Name"]}
                 />
             </div>
-            {#if districtData.properties["Total Student Count"] > 500}
+            <!-- {#if districtData.properties["Total Student Count"] > 500}
                 <div class="hist-inclusion">
                     <span class="metric-sub-name">LARGE DISTRICTS</span>
                     <MiniHistogram 
@@ -76,7 +77,7 @@
                         largeDistricts={true}
                     />
                 </div>
-            {/if}
+            {/if} -->
         </div>
     </div>
 
@@ -175,7 +176,6 @@
         flex-wrap: wrap;
         align-items: flex-start;
         justify-content: flex-start;
-        margin-top: 1rem;
     }
 
     .hist-inclusion {

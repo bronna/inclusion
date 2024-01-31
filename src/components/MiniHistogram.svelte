@@ -6,34 +6,38 @@
     export let metric1 // for line overlay
     export let currentMetric1Value // for line overlay
     export let metric2 // for hist bins, if applicable
-    export let largeDistricts = false
+    export let currentMetric2Value // decile
+    export let districtName
 
-    let data1
+    let data
     let metric1Domain
-    let data2
+    let weightedData
     let bins
     let xScale, yScale
     let xPos
-    const margin = { top: 10, right: 10, bottom: 30, left: 10 }
+    const margin = { top: 30, right: 0, bottom: 30, left: 0 }
     const width = 300 - margin.left - margin.right
-    const height = 120 - margin.top - margin.bottom
+    const height = 150 - margin.top - margin.bottom
 
     let metricScale = d3.scaleLinear().range([0, width])
 
     // extract the data values from districtsData for the specified metrics
-    $: data1 = $largeDistrictsData // make dynamic?
+    $: data = $largeDistrictsData // make dynamic?
         .filter(district => district.properties[metric1] > 0)
         .map(district => district.properties[metric1])
 
-    $: data2 = (largeDistricts ? $largeDistrictsData : $districtsData)
+    $: weightedData = $districtsData
         .filter(district => district.properties[metric2] > 0)
-        .map(district => district.properties[metric2])
-    $: if (data2 && data2.length > 0) {
+        .map(district => ({
+            value: district.properties[metric2],
+            weight: district.properties["Total Student Count"]
+        }))
+    $: if (weightedData && weightedData.length > 0) {
         createHistogram()
     }
 
-    $: if (data1 && data1.length > 0) {
-        metric1Domain = d3.extent(data1);
+    $: if (data && data.length > 0) {
+        metric1Domain = d3.extent(data);
         metricScale.domain(metric1Domain)
     }
 
@@ -52,47 +56,62 @@
 
         // create the histogram layout
         const histogram = d3.histogram()
-            .value(d => d)
+            .value(d => d.value)
             .domain([1, 11]) // make dynamic
             .thresholds(thresholds)
 
-        bins = histogram(data2)
+        bins = histogram(weightedData)
 
-        const maxBinHeight = d3.max(bins, d => d.length)
+        for (const bin of bins) {
+            bin.weightedLength = d3.sum(bin, d => d.weight)
+        }
 
-        // create scales
+        const maxBinWeight = d3.max(bins, d => d.weightedLength)
+
         xScale = d3.scaleLinear()
-            .domain([1, 11]) // make dynamic
+            .domain([1, 11])
             .range([0, width])
 
         yScale = d3.scaleLinear()
-            .domain([0, maxBinHeight])
+            .domain([0, maxBinWeight])
             .range([height, 0])
     }
 </script>
 
-<svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
+<svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} overflow="visible">
     <g transform={`translate(${margin.left}, ${margin.top})`}>
         {#each bins as bin, index}
             <rect
                 x={xScale(bin.x0)}
-                y={yScale(bin.length)}
+                y={yScale(bin.weightedLength)}
                 width={xScale(bin.x1) - xScale(bin.x0)}
-                height={height - yScale(bin.length)}
+                height={height - yScale(bin.weightedLength)}
                 fill={colors[6]}
             />
-            <!-- <text 
-                x={xScale((bin.x0 + bin.x1) / 2)}
-                y={yScale(bin.length) - 5}
-                fill="blue"
-                text-anchor="middle"
-                font-size="0.8rem"
-            >
-                {index + 1}
-            </text> -->
+            {#if (index + 1) === 1 || (index + 1) === 10}
+                <text 
+                    x={xScale((bin.x0 + bin.x1) / 2)}
+                    y={height + 15}
+                    fill={colors[5]}
+                    text-anchor="middle"
+                    font-size="0.8rem"
+                >
+                    {index + 1}
+                </text>
+            {/if}
         {/each}
 
         {#if xPos !== undefined && xPos !== null}
+            <text 
+                x={xPos} 
+                y=-20
+                fill={colors[5]}
+                font-size="0.8rem" 
+                text-anchor="middle"
+            >
+                {districtName}
+            </text>
+
             <line
                 x1={xPos}
                 x2={xPos}
@@ -102,15 +121,15 @@
                 stroke-width={4}
             />
 
-            <!-- <text 
+            <text 
                 x={xPos} 
-                y={height + 20} 
-                fill="blue" 
+                y={height + 28} 
+                fill={colors[5]}
                 font-size="0.8rem" 
                 text-anchor="middle"
             >
-                {Math.round(currentMetric1Value)}
-            </text> -->
+                {currentMetric2Value}
+            </text>
         {/if}
     </g>
 </svg>
@@ -146,8 +165,8 @@
         {/if}
         {#if xPos !== undefined && xPos !== null}
             <line
-                x1={metricScale(d3.min(data1))}
-                x2={metricScale(d3.min(data1))}
+                x1={metricScale(d3.min(data))}
+                x2={metricScale(d3.min(data))}
                 y1={0}
                 y2={height}
                 stroke="blue"
@@ -155,18 +174,18 @@
                 opacity=0.5
             />
             <text 
-                x={metricScale(d3.min(data1))} 
+                x={metricScale(d3.min(data))} 
                 y={height + 10} 
                 fill="blue" 
                 font-size="0.8rem" 
                 text-anchor="middle"
             >
-                {Math.round(d3.min(data1))}
+                {Math.round(d3.min(data))}
             </text>
 
             <line
-                x1={metricScale(d3.max(data1))}
-                x2={metricScale(d3.max(data1))}
+                x1={metricScale(d3.max(data))}
+                x2={metricScale(d3.max(data))}
                 y1={0}
                 y2={height}
                 stroke="blue"
@@ -174,13 +193,13 @@
                 opacity=0.5
             />
             <text 
-                x={metricScale(d3.max(data1))} 
+                x={metricScale(d3.max(data))} 
                 y={height + 10} 
                 fill="blue" 
                 font-size="0.8rem" 
                 text-anchor="middle"
             >
-                {Math.round(d3.max(data1))}
+                {Math.round(d3.max(data))}
             </text>
         {/if}
         

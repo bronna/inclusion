@@ -79,7 +79,7 @@
 
 <section id="scores">
 	<h1 class="headline">
-		How included are students with disabilities in your local schools?
+		See how included students with disabilities are in your school district
 	</h1>
 
 	<p class="text-width">
@@ -189,6 +189,12 @@
 	font-weight: 800;
 	letter-spacing: 0.09rem;
 	color: var(--color-text);
+  }
+
+  @media (max-width: 67rem) {
+	h1 {
+		max-width: 90%;
+	}
   }
 
   @media (max-width: 768px) {

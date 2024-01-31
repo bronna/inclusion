@@ -147,7 +147,7 @@
         vertical-align: middle;
         line-height: 1rem;
         font-size: 0.85rem;
-        letter-spacing: 0.01rem;
+        letter-spacing: 0.016rem;
         color: var(--dark-gray);
         cursor: pointer;
         position: relative; /* for arrow */
