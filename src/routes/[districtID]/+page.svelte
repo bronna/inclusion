@@ -67,22 +67,11 @@
                     districtName={districtData.properties["Institution Name"]}
                 />
             </div>
-            <!-- {#if districtData.properties["Total Student Count"] > 500}
-                <div class="hist-inclusion">
-                    <span class="metric-sub-name">LARGE DISTRICTS</span>
-                    <MiniHistogram 
-                        metric1={"weighted_inclusion"}
-                        currentMetric1Value={districtData.properties.weighted_inclusion}
-                        metric2={"decile"}
-                        largeDistricts={true}
-                    />
-                </div>
-            {/if} -->
         </div>
     </div>
 
-    <div class="text-width metric">
-        <h3 class="metric-name">Inclusion Breakdown</h3>
+    <div class="text-width metric" id="donut">
+        <h3 class="metric-name">Inclusion Rates</h3>
         {#if inclusionCategories && inclusionCategories.length > 0}
             <DonutChart 
                 data = {inclusionCategories} 
@@ -183,14 +172,8 @@
         flex-direction: column;
     }
 
-    .metric-sub-name {
-        color: var(--color-text);
-        font-size: 1rem;
-        letter-spacing: 0.01rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        text-align: center;
-        margin-bottom: 1rem;;
+    #donut {
+        margin-top: 1.8rem;
     }
 
     .district-cards-container {

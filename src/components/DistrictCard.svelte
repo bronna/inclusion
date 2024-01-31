@@ -28,17 +28,22 @@
         margin: 1.5rem 0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         width: 140px;
+        min-height: 140px;
     }
 
     .card-title {
         font-size: 1.1rem;
         font-weight: 700;
-        margin-bottom: 1rem;
         font-family: 'Bitter', serif;
         text-align: center;
+        white-space: normal;
+        word-wrap: break-word;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        flex-grow: 1;
     }
 
     .card-info {
