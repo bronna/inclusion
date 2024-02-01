@@ -52,7 +52,7 @@
                 x1={Math.cos(indicatorAngle) * (innerRadius - 5)} 
                 y1={Math.sin(indicatorAngle) * (innerRadius - 5)} 
                 x2={Math.cos(indicatorAngle) * (outerRadius + 5)}
-                y2={Math.sin(indicatorAngle) * (outerRadius + 5)}
+                    y2={Math.sin(indicatorAngle) * (outerRadius + 5)}
                 stroke={colors[5]} 
                 stroke-width="2" 
             />

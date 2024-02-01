@@ -76,13 +76,11 @@
             {#if !$hideSmallDistricts || (district.properties["Total Student Count"] > 500)}
                 <tr>
                     <td class="district-name">
-                        <span on:click={district.properties["Total Student Count"] ? () => goto(`/${district.properties.GEOID}`) : null}>
+                        <span on:click={() => goto(`/${district.properties.GEOID}`)}>
                             {district.properties["Institution Name"]}
-                            {#if district.properties["Total Student Count"]}
-                                <svg viewBox="0 0 24 24" width="12" height="12" class="inline-arrow">
-                                    <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="3" />
-                                </svg>
-                            {/if}
+                            <svg viewBox="0 0 24 24" width="12" height="12" class="inline-arrow">
+                                <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="3" />
+                            </svg>
                         </span>
                     </td>
                     <td class="district-metric">

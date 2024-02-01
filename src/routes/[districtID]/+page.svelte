@@ -20,9 +20,7 @@
 
     let inclusionCategories, gradRates, gradDonutCenterText, stateAvgGradRate
 
-    $: if (districtData) {
-        console.log(districtData)
-        
+    $: if (districtData && districtData.properties["Total Student Count"]) {
         inclusionCategories = [
             {group: "inclusive", value: districtData.properties["LRE Students >80%"]},
             {group: "semi-inclusive", value: districtData.properties["LRE Students >40% <80%"]},
@@ -81,38 +79,48 @@
                 centerText3="with IEPs"
             />
             <DonutLegend data={districtData} />
+        {:else}
+            <p>No students with IEPs</p>
         {/if}
     </div>
 
     <div class="text-width metric">
         <h3 class="metric-name">Alerts</h3>
-        <p>
-            {districtData.properties.SuspExplFg === "No" ? "No reports of disproportionate discipline of students with IEPs" : "This district reported disproportionate discipline of students with IEPs"}
-        </p>
-        <p>
-            {districtData.properties.SuspExplRaceEthnicityFg === "No" ? "No reports of disproportionate discipline of students in certain racial groups with IEPs" : "This district reported disproportionate discipline of students in certain racial groups with IEPs"}
-        </p>
-        <p>
-            {districtData.properties.DisPrptnRprsntnFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a disability" : "This district reported disproportionate identification of students in certain racial groups as having a disability"}
-        </p>
-        <p>
-            {districtData.properties.DisPrptnRprsntnDsbltyFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a certain disability" : "This district reported disproportionate identification of students in certain racial groups as having a certain disability"}
-        </p>
+        {#if districtData.properties["Total Student Count"]}
+            <p>
+                {districtData.properties.SuspExplFg === "No" ? "No reports of disproportionate discipline of students with IEPs" : "This district reported disproportionate discipline of students with IEPs"}
+            </p>
+            <p>
+                {districtData.properties.SuspExplRaceEthnicityFg === "No" ? "No reports of disproportionate discipline of students in certain racial groups with IEPs" : "This district reported disproportionate discipline of students in certain racial groups with IEPs"}
+            </p>
+            <p>
+                {districtData.properties.DisPrptnRprsntnFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a disability" : "This district reported disproportionate identification of students in certain racial groups as having a disability"}
+            </p>
+            <p>
+                {districtData.properties.DisPrptnRprsntnDsbltyFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a certain disability" : "This district reported disproportionate identification of students in certain racial groups as having a certain disability"}
+            </p>
+        {:else}
+            <p>No students with IEPs</p>
+        {/if}
     </div>
 
     <div class="text-width metric">
         <h3 class="metric-name">4-Year Graduation Rate of Students with IEPs</h3>
-        <DonutChart 
-            height = {120}
-            outerRadius = {60}
-            innerRadius = {40}
-            barSpacing = {1}
-            data = {gradRates} 
-            chartColors = {[colors[0], colors[6]]}
-            centerText={gradDonutCenterText}
-            indicator={[{group: "gradRate", value: stateAvgGradRate}, {group: "notGradRate", value: 100 - stateAvgGradRate}]}
-        />
-        <p>*school year 2018-19</p>
+        {#if districtData.properties["Total Student Count"]}
+            <DonutChart 
+                height = {120}
+                outerRadius = {60}
+                innerRadius = {40}
+                barSpacing = {1}
+                data = {gradRates} 
+                chartColors = {[colors[0], colors[6]]}
+                centerText={gradDonutCenterText}
+                indicator={[{group: "gradRate", value: stateAvgGradRate}, {group: "notGradRate", value: 100 - stateAvgGradRate}]}
+            />
+            <p>*school year 2018-19</p>
+        {:else}
+            <p>No students with IEPs</p>
+        {/if}
     </div>
 
     <div class="text-width metric">

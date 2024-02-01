@@ -101,7 +101,7 @@
             {/if}
         {/each}
 
-        {#if xPos !== undefined && xPos !== null}
+        {#if currentMetric1Value && xPos !== undefined && xPos !== null}
             <text 
                 x={xPos} 
                 y=-20
