@@ -80,7 +80,7 @@
             />
             <DonutLegend data={districtData} />
         {:else}
-            <p>No students with IEPs</p>
+            <p>No data available</p>
         {/if}
     </div>
 
@@ -100,7 +100,7 @@
                 {districtData.properties.DisPrptnRprsntnDsbltyFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a certain disability" : "This district reported disproportionate identification of students in certain racial groups as having a certain disability"}
             </p>
         {:else}
-            <p>No students with IEPs</p>
+            <p>No data available</p>
         {/if}
     </div>
 
@@ -119,7 +119,7 @@
             />
             <p>*school year 2018-19</p>
         {:else}
-            <p>No students with IEPs</p>
+            <p>No data available</p>
         {/if}
     </div>
 

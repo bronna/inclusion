@@ -16,7 +16,7 @@
             {#if matchedDistrict.properties["Total Student Count"]}
             <div class="card-info"><span class="highlight">{matchedDistrict.properties["Total Student Count"]}</span> students with IEPs</div>
             {:else}
-                <div class="card-info"><span class="highlight">No</span> students with IEPs</div>
+                <div class="card-info">No data available</div>
             {/if}
             
         </div>
