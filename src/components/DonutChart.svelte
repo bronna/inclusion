@@ -58,12 +58,12 @@
             />
             <!-- make label position dynamic -->
             <text
-                x={Math.cos(indicatorAngle) * (outerRadius + 60)}
+                x={Math.cos(indicatorAngle) * (outerRadius + 70)}
                 y={Math.sin(indicatorAngle) * (outerRadius + 15)}
                 dominant-baseline="middle"
                 text-anchor="middle"
                 fill={colors[5]}
-                font-size="0.8rem"
+                font-size="0.9rem"
                 font-weight="600"
             >
                 State Avg: {Math.round(indicator[0].value)}% <!-- make label text dynamic -->
@@ -84,7 +84,7 @@
 
 <style>
     .donut-chart {
-        margin-top: 1.6rem;
+        margin-top: 0.5rem;
         padding-bottom: 1rem;
     }
 </style>

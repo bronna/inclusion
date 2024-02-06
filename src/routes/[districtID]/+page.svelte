@@ -6,10 +6,11 @@
     import MiniHistogram from '../../components/MiniHistogram.svelte'
     import DonutChart from '../../components/DonutChart.svelte'
     import DonutLegend from '../../components/DonutLegend.svelte'
+    import AlertsCards from '../../components/AlertsCards.svelte'
     import Sources from '../../components/Sources.svelte'
     import DistrictCard from '../../components/DistrictCard.svelte'
 
-    let districtData, stateData
+    let districtData, stateData, alerts
 
     $: districtID = $page.params.districtID
 
@@ -17,6 +18,13 @@
         districtData = $districtsData.find(d => d.properties.GEOID === districtID)
         stateData = $districtsData.find(d => d.properties.GEOID === "999999")
     }
+
+    $: alerts = [
+        {name: "Suspension/Expulsion", value: districtData.properties.SuspExplFg},
+        {name: "Suspension/Expulsion by race", value: districtData.properties.SuspExplRaceEthnicityFg},
+        {name: "Disproportionate representation", value: districtData.properties.DisPrptnRprsntnFg},
+        {name: "Disproportionate representation by disability", value: districtData.properties.DisPrptnRprsntnDsbltyFg},
+    ]
 
     let inclusionCategories, gradRates, gradDonutCenterText, stateAvgGradRate
 
@@ -68,8 +76,8 @@
         </div>
     </div>
 
-    <div class="text-width metric" id="donut">
-        <h3 class="metric-name">Inclusion Rates</h3>
+    <div class="text-width metric">
+        <h3 class="metric-name" id="inclusion-donut">Inclusion Rates</h3>
         {#if inclusionCategories && inclusionCategories.length > 0}
             <DonutChart 
                 data = {inclusionCategories} 
@@ -86,19 +94,9 @@
 
     <div class="text-width metric">
         <h3 class="metric-name">Alerts</h3>
-        {#if districtData.properties["Total Student Count"]}
-            <p>
-                {districtData.properties.SuspExplFg === "No" ? "No reports of disproportionate discipline of students with IEPs" : "This district reported disproportionate discipline of students with IEPs"}
-            </p>
-            <p>
-                {districtData.properties.SuspExplRaceEthnicityFg === "No" ? "No reports of disproportionate discipline of students in certain racial groups with IEPs" : "This district reported disproportionate discipline of students in certain racial groups with IEPs"}
-            </p>
-            <p>
-                {districtData.properties.DisPrptnRprsntnFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a disability" : "This district reported disproportionate identification of students in certain racial groups as having a disability"}
-            </p>
-            <p>
-                {districtData.properties.DisPrptnRprsntnDsbltyFg === "No" ? "No reports of disproportionate identification of students in certain racial groups as having a certain disability" : "This district reported disproportionate identification of students in certain racial groups as having a certain disability"}
-            </p>
+        <p class="data-asterisk">*discipline rates lower this school year due to remote learning</p>
+        {#if districtData.properties["Total Student Count"] && alerts}
+            <AlertsCards alertsData={alerts} />
         {:else}
             <p>No data available</p>
         {/if}
@@ -106,6 +104,7 @@
 
     <div class="text-width metric">
         <h3 class="metric-name">4-Year Graduation Rate of Students with IEPs</h3>
+        <p class="data-asterisk">*school year 2018-19</p>
         {#if districtData.properties["Total Student Count"]}
             <DonutChart 
                 height = {120}
@@ -117,7 +116,6 @@
                 centerText={gradDonutCenterText}
                 indicator={[{group: "gradRate", value: stateAvgGradRate}, {group: "notGradRate", value: 100 - stateAvgGradRate}]}
             />
-            <p>*school year 2018-19</p>
         {:else}
             <p>No data available</p>
         {/if}
@@ -132,7 +130,10 @@
         </div>
     </div>
 
-    <Sources />
+    <div class="sources">
+        <Sources />
+    </div>
+    
 {:else}
     <p>Loading...</p>
 {/if}
@@ -140,7 +141,7 @@
 
 <style>
     .metric {
-        margin: 1rem 0;
+        margin: 2.5rem 0;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -156,7 +157,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 1.6rem;
     }
 
     .metric-name {
@@ -180,8 +181,14 @@
         flex-direction: column;
     }
 
-    #donut {
-        margin-top: 1.8rem;
+    #inclusion-donut {
+        margin-bottom: 1rem;
+    }
+
+    .data-asterisk {
+        font-size: 0.9rem;
+        color: var(--color-text);
+        margin-top: 0.5rem;
     }
 
     .district-cards-container {
@@ -191,6 +198,10 @@
         gap: 1rem;
         max-width: 100%;
         white-space: nowrap;
+    }
+
+    .sources {
+        margin-top: 1rem;
     }
 </style>
 
