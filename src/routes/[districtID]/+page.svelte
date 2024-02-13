@@ -13,6 +13,7 @@
     let districtData, stateData, alerts
 
     $: districtID = $page.params.districtID
+    console.log($page.params)
 
     $: if ($districtsData) {
         districtData = $districtsData.find(d => d.properties.GEOID === districtID)
@@ -94,7 +95,7 @@
 
     <div class="text-width metric">
         <h3 class="metric-name">Alerts</h3>
-        <p class="data-asterisk">*lower discipline rates school year 21-22 due to remote learning</p>
+        <p class="data-asterisk">*discipline rates were lower during school year 21-22 due to remote learning</p>
         {#if districtData.properties["Total Student Count"] && alerts}
             <AlertsCards alertsData={alerts} />
         {:else}
