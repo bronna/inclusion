@@ -32,6 +32,12 @@
         <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
             <polyline points="6 9 12 15 18 9"></polyline>
         </svg>`
+
+    function handleKeypress(event) {
+        if (event.key === "Enter") {
+            goto(`/${district.properties.GEOID}`)
+        }
+    }
 </script>
 
 <table class="text-width">
@@ -76,12 +82,17 @@
             {#if !$hideSmallDistricts || (district.properties["Total Student Count"] > 500)}
                 <tr>
                     <td class="district-name">
-                        <span on:click={() => goto(`/${district.properties.GEOID}`)}>
+                        <a href="javascript:void(0)"
+                            on:click={() => goto(`/${district.properties.GEOID}`)}
+                            role="button"
+                            tabindex="0"
+                            on:keypres={handleKeypress}
+                        >
                             {district.properties["Institution Name"]}
                             <svg viewBox="0 0 24 24" width="12" height="12" class="inline-arrow">
                                 <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="3" />
                             </svg>
-                        </span>
+                        </a>
                     </td>
                     <td class="district-metric">
                         <div class="metric-content">
