@@ -83,11 +83,11 @@
 	</h1>
 
 	<p class="text-width">
-		Advocates want all children to feel included in their own communities. In a school setting, this usually means having students with disabilities spend as much time as possible in a typical classroom setting. To do this, they oftentimes need additional supports, such as a speech device or an aide. For students, this is worth it because research shows that disabled students make much more progress when surrounded by typical peers. Typical peers also benefit from the inclusive environment, as accommodations like universal design end up benefitting many, as well as giving them confidence that, in a supportive community, their own unique needs can be met.
+		Advocates want all children to feel included in their communities. In a school setting, this usually means having students with disabilities spend as much time as possible in regular classrooms (with, importantly, any needed supports). Research shows that, in general, disabled students make much more progress when surrounded by their typically developing peers. Typical peers also benefit from the inclusive environment, as accommodations like universal design end up benefitting many, as well as giving them confidence that, in a supportive community, their own unique needs will be met. Additionally, inclusive environments can help reduce stigma and discrimination.
 	</p>
 
 	<p class="text-width">
-		This tool allows you to explore the most recent data on programs that serve students with IEPs from school districts around your state. To begin, enter the name of a district below, or select on the map.
+		This tool allows you to explore the most recent data on inclusion and outcomes for children with IEPs from school districts around your state. To begin, enter the name of a district below, or select one or more on the map.
 	</p>
 
 	<aside class="text-width">
@@ -105,7 +105,7 @@
 					d="M 16 3 C 12.210938 3 8.765625 4.113281 6.21875 5.976563 C 3.667969 7.835938 2 10.507813 2 13.5 C 2 17.128906 4.472656 20.199219 8 22.050781 L 8 29 L 14.746094 23.9375 C 15.15625 23.96875 15.570313 24 16 24 C 19.789063 24 23.234375 22.886719 25.78125 21.027344 C 28.332031 19.164063 30 16.492188 30 13.5 C 30 10.507813 28.332031 7.835938 25.78125 5.976563 C 23.234375 4.113281 19.789063 3 16 3 Z M 16 5 C 19.390625 5 22.445313 6.015625 24.601563 7.589844 C 26.757813 9.164063 28 11.246094 28 13.5 C 28 15.753906 26.757813 17.835938 24.601563 19.410156 C 22.445313 20.984375 19.390625 22 16 22 C 15.507813 22 15.015625 21.972656 14.523438 21.925781 L 14.140625 21.894531 L 10 25 L 10 20.859375 L 9.421875 20.59375 C 6.070313 19.019531 4 16.386719 4 13.5 C 4 11.246094 5.242188 9.164063 7.398438 7.589844 C 9.554688 6.015625 12.609375 5 16 5 Z">
 				</path>
 			</svg>
-			<p><strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans (<strong>IEP</strong>s) outline what supports a student with disabilities will need to be able to work towards their educational goals. They're created by a team of teachers, therapists, the student, and their caregivers</p>
+			<p><strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans (<strong>IEP</strong>s) outline what supports a student with disabilities will need to be able to work towards their educational goals. They're created by a team of teachers, therapists, the student, and their caregivers. They can include things like larger type size on worksheets, a speech output device, or a personal aide.</p>
 		</div>
 	</aside>
 
@@ -215,6 +215,12 @@
 	/* background: white; */
 	border-radius: 5px;
 	border: 2px solid var(--dark-gray);
+  }
+
+  @media (max-width: 768px) {
+	aside {
+		border: none;
+	}
   }
 
   aside .inner-content {

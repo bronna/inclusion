@@ -44,6 +44,12 @@
     }
   }
 
+  @media (max-width: 768px) {
+    footer {
+      padding: 2rem 0;
+    }
+  }
+
   .label {
     font-size: 0.95rem;
     letter-spacing: 0.025rem;

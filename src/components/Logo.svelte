@@ -22,7 +22,6 @@
     }
 
     .logo a {
-        margin-left: 7px;
         text-decoration: none;
         font-family: var(--font-headers);
         font-weight: 800;
