@@ -1,0 +1,128 @@
+@import '@fontsource/fira-mono';
+
+:root {
+	--font-body: 'Source Sans 3', sans-serif;
+	--font-headers: 'Bitter', serif;
+	--color-text: #333131;
+	--column-width: 42rem;
+	--column-margin-top: 4rem;
+	font-family: var(--font-body);
+	color: var(--color-text);
+	--dark-teal: rgb(50, 143, 131);
+	--inclusive-color: rgba(70, 181, 166, 1.0);
+    --semi-inclusive-color: rgba(248, 170, 22, 1.0);
+	--non-inclusive-color: rgba(247, 134, 68, 1.0);
+	--separate-color: rgba(222, 84, 102, 1.0);
+    --dark-gray: #333131;
+	--medium-gray: #BCB6B6;
+	--light-gray: #DBD7D7;
+	--light-light-gray: #E8E5E4;
+	--background-color: #F4F1F0;
+
+	font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	min-height: 100vh;
+	margin: 0;
+	background-color: white;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+	align-items: center;
+}
+
+h1 {
+	font-size: 2.25rem;
+	font-weight: bold;
+	font-family: var(--font-headers);
+	line-height: 2.5rem;
+	text-align: left;
+}
+
+h3 {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: var(--dark-gray);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+hr {
+	margin-top: 3rem;
+	border: 1px solid var(--dark-gray);
+	height: 0px;
+	box-shadow: none;
+}
+
+pre {
+	font-size: 16px;
+	font-family: var(--font-headers);
+	background-color: rgba(255, 255, 255, 0.45);
+	border-radius: 3px;
+	box-shadow: 2px 2px 6px rgb(255 255 255 / 25%);
+	padding: 0.5em;
+	overflow-x: auto;
+	color: var(--color-text);
+}
+
+.text-column {
+	display: flex;
+	max-width: 48rem;
+	flex: 0.6;
+	flex-direction: column;
+	justify-content: center;
+	margin: 0 auto;
+}
+
+input,
+button {
+	font-size: inherit;
+	font-family: inherit;
+}
+
+button:focus:not(:focus-visible) {
+	outline: none;
+}
+
+@media (min-width: 720px) {
+	h1 {
+		font-size: 2.4rem;
+	}
+}
+
+.visually-hidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: auto;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	white-space: nowrap;
+}
+
+.text-width {
+	max-width: 40rem;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .text-width {
+        padding: 0 1rem;
+    }
+}
