@@ -8,7 +8,7 @@
 	--column-margin-top: 4rem;
 	font-family: var(--font-body);
 	color: var(--color-text);
-	--dark-teal: rgb(50, 143, 131);
+	--dark-teal: rgb(52, 148, 135);
 	--inclusive-color: rgba(70, 181, 166, 1.0);
     --semi-inclusive-color: rgba(248, 170, 22, 1.0);
 	--non-inclusive-color: rgba(247, 134, 68, 1.0);
