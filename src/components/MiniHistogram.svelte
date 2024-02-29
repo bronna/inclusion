@@ -15,9 +15,9 @@
     let bins
     let xScale, yScale
     let xPos
-    const margin = { top: 30, right: 0, bottom: 30, left: 0 }
+    const margin = { top: 60, right: 0, bottom: 30, left: 0 }
     const width = 300 - margin.left - margin.right
-    const height = 150 - margin.top - margin.bottom
+    const height = 190 - margin.top - margin.bottom
 
     let metricScale = d3.scaleLinear().range([0, width])
 
@@ -100,6 +100,11 @@
                 </text>
             {/if}
         {/each}
+
+        <g class="legend" transform="translate(0, -60)">
+            <rect width="15" height="15" fill={colors[6]}></rect>
+            <text x="20" y="12.5" fill={colors[5]} font-size="0.8rem">All other school districts</text>
+        </g>
 
         {#if currentMetric1Value && xPos !== undefined && xPos !== null}
             <text 

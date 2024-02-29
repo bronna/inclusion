@@ -94,16 +94,16 @@
 
     <div class="text-width metric">
         <h3 class="metric-name">Alerts</h3>
-        <p class="data-asterisk">*discipline rates were lower during school year 21-22 due to remote learning</p>
         {#if districtData.properties["Total Student Count"] && alerts}
             <AlertsCards alertsData={alerts} />
         {:else}
             <p>No data available</p>
         {/if}
+        <p class="data-asterisk">*discipline rates were lower than usual due to remote learning</p>
     </div>
 
     <div class="text-width metric">
-        <h3 class="metric-name">4-Year Graduation Rate of Students with IEPs</h3>
+        <h3 class="metric-name">Graduation Rate of Students with IEPs Within 4 Years</h3>
         <p class="data-asterisk">*school year 2018-19</p>
         {#if districtData.properties["Total Student Count"]}
             <DonutChart 
@@ -188,7 +188,7 @@
     .data-asterisk {
         font-size: 0.9rem;
         color: var(--color-text);
-        margin-top: 0.5rem;
+        margin-top: 0.8rem;
     }
 
     .district-cards-container {

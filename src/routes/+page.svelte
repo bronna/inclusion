@@ -86,10 +86,6 @@
 		Advocates want all children to feel included in their communities. In a school setting, this usually means having students with disabilities spend as much time as possible in regular classrooms (with, importantly, any needed supports). Research shows that, in general, disabled students make much more progress when surrounded by their typically developing peers. Typical peers also benefit from the inclusive environment, as accommodations like universal design end up benefitting many, as well as giving them confidence that, in a supportive community, their own unique needs will be met. Additionally, inclusive environments can help reduce stigma and discrimination.
 	</p>
 
-	<p class="text-width">
-		This tool allows you to explore the most recent data on inclusion and outcomes for children with IEPs from school districts around your state. To begin, enter the name of a district below, or select one or more on the map.
-	</p>
-
 	<aside class="text-width">
 		<div class="inner-content">
 			<svg 
@@ -108,6 +104,10 @@
 			<p><strong>I</strong>ndividualized <strong>E</strong>ducation <strong>P</strong>lans (<strong>IEP</strong>s) outline what supports a student with disabilities will need to be able to work towards their educational goals. They're created by a team of teachers, therapists, the student, and their caregivers. They can include things like larger type size on worksheets, a speech output device, or a personal aide.</p>
 		</div>
 	</aside>
+
+	<p class="text-width">
+		This tool allows you to explore the most recent data on inclusion and outcomes for children with IEPs from school districts around your state. To begin, enter the name of a district below, or select one or more on the map.
+	</p>
 
 	<div class="search text-width">
 		<p class="search-description text-width">
@@ -129,11 +129,6 @@
 	<StateMap data={$districtsData} />
 
 	<div class="filters">
-		<!-- Hide/show small districts -->
-		<button on:click={toggleHideSmallDistricts} class="action-button" id="hide-button">
-			{$hideSmallDistricts ? 'show small districts' : 'hide small districts'}
-		</button>
-
 		<!-- Select all -->
 		<button on:click={selectAllDistricts} class="action-button" id="select-all-button">
 			select all
@@ -142,6 +137,11 @@
 		<!-- Select none -->
 		<button on:click={clearSelectedDistricts} class="action-button" id="select-none-button">
 			select none
+		</button>
+
+		<!-- Hide/show small districts -->
+		<button on:click={toggleHideSmallDistricts} class="action-button" id="hide-button">
+			{$hideSmallDistricts ? 'show small districts' : 'hide small districts'}
 		</button>
 
 		<!-- Filter by size action -->
@@ -328,11 +328,11 @@
   }
 
   #select-all-button {
-	background-color: var(--non-inclusive-color);
+	background-color: var(--semi-inclusive-color);
   }
 
   #select-none-button {
-	background-color: var(--semi-inclusive-color);
+	background-color: var(--non-inclusive-color);
   }
 
   .action-button:hover {

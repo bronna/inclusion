@@ -55,6 +55,7 @@
     border: none;
     font-size: 2rem;
     cursor: pointer;
+    color: var(--text-color);
   }
 
   .nav-links {
@@ -92,6 +93,7 @@
     font-size: 2rem;
     font-weight: 600;
     cursor: pointer;
+    color: var(--text-color);
   }
 
   @media (max-width: 768px) {
