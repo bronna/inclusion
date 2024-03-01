@@ -50,6 +50,11 @@ h3 {
 	padding: 0;
 }
 
+p {
+	font-size: 1.2rem;
+	line-height: 1.7rem;
+}
+
 a {
 	color: var(--dark-gray);
 	text-decoration: none;

@@ -205,11 +205,6 @@
     }
   }
 
-  p {
-	font-size: 1.1rem;
-	line-height: 1.6rem;
-  }
-
   aside {
 	margin: 1rem 0;
 	/* background: white; */

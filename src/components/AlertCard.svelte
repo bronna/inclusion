@@ -72,6 +72,7 @@
 
     .alert-card p {
         margin-top: -1rem;
+        line-height: 1.4rem;
     }
 
     .alert-description {

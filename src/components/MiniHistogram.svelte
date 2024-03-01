@@ -101,9 +101,9 @@
             {/if}
         {/each}
 
-        <g class="legend" transform="translate(0, -60)">
+        <g class="legend" transform="translate(0, -65)">
             <rect width="15" height="15" fill={colors[6]}></rect>
-            <text x="20" y="12.5" fill={colors[5]} font-size="0.8rem">All other school districts</text>
+            <text x="20" y="12.5" fill={colors[5]} font-size="0.9rem">All other school districts</text>
         </g>
 
         {#if currentMetric1Value && xPos !== undefined && xPos !== null}
@@ -111,7 +111,8 @@
                 x={xPos} 
                 y=-20
                 fill={colors[5]}
-                font-size="0.8rem" 
+                font-size="1rem"
+                font-weight="600"
                 text-anchor="middle"
             >
                 {districtName}
@@ -130,7 +131,8 @@
                 x={xPos} 
                 y={height + 28} 
                 fill={colors[5]}
-                font-size="0.8rem" 
+                font-size="1rem"
+                font-weight="600"
                 text-anchor="middle"
             >
                 {currentMetric2Value}
