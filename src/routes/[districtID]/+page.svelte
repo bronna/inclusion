@@ -81,7 +81,9 @@
                 />
             </div>
         </div>
-        <p class="asterisk">* small district size reduces accuracy of inclusion score</p>
+        {#if districtData.properties["Total Student Count"] < 500}
+            <p class="asterisk">* small district size reduces accuracy of inclusion score</p>
+        {/if}
     </div>
 
     <div class="text-width metric">

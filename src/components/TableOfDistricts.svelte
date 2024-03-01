@@ -38,6 +38,10 @@
             goto(`/${district.properties.GEOID}`)
         }
     }
+
+    function navigateToDistrict(districtGEOID) {
+        goto(`/${districtGEOID}`)
+    }
 </script>
 
 <table class="text-width">
@@ -80,14 +84,14 @@
     <tbody>
         {#each $sortedDistrictsData as district (district.properties.GEOID)}
             {#if !$hideSmallDistricts || (district.properties["Total Student Count"] > 500)}
-                <tr>
+                <tr on:click={() => navigateToDistrict(district.properties.GEOID)} tabindex="0" role="button">
                     <td class="district-name">
-                        <a href={`/${district.properties.GEOID}`} sveltekit:prefetch>
+                        <!-- <a href={`/${district.properties.GEOID}`} sveltekit:prefetch> -->
                             {district.properties["Institution Name"]}
                             <svg viewBox="0 0 24 24" width="12" height="12" class="inline-arrow">
                                 <path d="M9 18l6-6-6-6" fill="none" stroke="currentColor" stroke-width="3" />
                             </svg>
-                        </a>
+                        <!-- </a> -->
                     </td>
                     <td class="district-metric">
                         <div class="inclusion-ring-container">
@@ -187,6 +191,10 @@
         text-decoration: underline;
         text-decoration-thickness: 1.5px;
         text-underline-offset: 3px;
+    }
+
+    tbody tr[tabindex="0"] {
+        cursor: pointer;
     }
 
     th:nth-child(1), 
