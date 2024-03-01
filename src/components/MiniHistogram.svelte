@@ -89,7 +89,7 @@
             <rect
                 x={xScale(bin.x0)}
                 y={yScale(bin.weightedLength)}
-                width={xScale(bin.x1) - xScale(bin.x0)}
+                width={xScale(bin.x1) - xScale(bin.x0) - 1}
                 height={height - yScale(bin.weightedLength)}
                 fill={colors[6]}
             />
@@ -97,7 +97,7 @@
                 <rect
                     x={xScale(bin.x0)}
                     y={yScale(bin.weightedLength)}
-                    width={xScale(bin.x1) - xScale(bin.x0)}
+                    width={xScale(bin.x1) - xScale(bin.x0) - 1}
                     height={districtSize < 300 ? (height - yScale(300)) : (height - yScale(districtSize))}
                     fill={colors[0]}
                 />
