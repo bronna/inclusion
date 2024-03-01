@@ -42,7 +42,6 @@
             </text>
         </g>
     </svg>
-    
 </div>
   
 <style>

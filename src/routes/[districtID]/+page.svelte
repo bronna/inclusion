@@ -60,7 +60,14 @@
     <div class="text-width metric" id="score">
         <div class="score-label">
             <h3 class="metric-name">Inclusion Score: </h3>
-            <InclusionRing value={districtData.properties.decile} weighted_inclusion={districtData.properties.weighted_inclusion} />
+            <div class="inclusion-ring-container">
+                <div class="metric-content">
+                    <InclusionRing value={districtData.properties.decile} weighted_inclusion={districtData.properties.weighted_inclusion} />
+                </div>
+                {#if districtData.properties["Total Student Count"] < 500}
+                    <span class="uncertainty">*</span>
+                {/if}
+            </div>
         </div>
         
         <div class="comparison-hists">
@@ -74,6 +81,7 @@
                 />
             </div>
         </div>
+        <p class="asterisk">* small district size reduces accuracy of inclusion score</p>
     </div>
 
     <div class="text-width metric">
@@ -140,6 +148,10 @@
 </section>
 
 <style>
+    .district-name {
+        letter-spacing: 0.04rem;
+    }
+
     .metric {
         margin: 2.5rem 0;
         display: flex;
@@ -158,6 +170,31 @@
         flex-direction: row;
         align-items: center;
         margin-bottom: 1.6rem;
+    }
+
+    .inclusion-ring-container {
+        display: flex;
+        align-items: center; /* Vertically center the contents */
+    }
+
+    .metric-content {
+        display: flex;
+        align-items: center; /* Ensure the InclusionRing is also centered if necessary */
+    }
+
+    .uncertainty {
+        margin-left: 4px; /* Adjust as needed for spacing */
+        align-self: flex-start; /* Align asterisk to the top */
+        font-size: 1.6rem;
+        color: var(--dark-gray);
+        margin-left: 0.25rem;
+    }
+
+    .asterisk {
+        font-size: 0.9rem;
+        color: var(--dark-gray);
+        margin-top: 1rem;
+        line-height: 1.2rem;
     }
 
     .metric-name {

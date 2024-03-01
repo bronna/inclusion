@@ -90,8 +90,13 @@
                         </a>
                     </td>
                     <td class="district-metric">
-                        <div class="metric-content">
-                            <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
+                        <div class="inclusion-ring-container">
+                            <div class="metric-content">
+                                <InclusionRing value={district.properties.decile} weighted_inclusion={district.properties.weighted_inclusion} />
+                            </div>
+                            {#if district.properties["Total Student Count"] < 500}
+                                <span class="uncertainty">*</span>
+                            {/if}
                         </div>
                     </td>
                     <!-- <td>
@@ -110,6 +115,7 @@
             {/if}
         {/each}
     </tbody>
+    <p class="asterisk">* small district size reduces accuracy of inclusion score</p>
 </table>
 
 <style>
@@ -220,10 +226,36 @@
         min-height: 42px;
     }
 
+    .inclusion-ring-container {
+        display: flex;
+        align-items: center; /* Vertically center the contents */
+    }
+
+    .metric-content {
+        display: flex;
+        align-items: center; /* Ensure the InclusionRing is also centered if necessary */
+    }
+
+    .uncertainty {
+        margin-left: 4px; /* Adjust as needed for spacing */
+        align-self: flex-start; /* Align asterisk to the top */
+        font-size: 1.6rem;
+        color: var(--dark-gray);
+        margin-left: 0.25rem;
+    }
+
     .student-count {
         font-size: 1.2rem;
         white-space: normal;
         text-align: right;
         padding-right: 2rem;
+    }
+
+    .asterisk {
+        font-size: 0.9rem;
+        color: var(--dark-gray);
+        margin-top: 1.8rem;
+        line-height: 1.2rem;
+        margin-left: 1rem;
     }
 </style>
