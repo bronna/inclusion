@@ -78,6 +78,7 @@
                     metric2={"decile"}
                     currentMetric2Value={districtData.properties.decile}
                     districtName={districtData.properties["Institution Name"]}
+                    districtSize={districtData.properties["Total Student Count"]}
                 />
             </div>
         </div>

@@ -3,16 +3,18 @@
     import { districtsData, largeDistrictsData } from '../stores/stores'
     import { colors } from '../styles/colors'
 
-    export let metric1 // for line overlay
-    export let currentMetric1Value // for line overlay
-    export let metric2 // for hist bins, if applicable
-    export let currentMetric2Value // decile
+    export let metric1 // "weighted_inclusion", for line overlay
+    export let currentMetric1Value // the district's weighted_inclusion, for line overlay
+    export let metric2 // "decile", for hist bins
+    export let currentMetric2Value // the district's "decile", or inclusion score, for hist bins
     export let districtName
+    export let districtSize
 
     let data
     let metric1Domain
     let weightedData
     let bins
+    let yAxisTicks
     let xScale, yScale
     let xPos
     const margin = { top: 60, right: 0, bottom: 30, left: 0 }
@@ -75,11 +77,14 @@
         yScale = d3.scaleLinear()
             .domain([0, maxBinWeight])
             .range([height, 0])
+
+        yAxisTicks = [10000, 20000]
     }
 </script>
 
 <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} overflow="visible">
     <g transform={`translate(${margin.left}, ${margin.top})`}>
+        <!-- Histogram rectangles -->
         {#each bins as bin, index}
             <rect
                 x={xScale(bin.x0)}
@@ -88,7 +93,16 @@
                 height={height - yScale(bin.weightedLength)}
                 fill={colors[6]}
             />
-            {#if (index + 1) === 1 || (index + 1) === 10}
+            {#if districtSize && bin[0].value === currentMetric2Value}
+                <rect
+                    x={xScale(bin.x0)}
+                    y={yScale(bin.weightedLength)}
+                    width={xScale(bin.x1) - xScale(bin.x0)}
+                    height={districtSize < 300 ? (height - yScale(300)) : (height - yScale(districtSize))}
+                    fill={colors[0]}
+                />
+            {/if}
+            {#if (index + 1) === 2 || (index + 1) === 4 || (index + 1) === 6 || (index + 1) === 8 || (index + 1) === 10}
                 <text 
                     x={xScale((bin.x0 + bin.x1) / 2)}
                     y={height + 15}
@@ -101,13 +115,62 @@
             {/if}
         {/each}
 
+        <!-- Axes labels -->
+        <g class="axes-labels">
+            <text 
+                x={0}
+                y={height + 15}
+                fill={colors[5]}
+                text-anchor="middle"
+                font-size="0.8rem"
+                font-weight="600"
+            >
+                score
+            </text>
+
+            <text 
+                x={width + 5}
+                y={-20}
+                fill={colors[5]}
+                text-anchor="start"
+                font-size="0.8rem"
+                font-weight="600"
+            >
+                # students
+            </text>
+        </g>
+
+        <!-- Y-axis ticks -->
+        {#each yAxisTicks as tick}
+            <text 
+                x={width + 5} 
+                y={yScale(tick)} 
+                dy=".32em" 
+                fill={colors[5]} 
+                text-anchor="start" 
+                font-size="0.8rem"
+            >
+                {d3.format(",.0f")(tick)}
+            </text>
+            <line 
+                x1={width} x2={width + 5}
+                y1={yScale(tick)} y2={yScale(tick)}
+                stroke={colors[5]} 
+                stroke-width="1" 
+            />
+        {/each}
+
+        <!-- Legend -->
         <g class="legend" transform="translate(0, -65)">
             <rect width="15" height="15" fill={colors[6]}></rect>
             <text x="20" y="12.5" fill={colors[5]} font-size="0.9rem">All other school districts</text>
+
+            <rect width="15" height="15" y="25" fill={colors[0]}></rect>
+            <text x="20" y="37.5" fill={colors[5]} font-size="0.9rem">{districtName}</text>
         </g>
 
         {#if currentMetric1Value && xPos !== undefined && xPos !== null}
-            <text 
+            <!-- <text 
                 x={xPos} 
                 y=-20
                 fill={colors[5]}
@@ -116,23 +179,24 @@
                 text-anchor="middle"
             >
                 {districtName}
-            </text>
+            </text> -->
 
             <line
                 x1={xPos}
                 x2={xPos}
                 y1={-10}
                 y2={height + 14}
-                stroke={colors[0]}
-                stroke-width={4}
+                stroke={colors[4]}
+                stroke-width={2}
+                stroke-dasharray="2, 2"
             />
 
             <text 
                 x={xPos} 
                 y={height + 28} 
-                fill={colors[5]}
-                font-size="1rem"
-                font-weight="600"
+                fill={colors[8]}
+                font-size="1.2rem"
+                font-weight="800"
                 text-anchor="middle"
             >
                 {currentMetric2Value}
