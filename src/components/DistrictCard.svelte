@@ -12,9 +12,16 @@
     <a on:click={() => goto(`/${districtId}`)} class="card-link">
         <div class="card">
             <div class="card-title">{matchedDistrict.properties["Institution Name"]}</div>
-            <InclusionRing value={matchedDistrict.properties.decile} weighted_inclusion={matchedDistrict.properties.weighted_inclusion} />
+            <div class="inclusion-ring-container">
+                <div class="metric-content">
+                    <InclusionRing value={matchedDistrict.properties.decile} weighted_inclusion={matchedDistrict.properties.weighted_inclusion} />
+                </div>
+                {#if matchedDistrict.properties["Total Student Count"] < 500}
+                    <span class="uncertainty">*</span>
+                {/if}
+            </div>
             {#if matchedDistrict.properties["Total Student Count"]}
-            <div class="card-info"><span class="highlight">{matchedDistrict.properties["Total Student Count"]}</span> students with IEPs</div>
+                <div class="card-info"><span class="highlight">{matchedDistrict.properties["Total Student Count"]}</span> students with IEPs</div>
             {:else}
                 <div class="card-info">No data available</div>
             {/if}
@@ -57,6 +64,24 @@
         margin-top: 1rem;
         text-align: center;
         line-height: 1.2rem;
+    }
+
+    .inclusion-ring-container {
+        display: flex;
+        align-items: center; /* Vertically center the contents */
+    }
+
+    .metric-content {
+        display: flex;
+        align-items: center; /* Ensure the InclusionRing is also centered if necessary */
+    }
+
+    .uncertainty {
+        margin-left: 4px; /* Adjust as needed for spacing */
+        align-self: flex-start; /* Align asterisk to the top */
+        font-size: 1.6rem;
+        color: var(--dark-gray);
+        margin-left: 0.25rem;
     }
 
     .highlight {
