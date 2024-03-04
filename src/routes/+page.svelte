@@ -272,8 +272,23 @@
     margin: 2rem 0 1rem 0;
     width: 100%;
     max-width: 72rem;
-    gap: 1rem;
+    /* gap: 1rem; */
   }
+
+  /* Fallback for older browsers */
+	.filters > *:not(:last-child) {
+		margin-right: 1rem; /* Horizontal spacing */
+	}
+
+	@supports (gap: 1rem) {
+		.filters {
+			gap: 1rem;
+		}
+		/* With gap supported, we no longer need the extra margin on buttons */
+		.filters > * {
+			margin: 0;
+		}
+	}
 
   .filter-size {
     display: flex;
@@ -305,7 +320,7 @@
 
   .action-button {
     padding: 0.5rem 1rem;
-    margin: 0;
+    /* margin: 0; */
     border-radius: 20px;
     cursor: pointer;
 	color: white;
@@ -316,6 +331,8 @@
 	font-weight: 700;
 	letter-spacing: 0.02rem;
 	opacity: 0.85;
+	/* Added margin for fallback, will be overridden if gap is supported */
+    margin: 0; /* Resets any additional margin for the feature query to work properly */
   }
 
   #hide-button {

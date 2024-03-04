@@ -60,13 +60,14 @@
 
   .nav-links {
     display: flex;
-    gap: 2rem;
+    /* gap: 2rem; */
+    flex-direction: row;
   }
 
   .mobile-nav {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    /* gap: 1rem; */
     position: fixed;
     top: 0;
     right: -100%;
@@ -111,6 +112,16 @@
     }
   }
 
+  /* Apply gap for browsers that support it */
+  @supports (gap: 1rem) {
+    .nav-links, .mobile-nav {
+      gap: 1rem;
+    }
+    .nav-links a, .mobile-nav a {
+      margin-bottom: 0; /* Reset margin if gap is supported */
+    }
+  }
+
   .nav-links {
     display: flex;
     align-items: center;
@@ -122,6 +133,7 @@
     color: var(--text-color); /* Replace with your color variable */
     font-weight: bold; /* Optional: Adjusts the font weight of nav links */
     line-height: 1.2;
+    margin-bottom: 1rem;
   }
 
   .nav-links .attention {
