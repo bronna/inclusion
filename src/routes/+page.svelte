@@ -4,19 +4,15 @@
 </svelte:head>
 
 <script>
-  import { getData } from "../data/processData.js";
-  import { selectedDistricts, districtsData, selectedDistrictsData, hideSmallDistricts } from "../stores/stores.js"
-  import Svelecte from "svelecte";
-  import RangeSlider from "svelte-range-slider-pips"
-  import StateMap from "../components/StateMap.svelte";
-  import TableOfDistricts from "../components/TableOfDistricts.svelte";
-  import Sources from "../components/Sources.svelte";
+  import { onMount } from "svelte"
+  import { selectedDistricts, districtsData, hideSmallDistricts } from "../stores/stores.js"
+  import Svelecte from "svelecte"
+  //import RangeSlider from "svelte-range-slider-pips"
+  import StateMap from "../components/StateMap.svelte"
+  import TableOfDistricts from "../components/TableOfDistricts.svelte"
+  import Sources from "../components/Sources.svelte"
 
-  let data = getData()
-
-  let stateData = data.find(row => row.properties.GEOID === "999999")
-
-  let numberDistricts = $districtsData.length
+  let isLoading = true
 
   let maxStudents = Math.max(
 	...$districtsData
@@ -30,10 +26,6 @@
 		.map(district => district.properties["Total Student Count"])
 		.filter(n => typeof n === 'number')
   );
-
-  function deepClone(arr) {
-	return JSON.parse(JSON.stringify(arr))
-  }
 
 	// create array of objects with id and name value for each item in the data array
 	let districtNames = $districtsData.map((district) => {
@@ -62,19 +54,26 @@
 		values = [minSize, maxSize]
 	}
 
-	function filterBySize() {
-		let filteredDistricts = deepClone($districtsData)
-			.filter(district => district.properties["Total Student Count"] >= minSize && district.properties["Total Student Count"] <= maxSize)
-			.map(district => district.properties.GEOID);
+	// function filterBySize() {
+	// 	let filteredDistricts = deepClone($districtsData)
+	// 		.filter(district => district.properties["Total Student Count"] >= minSize && district.properties["Total Student Count"] <= maxSize)
+	// 		.map(district => district.properties.GEOID);
 		
-		selectedDistricts.set(filteredDistricts);
-	}
+	// 	selectedDistricts.set(filteredDistricts);
+	// }
 
 	// set state for filter option
 	let minSize = 0;
 	let maxSize = 9000
 	let values = [minSize, maxSize]
 
+	onMount(() => {
+		$selectedDistricts.length ? isLoading = false : isLoading = true
+	})
+
+	$: if ($selectedDistricts.length > 0) {
+		isLoading = false
+	}
 </script>
 
 <section id="scores">
@@ -109,67 +108,73 @@
 		This tool allows you to explore the most recent data on inclusion and outcomes for children with IEPs from school districts around your state. To begin, enter the name of a district below, or select one or more on the map.
 	</p>
 
-	<div class="search text-width">
-		<p class="search-description text-width">
-			Find a school district
-		</p>
+	{#if !isLoading}
+		<div class="search text-width">
+			<p class="search-description text-width">
+				Find a school district
+			</p>
 
-		<div class="search-container text-width">
-			<Svelecte 
-				options={districtNames} 
-				bind:value={$selectedDistricts} 
-				multiple={true} 
-				collapseSelection={$selectedDistricts.length < 6 ? false : true}
-				placeholder={"find a school district"}
-				closeAfterSelect={true}
-			/>
-		</div>
-	</div>
-
-	<StateMap data={$districtsData} />
-
-	<div class="filters">
-		<!-- Select all -->
-		<button on:click={selectAllDistricts} class="action-button" id="select-all-button">
-			select all
-		</button>
-
-		<!-- Select none -->
-		<button on:click={clearSelectedDistricts} class="action-button" id="select-none-button">
-			select none
-		</button>
-
-		<!-- Hide/show small districts -->
-		<button on:click={toggleHideSmallDistricts} class="action-button" id="hide-button">
-			{$hideSmallDistricts ? 'show small districts' : 'hide small districts'}
-		</button>
-
-		<!-- Filter by size action -->
-		<!-- <div class="filter-size">
-			<div class="slider-label">
-				<span>Filter by # of</span>
-				<span>students with IEPs:</span>
+			<div class="search-container text-width">
+				<Svelecte 
+					options={districtNames} 
+					bind:value={$selectedDistricts} 
+					multiple={true} 
+					collapseSelection={$selectedDistricts.length < 6 ? false : true}
+					placeholder={"find a school district"}
+					closeAfterSelect={true}
+				/>
 			</div>
-			<RangeSlider 
-				bind:values
-				range={true} 
-				min={minStudents} 
-				max={maxStudents} 
-				float={true} 
-				first={true}
-				last={true}
-				id="range-slider"
-				aria-labels={["Minimum number of students", "Maximum number of students"]}
-				on:stop={() => {
-					minSize = values[0]
-					maxSize = values[1]
-					filterBySize()
-				}}
-			/>
-		</div> -->
-	</div>
+		</div>
 
-	<TableOfDistricts />
+		<StateMap data={$districtsData} />
+
+		<div class="filters">
+			<!-- Select all -->
+			<button on:click={selectAllDistricts} class="action-button" id="select-all-button">
+				select all
+			</button>
+
+			<!-- Select none -->
+			<button on:click={clearSelectedDistricts} class="action-button" id="select-none-button">
+				select none
+			</button>
+
+			<!-- Hide/show small districts -->
+			<button on:click={toggleHideSmallDistricts} class="action-button" id="hide-button">
+				{$hideSmallDistricts ? 'show small districts' : 'hide small districts'}
+			</button>
+
+			<!-- Filter by size action -->
+			<!-- <div class="filter-size">
+				<div class="slider-label">
+					<span>Filter by # of</span>
+					<span>students with IEPs:</span>
+				</div>
+				<RangeSlider 
+					bind:values
+					range={true} 
+					min={minStudents} 
+					max={maxStudents} 
+					float={true} 
+					first={true}
+					last={true}
+					id="range-slider"
+					aria-labels={["Minimum number of students", "Maximum number of students"]}
+					on:stop={() => {
+						minSize = values[0]
+						maxSize = values[1]
+						filterBySize()
+					}}
+				/>
+			</div> -->
+		</div>
+
+		<TableOfDistricts />
+	{:else}
+		<p class="text-width">
+			Loading data...
+		</p>
+	{/if}
 </section>
 
 <Sources />
@@ -239,11 +244,6 @@
   .inner-content svg {
     color: #fff;
     margin-right: 10px;
-  }
-
-  .state {
-	width: 100%;
-	margin-bottom: 1rem;
   }
 
   .search p {
@@ -342,10 +342,5 @@
 
   #scores {
 	margin-bottom: 5rem;
-  }
-
-  #breakdown {
-	background-color: var(--light-light-gray);
-	padding-top: 3rem;
   }
 </style>
