@@ -39,7 +39,7 @@
     display: flex;
     justify-content: space-between; /* Aligns Logo to left and nav to right */
     align-items: center;
-    padding: 2rem 1rem; /* Adjusted for uniform padding */
+    padding: 2rem 2rem;
     background-color: var(--background-color);
   }
 

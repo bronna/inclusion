@@ -110,7 +110,7 @@
         {:else}
             <p>No data available</p>
         {/if}
-        <p class="data-asterisk">*discipline rates were lower than usual due to remote learning</p>
+        <p class="data-asterisk">*discipline rates lower than usual due to remote learning</p>
     </div>
 
     <div class="text-width metric">

@@ -219,7 +219,7 @@
       return () => {
         window.removeEventListener('resize', updateProjection)
       }
-    });
+    })
 </script>
 
 <div class="tooltip" bind:this={tooltip}></div>
@@ -331,7 +331,23 @@
             </g>
         {/if}
       </g>
-      
+    </svg>
+
+    <!-- Legend -->
+    <svg class="color-legend" width="150" height="210">
+      <defs>
+        <linearGradient id="inclusionGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:{colors[0]}; stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#fff; stop-opacity:1" />
+        </linearGradient>
+      </defs>
+
+      <rect x="15" y="10" width="20" height="180" fill="url(#inclusionGradient)" />
+
+      <text x="45" y="15" font-size="0.8rem" text-anchor="start" font-weight="600">More</text>
+      <text x="45" y="30" font-size="0.8rem" text-anchor="start" font-weight="600">Inclusive</text>
+      <text x="45" y="190" font-size="0.8rem" text-anchor="start" font-weight="600">Less</text>
+      <text x="45" y="205" font-size="0.8rem" text-anchor="start" font-weight="600">Inclusive</text>
     </svg>
 
     <div class="zoom-controls">
@@ -348,6 +364,13 @@
       min-height: 300px;
       display: flex;
       justify-content: center;
+  }
+
+  .color-legend {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      pointer-events: none; /* Make the legend non-interactive */
   }
 
   .zoom-controls {
