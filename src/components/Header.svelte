@@ -44,9 +44,9 @@
   }
 
   @media (max-width: 768px) {
-      header {
-          padding: 2rem 1rem;
-      }
+    header {
+      padding: 2rem 1rem;
+    }
   }
 
   .hamburger {
@@ -58,91 +58,92 @@
     color: var(--text-color);
   }
 
-  .nav-links {
+  /* Apply horizontal layout with margins as fallback */
+  .nav-links, .mobile-nav {
     display: flex;
-    /* gap: 2rem; */
     flex-direction: row;
+    margin-right: -1rem; /* Negate the margin for the last item */
+    align-items: center;
+  }
+  
+  .nav-links a, .mobile-nav a {
+    margin-right: 1rem; /* Fallback spacing */
   }
 
+  /* Remove margin for the last item */
+  .nav-links a:last-child, .mobile-nav a:last-child {
+    margin-right: 0;
+  }
+
+  /* Specific styles for mobile navigation */
   .mobile-nav {
-    display: flex;
-    flex-direction: column;
-    /* gap: 1rem; */
+    flex-direction: column; /* Stack vertically on mobile */
+    display: none; /* Start hidden and show based on menuOpen */
     position: fixed;
     top: 0;
-    right: -100%;
+    right: 0;
     bottom: 0;
     width: 80%;
     max-width: 300px;
-    transition: left 0.3s ease;
-    background-color: rgba(244, 241, 240, 0.9);
+    background-color: rgba(244, 241, 240, 0.94);
     padding: 1rem;
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     z-index: 10;
   }
-
+  
   .mobile-nav.show {
-    right: 0;
+    display: flex; /* Show mobile nav when menu is open */
   }
 
   .close-btn {
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
+    align-self: flex-end;
     background: none;
     border: none;
     font-size: 2rem;
     font-weight: 600;
     cursor: pointer;
     color: var(--text-color);
+    margin-bottom: 1rem; /* Space below the close button */
   }
 
   @media (max-width: 768px) {
     .nav-links {
-      display: none !important;
+      display: none;
     }
 
     .hamburger {
-      display: block !important;
-    }
-
-    /* When menuOpen is true, the mobile nav is displayed */
-    .mobile-nav {
-      display: flex;
+      display: block;
     }
   }
 
-  /* Apply gap for browsers that support it */
+  /* Use gap for browsers that support it and reset fallback margins */
   @supports (gap: 1rem) {
     .nav-links, .mobile-nav {
       gap: 1rem;
+      margin-right: 0; /* Reset the negative margin when gap is supported */
     }
     .nav-links a, .mobile-nav a {
-      margin-bottom: 0; /* Reset margin if gap is supported */
+      margin-right: 0; /* Reset margin for horizontal layout */
     }
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2rem; /* Creates space between navigation links */
+    .mobile-nav {
+      flex-direction: column; /* Ensure mobile nav remains vertical */
+    }
   }
 
   .nav-links a {
     text-decoration: none;
-    color: var(--text-color); /* Replace with your color variable */
-    font-weight: bold; /* Optional: Adjusts the font weight of nav links */
+    color: var(--text-color);
+    font-weight: bold;
     line-height: 1.2;
-    margin-bottom: 1rem;
   }
 
   .nav-links .attention {
-    background-color: var(--separate-color); /* Replace with your color variable */
-    color: var(--background-color); /* Replace with your color variable */
-    padding: 0.25rem 0.7rem; /* Adjusted for uniform padding */
+    background-color: var(--separate-color);
+    color: var(--background-color);
+    padding: 0.25rem 0.7rem;
     border: 2px solid var(--color-text);
-    border-radius: 90px; /* Optional: Adds rounded corners to the button */
-    transition: var(--background-color) 0.3s;
+    border-radius: 90px;
+    transition: background-color 0.3s;
     display: inline-block;
     text-align: center;
     opacity: 0.85;
